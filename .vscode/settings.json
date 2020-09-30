@@ -1,0 +1,7 @@
+{
+	"files.exclude": {
+		"D:/Unreal Projects/MeleeCombatCore/.vscode": true,
+		"D:/Unreal Projects/MeleeCombatCore/Content": true,
+		"D:/Unreal Projects/MeleeCombatCore/Intermediate": true
+	}
+}
