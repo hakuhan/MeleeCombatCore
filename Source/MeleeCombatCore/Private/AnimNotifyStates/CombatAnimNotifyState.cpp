@@ -1,12 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CombatAnimNotifyState.h"
-
-UCombatAnimNotifyState::UCombatAnimNotifyState()
-{
-
-}
+#include "AnimNotifyStates/CombatAnimNotifyState.h"
 
 void UCombatAnimNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
 {

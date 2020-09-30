@@ -11,6 +11,7 @@
 #include "HitSolution.h"
 #include "CombatStructure.h"
 #include "HitReaction.h"
+#include "CombatEffectComponent.h"
 #include "CombatComponent.generated.h"
 
 UCLASS(ClassGroup = (Custom), Blueprintable, meta = (BlueprintSpawnableComponent))
@@ -26,6 +27,9 @@ public:
 	// deal info
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")
 	FDataTableRowHandle m_hitSolutionInfo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")
+	UCombatEffectComponent* m_effectComponet;
 
 	// tag to find out weapon
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")

@@ -20,12 +20,8 @@ class MELEECOMBATCORE_API UCombatAnimNotifyState : public UAnimNotifyState
 
 public:
 	UCombatComponent* m_combat;
-protected:
 	
-
 public:
-	UCombatAnimNotifyState();
-
 	virtual void NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration);
 	virtual void NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime);
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation);

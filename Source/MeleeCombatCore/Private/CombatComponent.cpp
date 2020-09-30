@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "CombatComponent.h"
 
 // Sets default values for this component's properties
@@ -74,6 +72,11 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 						// UE_LOG(LogTemp, Warning, TEXT("Attack player"));
 						IHitSolution::Execute_OnHit(Cast<UObject>(m_solution), hit.GetActor());
 					}
+
+					if (m_effectComponet)
+					{
+						m_effectComponet->HitEffect(hit);
+					}
 					// UE_LOG(LogTemp, Warning, TEXT("Attack player: %s"), *hit.GetActor()->GetFName().ToString());
 				}
 
@@ -93,6 +96,11 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 							IHitSolution::Execute_OnHit(Cast<UObject>(m_solution), h.GetActor());
 						}
 						// UE_LOG(LogTemp, Warning, TEXT("Sockets attack player: %s"), *h.GetActor()->GetFName().ToString());
+
+						if (m_effectComponet)
+						{
+							m_effectComponet->HitEffect(h);
+						}
 					}
 				}
 
@@ -118,6 +126,10 @@ void UCombatComponent::ResetData()
 	for (int i = 0; i < m_weapons.Num(); ++i)
 	{
 		m_weapons[i].tempSocketLocation.Empty();
+	}
+	if (m_effectComponet)
+	{
+		m_effectComponet->ResetData();
 	}
 }
 

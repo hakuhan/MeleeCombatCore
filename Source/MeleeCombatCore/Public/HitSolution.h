@@ -11,7 +11,7 @@
 #include "HitSolution.generated.h"
 
 UINTERFACE(Blueprintable)
-class UHitSolution : public UInterface
+class MELEECOMBATCORE_API UHitSolution : public UInterface
 {
     GENERATED_BODY()
 };
