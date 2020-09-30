@@ -21,6 +21,8 @@ private:
     TArray<UObject*> m_CombatEffects;
 
 public:
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "HitEffect"))
+    // TArray<TScriptInterface<IHitEffect>> m_hitEffectObjs;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "HitEffect"))
     TArray<TSubclassOf<UObject>> m_HitEffectClasses;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "CombatingEffect"))

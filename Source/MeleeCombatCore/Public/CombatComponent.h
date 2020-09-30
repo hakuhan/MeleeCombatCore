@@ -28,8 +28,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")
 	FDataTableRowHandle m_hitSolutionInfo;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")
-	UCombatEffectComponent* m_effectComponet;
+	UPROPERTY(VisibleAnywhere, Category = "Detection")
+	UCombatEffectComponent* m_effectComponent;
 
 	// tag to find out weapon
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")

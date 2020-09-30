@@ -28,6 +28,8 @@ void UCombatComponent::BeginPlay()
 			m_solution->Init(*solutionInfo);
 		}
 	}
+
+	m_effectComponent = Cast<UCombatEffectComponent>(GetOwner()->GetComponentByClass(UCombatEffectComponent::StaticClass()));
 }
 
 // Called every frame
@@ -73,9 +75,9 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 						IHitSolution::Execute_OnHit(Cast<UObject>(m_solution), hit.GetActor());
 					}
 
-					if (m_effectComponet)
+					if (m_effectComponent)
 					{
-						m_effectComponet->HitEffect(hit);
+						m_effectComponent->HitEffect(hit);
 					}
 					// UE_LOG(LogTemp, Warning, TEXT("Attack player: %s"), *hit.GetActor()->GetFName().ToString());
 				}
@@ -97,9 +99,9 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 						}
 						// UE_LOG(LogTemp, Warning, TEXT("Sockets attack player: %s"), *h.GetActor()->GetFName().ToString());
 
-						if (m_effectComponet)
+						if (m_effectComponent)
 						{
-							m_effectComponet->HitEffect(h);
+							m_effectComponent->HitEffect(h);
 						}
 					}
 				}
@@ -127,9 +129,9 @@ void UCombatComponent::ResetData()
 	{
 		m_weapons[i].tempSocketLocation.Empty();
 	}
-	if (m_effectComponet)
+	if (m_effectComponent)
 	{
-		m_effectComponet->ResetData();
+		m_effectComponent->ResetData();
 	}
 }
 
