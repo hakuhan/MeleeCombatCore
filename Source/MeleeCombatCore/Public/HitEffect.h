@@ -9,7 +9,7 @@
 #include "Engine/EngineTypes.h"
 #include "HitEffect.generated.h"
 
-UINTERFACE()
+UINTERFACE(Blueprintable)
 class MELEECOMBATCORE_API UHitEffect : public UInterface
 {
     GENERATED_BODY()

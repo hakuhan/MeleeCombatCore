@@ -14,23 +14,22 @@ class MELEECOMBATCORE_API UCombatEffectComponent : public UActorComponent
 {
     GENERATED_BODY()
 private:
-    TArray<AActor*> m_HittedActors;
+    TArray<AActor *> m_HittedActors;
 
-    // Effects
-    TArray<UObject*> m_HitEffects;
-    TArray<UObject*> m_CombatEffects;
+protected:
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    TArray<UObject *> m_HitEffects;
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    TArray<UObject *> m_CombatEffects;
+
+// public:
+//     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "HitEffect"))
+//     TArray<TSubclassOf<UObject>> m_HitEffectClasses;
+//     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "CombatingEffect"))
+//     TArray<TSubclassOf<UObject>> m_CombatingClasses;
 
 public:
-    // UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "HitEffect"))
-    // TArray<TScriptInterface<IHitEffect>> m_hitEffectObjs;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "HitEffect"))
-    TArray<TSubclassOf<UObject>> m_HitEffectClasses;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "CombatingEffect"))
-    TArray<TSubclassOf<UObject>> m_CombatingClasses;
-
-public:
-	virtual void BeginPlay() override;
-
+    // virtual void BeginPlay() override;
 
     UFUNCTION(BlueprintCallable)
     void HitEffect(FHitResult hitInfo);
@@ -40,10 +39,10 @@ public:
     void StopCombatingEffect();
     UFUNCTION(BlueprintCallable)
     void ResetData();
-    UFUNCTION(BlueprintCallable)
-    void UpdateEffects();
+    // UFUNCTION(BlueprintCallable)
+    // void UpdateEffects();
 
 protected:
     // check array's element is valid
-    void CheckEffectClass(TArray<UObject*> arrays);
+    void CheckEffectClass(TArray<UObject *> arrays);
 };

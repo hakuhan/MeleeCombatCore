@@ -1,9 +1,9 @@
 #include "CombatEffectComponent.h"
 
-void UCombatEffectComponent::BeginPlay()
-{
-    UpdateEffects();
-}
+// void UCombatEffectComponent::BeginPlay()
+// {
+//     UpdateEffects();
+// }
 
 void UCombatEffectComponent::HitEffect(FHitResult hitInfo)
 {
@@ -22,7 +22,7 @@ void UCombatEffectComponent::HitEffect(FHitResult hitInfo)
 
     for (auto effect : m_HitEffects)
     {
-        IHitEffect::Execute_FirstHitEffect(effect, hitInfo);
+        IHitEffect::Execute_HitEffect(effect, hitInfo);
     }
 }
 
@@ -60,21 +60,21 @@ void UCombatEffectComponent::CheckEffectClass(TArray<UObject *> arrays)
     }
 }
 
-void UCombatEffectComponent::UpdateEffects()
-{
-    for (auto hitClass : m_HitEffectClasses)
-    {
-        if (hitClass)
-        {
-            m_HitEffects.Add(NewObject<UObject>(this, hitClass));
-        }
-    }
+// void UCombatEffectComponent::UpdateEffects()
+// {
+//     for (auto hitClass : m_HitEffectClasses)
+//     {
+//         if (hitClass)
+//         {
+//             m_HitEffects.Add(NewObject<UObject>(this, hitClass));
+//         }
+//     }
 
-    for (auto combatingClass : m_CombatingClasses)
-    {
-        if (combatingClass)
-        {
-            m_CombatEffects.Add(NewObject<UObject>(this, combatingClass));
-        }
-    }
-}
+//     for (auto combatingClass : m_CombatingClasses)
+//     {
+//         if (combatingClass)
+//         {
+//             m_CombatEffects.Add(NewObject<UObject>(this, combatingClass));
+//         }
+//     }
+// }
