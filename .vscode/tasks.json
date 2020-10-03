@@ -9,7 +9,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Debug",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -26,7 +26,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Debug",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -46,7 +46,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Debug",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -63,7 +63,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"DebugGame",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -80,7 +80,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"DebugGame",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -100,7 +100,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"DebugGame",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -117,7 +117,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Development",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -134,7 +134,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Development",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -154,7 +154,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Development",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -171,7 +171,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Shipping",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -188,7 +188,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Shipping",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -208,7 +208,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Shipping",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -225,7 +225,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Test",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -242,7 +242,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Test",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -262,7 +262,7 @@
 				"MeleeCombatCore",
 				"Win32",
 				"Test",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -279,7 +279,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Debug",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -296,7 +296,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Debug",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -316,7 +316,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Debug",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -333,7 +333,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"DebugGame",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -350,7 +350,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"DebugGame",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -370,7 +370,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"DebugGame",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -387,7 +387,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Development",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -404,7 +404,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Development",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -424,7 +424,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Development",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -441,7 +441,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Shipping",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -458,7 +458,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Shipping",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -478,7 +478,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Shipping",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -495,7 +495,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Test",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -512,7 +512,7 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Test",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -532,7 +532,277 @@
 				"MeleeCombatCore",
 				"Win64",
 				"Test",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Debug Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Debug",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Debug Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Debug",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"MeleeCombatCore Android Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Debug Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Debug",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android DebugGame Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"DebugGame",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"DebugGame",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"MeleeCombatCore Android DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android DebugGame Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"DebugGame",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Development Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Development",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Development Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Development",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"MeleeCombatCore Android Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Development Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Development",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Shipping Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Shipping",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Shipping Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Shipping",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"MeleeCombatCore Android Shipping Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Shipping Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Shipping",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Test Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Test",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Test Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Test",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"MeleeCombatCore Android Test Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "C:\\Program Files\\Epic Games\\UE_4.25"
+			}
+		},
+		{
+			"label": "MeleeCombatCore Android Test Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"MeleeCombatCore",
+				"Android",
+				"Test",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -549,7 +819,7 @@
 				"MeleeCombatCoreEditor",
 				"Win64",
 				"Debug",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -566,7 +836,7 @@
 				"MeleeCombatCoreEditor",
 				"Win64",
 				"Debug",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -586,7 +856,7 @@
 				"MeleeCombatCoreEditor",
 				"Win64",
 				"Debug",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -603,7 +873,7 @@
 				"MeleeCombatCoreEditor",
 				"Win64",
 				"DebugGame",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -620,7 +890,7 @@
 				"MeleeCombatCoreEditor",
 				"Win64",
 				"DebugGame",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -640,7 +910,7 @@
 				"MeleeCombatCoreEditor",
 				"Win64",
 				"DebugGame",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -657,7 +927,7 @@
 				"MeleeCombatCoreEditor",
 				"Win64",
 				"Development",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -674,7 +944,7 @@
 				"MeleeCombatCoreEditor",
 				"Win64",
 				"Development",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",
@@ -694,7 +964,7 @@
 				"MeleeCombatCoreEditor",
 				"Win64",
 				"Development",
-				"D:\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
+				"C:\\Users\\BC\\Documents\\Unreal Projects\\MeleeCombatCore\\MeleeCombatCore.uproject",
 				"-waitmutex"
 			],
 			"problemMatcher": "$msCompile",

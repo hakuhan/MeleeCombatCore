@@ -44,5 +44,5 @@ public:
 
 protected:
     // check array's element is valid
-    void CheckEffectClass(TArray<UObject *> arrays);
+    void CheckEffectClass(TArray<UObject *>& arrays);
 };

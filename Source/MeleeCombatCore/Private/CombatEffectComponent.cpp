@@ -29,18 +29,18 @@ void UCombatEffectComponent::HitEffect(FHitResult hitInfo)
 void UCombatEffectComponent::ShowCombatingEffect()
 {
     CheckEffectClass(m_CombatEffects);
-    for (auto effect : m_CombatEffects)
+    for (auto combatEft : m_CombatEffects)
     {
-        ICombatingEffect::Execute_ShowCombatingEffect(effect);
+        ICombatingEffect::Execute_ShowCombatingEffect(combatEft);
     }
 }
 
 void UCombatEffectComponent::StopCombatingEffect()
 {
     CheckEffectClass(m_CombatEffects);
-    for (auto effect : m_CombatEffects)
+    for (auto combatEft : m_CombatEffects)
     {
-        ICombatingEffect::Execute_StopCombatingEffect(effect);
+        ICombatingEffect::Execute_StopCombatingEffect(combatEft);
     }
 }
 
@@ -49,11 +49,11 @@ void UCombatEffectComponent::ResetData()
     m_HittedActors.Empty();
 }
 
-void UCombatEffectComponent::CheckEffectClass(TArray<UObject *> arrays)
+void UCombatEffectComponent::CheckEffectClass(TArray<UObject *>& arrays)
 {
     for (int i = arrays.Num() - 1; i >= 0; --i)
     {
-        if (arrays[i])
+        if (!arrays[i])
         {
             arrays.RemoveAt(i);
         }
