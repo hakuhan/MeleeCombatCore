@@ -22,11 +22,11 @@ protected:
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     TArray<UObject *> m_CombatEffects;
 
-// public:
-//     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "HitEffect"))
-//     TArray<TSubclassOf<UObject>> m_HitEffectClasses;
-//     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "CombatingEffect"))
-//     TArray<TSubclassOf<UObject>> m_CombatingClasses;
+public:
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "HitEffect"))
+    // TArray<TSubclassOf<UObject>> m_HitEffectClasses;
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "CombatingEffect"))
+    // TArray<TSubclassOf<UObject>> m_CombatingClasses;
 
 public:
     // virtual void BeginPlay() override;
