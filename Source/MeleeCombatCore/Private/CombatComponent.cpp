@@ -35,6 +35,7 @@ void UCombatComponent::BeginPlay()
 // Called every frame
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
+	m_tempHitActors.Empty();
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	if (m_isDetecting)
@@ -44,6 +45,8 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		{
 			for (int j = 0; j < m_weapons[i].socketNames.Num(); ++j)
 			{
+				TArray<AActor *> tempActors;
+
 				// 1. Check every single socket
 				auto debugTrace = EDrawDebugTrace::ForDuration;
 				if (!m_isShowTrace)
@@ -69,17 +72,7 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 				UKismetSystemLibrary::LineTraceMulti(world, preLocation, crtLocation, channel, true, arrayIgnoreActor, debugTrace, hits, true, traceColor, collisionColor);
 				for (auto hit : hits)
 				{
-					if (m_solution)
-					{
-						// UE_LOG(LogTemp, Warning, TEXT("Attack player"));
-						IHitSolution::Execute_OnHit(Cast<UObject>(m_solution), hit.GetActor());
-					}
-
-					if (m_effectComponent)
-					{
-						m_effectComponent->HitEffect(hit);
-					}
-					// UE_LOG(LogTemp, Warning, TEXT("Attack player: %s"), *hit.GetActor()->GetFName().ToString());
+					ExecuteHit(hit);
 				}
 
 				// 2. Check trace between sokets
@@ -93,16 +86,7 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 					for (auto h : hitsBySockets)
 					{
-						if (m_solution)
-						{
-							IHitSolution::Execute_OnHit(Cast<UObject>(m_solution), h.GetActor());
-						}
-						// UE_LOG(LogTemp, Warning, TEXT("Sockets attack player: %s"), *h.GetActor()->GetFName().ToString());
-
-						if (m_effectComponent)
-						{
-							m_effectComponent->HitEffect(h);
-						}
+						ExecuteHit(h);
 					}
 				}
 
@@ -159,5 +143,25 @@ void UCombatComponent::UpdateWeapon()
 			wData->socketNames.Append(wData->weapon->GetAllSocketNames());
 			m_weapons.Add(*wData);
 		}
+	}
+}
+
+void UCombatComponent::ExecuteHit(FHitResult hit)
+{
+	AActor* actor = hit.GetActor();
+	if (m_tempHitActors.Contains(actor))
+	{
+		return;
+	}
+	m_tempHitActors.Add(actor);
+
+	if (m_solution)
+	{
+		IHitSolution::Execute_OnHit(Cast<UObject>(m_solution), actor);
+	}
+
+	if (m_effectComponent)
+	{
+		m_effectComponent->HitEffect(hit);
 	}
 }
