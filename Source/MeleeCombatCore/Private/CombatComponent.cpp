@@ -24,7 +24,8 @@ void UCombatComponent::BeginPlay()
 		auto solutionInfo = dealInfo->solutionInfo.GetRow<FHitSolutionInfo>("Get Deal attak data");
 		if (dealObj && solutionInfo)
 		{
-			m_solution = Cast<IHitSolution>(dealObj);
+			m_solution.SetObject(dealObj);
+			m_solution.SetInterface(Cast<IHitSolution>(dealObj));
 			m_solution->Init(*solutionInfo);
 		}
 	}
@@ -100,7 +101,7 @@ void UCombatComponent::StartDetection()
 {
 	if (m_solution)
 	{
-		IHitSolution::Execute_OnStartDetection(Cast<UObject>(Cast<UObject>(m_solution)));
+		IHitSolution::Execute_OnStartDetection(m_solution.GetObject());
 	}
 	m_isDetecting = true;
 
@@ -123,7 +124,7 @@ void UCombatComponent::EndDetection()
 {
 	if (m_solution)
 	{
-		IHitSolution::Execute_OnEndDetection(Cast<UObject>(m_solution));
+		IHitSolution::Execute_OnEndDetection(m_solution.GetObject());
 	}
 	m_isDetecting = false;
 }
@@ -148,7 +149,7 @@ void UCombatComponent::UpdateWeapon()
 
 void UCombatComponent::ExecuteHit(FHitResult hit)
 {
-	AActor* actor = hit.GetActor();
+	AActor *actor = hit.GetActor();
 	if (m_tempHitActors.Contains(actor))
 	{
 		return;
@@ -157,11 +158,16 @@ void UCombatComponent::ExecuteHit(FHitResult hit)
 
 	if (m_solution)
 	{
-		IHitSolution::Execute_OnHit(Cast<UObject>(m_solution), actor);
+		IHitSolution::Execute_OnHit(m_solution.GetObject(), actor);
 	}
 
 	if (m_effectComponent)
 	{
 		m_effectComponent->HitEffect(hit);
 	}
+}
+
+void UCombatComponent::UpdateSolution(TScriptInterface<IHitSolution> solution)
+{
+	m_solution = solution;
 }

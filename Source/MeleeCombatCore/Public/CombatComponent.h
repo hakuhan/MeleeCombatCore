@@ -21,7 +21,9 @@ class MELEECOMBATCORE_API UCombatComponent : public UActorComponent
 
 private:
 	// deal handler
-	IHitSolution* m_solution;
+	UPROPERTY()
+	TScriptInterface<IHitSolution> m_solution;
+	UPROPERTY()
 	TArray<AActor*> m_tempHitActors;
 
 public:
@@ -76,6 +78,9 @@ public:
 	/// </summary>
 	UFUNCTION(BlueprintCallable)
 	void UpdateWeapon();
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateSolution(TScriptInterface<IHitSolution> solution);
 
 private:
 	void ExecuteHit(FHitResult hit);
