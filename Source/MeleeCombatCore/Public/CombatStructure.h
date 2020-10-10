@@ -41,19 +41,33 @@ public:
 	FDataTableRowHandle solutionInfo;
 };
 
-
 // deal data
 USTRUCT(Blueprintable)
 struct MELEECOMBATCORE_API FHitSolutionInfo : public FTableRowBase
 {
-    GENERATED_USTRUCT_BODY()
+	GENERATED_USTRUCT_BODY()
 
 public:
-    FHitSolutionInfo()
-        : hurts(1)
-    {
-    }
+	FHitSolutionInfo()
+		: hurts(1)
+	{
+	}
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float hurts;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float hurts;
+};
+
+USTRUCT(Blueprintable)
+struct FHitMultiInfo : public FHitSolutionInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	FHitMultiInfo()
+	{
+		
+	}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float interval;
 };

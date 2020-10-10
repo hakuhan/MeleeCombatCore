@@ -7,6 +7,7 @@
 
 #include "CoreMinimal.h"
 #include "HitSolution.h"
+#include "TimerManager.h"
 #include "HitMulti.generated.h"
 
 UCLASS()
@@ -16,6 +17,7 @@ class UHitMulti : public UObject, public IHitSolution
 
 private:
     TArray<AActor *> m_actors;
+    // TArray<float> m_intervals;
 
 public:
     /*hit interval of multi attack*/
@@ -23,7 +25,7 @@ public:
     float m_hitInterval = 0.1f;
 
 private:
-    bool m_isCooling = false;
+    FTimerHandle timeHandler;
 
 public:
     virtual void OnHit_Implementation(AActor *attackedActor) override;
@@ -33,4 +35,10 @@ public:
     virtual void OnStartDetection_Implementation() override;
 
     virtual void OnEndDetection_Implementation() override;
+
+    UFUNCTION(BlueprintCallable)
+    bool IsCooling();
+
+protected:
+    void CoolOver();
 };

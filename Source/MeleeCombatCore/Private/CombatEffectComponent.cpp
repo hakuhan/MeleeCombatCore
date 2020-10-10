@@ -18,12 +18,25 @@ void UCombatEffectComponent::HitEffect(FHitResult hitInfo)
         {
             IHitEffect::Execute_FirstHitEffect(effect, hitInfo);
         }
+        return;
+    }
+
+    if (IsCooling())
+    {
+        return;
     }
 
     for (auto effect : m_HitEffects)
     {
         IHitEffect::Execute_HitEffect(effect, hitInfo);
     }
+
+    GetWorld()->GetTimerManager().SetTimer(timeHandler, this, &UCombatEffectComponent::EndCooling, m_effectInterval, false);
+}
+
+void UCombatEffectComponent::EndCooling()
+{
+
 }
 
 void UCombatEffectComponent::ShowCombatingEffect()
@@ -152,3 +165,8 @@ void UCombatEffectComponent::RemoveCombatingEffect(UObject *effect)
 }
 
 #pragma endregion ManageEffect
+
+bool UCombatEffectComponent::IsCooling()
+{
+    return GetWorld()->GetTimerManager().IsTimerActive(timeHandler);
+}

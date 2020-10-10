@@ -15,12 +15,15 @@ class MELEECOMBATCORE_API UCombatEffectComponent : public UActorComponent
     GENERATED_BODY()
 private:
     TArray<AActor *> m_HittedActors;
+    FTimerHandle timeHandler;
 
 protected:
-    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Effect")
+    UPROPERTY(BlueprintReadWrite, Category = "Effect")
     TArray<UObject *> m_HitEffects;
-    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Effect")
+    UPROPERTY(BlueprintReadWrite, Category = "Effect")
     TArray<UObject *> m_CombatEffects;
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Effect")
+    float m_effectInterval = 0.1f;
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "HitEffect"), Category = "Effect")
@@ -39,6 +42,12 @@ public:
     void StopCombatingEffect();
     UFUNCTION(BlueprintCallable, Category = "Effect")
     void ResetData();
+
+    UFUNCTION(BlueprintCallable, Category = "Effect")
+    bool IsCooling();
+
+    UFUNCTION(BlueprintCallable, Category = "Effect")
+    void EndCooling();
 
 #pragma region ManageEffect
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Effect")
