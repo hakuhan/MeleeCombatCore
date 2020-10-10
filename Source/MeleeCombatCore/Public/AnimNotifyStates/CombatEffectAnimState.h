@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CombatEffectComponent.h"
+#include "MeleeComponents/CombatEffectComponent.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
 #include "CombatEffectAnimState.generated.h"
 

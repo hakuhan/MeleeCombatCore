@@ -8,6 +8,7 @@
 #include "CoreMinimal.h"
 #include "CombatStructure.h"
 #include "HitReaction.h"
+#include "MeleeUtils.h"
 #include "HitSolution.generated.h"
 
 UINTERFACE(Blueprintable)
@@ -49,9 +50,14 @@ public:
 protected:
     void NoticeHit(AActor *actor)
     {
-        if (actor->GetClass()->ImplementsInterface(UHitReaction::StaticClass()))
+        TArray<UObject *> reacters;
+        UMeleeUtils::GetImplementFromActor(actor, UHitReaction::StaticClass(), reacters);
+        if (reacters.Num() > 0)
         {
-            IHitReaction::Execute_OnHitted(actor, m_hitInfo.hurts);
+            for (auto reacter : reacters)
+            {
+                IHitReaction::Execute_OnHitted(reacter, m_hitInfo.hurts);
+            }
             // UE_LOG(LogTemp, Warning, TEXT("Multi attack"));
         }
     }

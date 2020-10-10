@@ -7,7 +7,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "CombatComponent.h"
+#include "MeleeComponents/CombatComponent.h"
 #include "CombatAnimNotifyState.generated.h"
 
 /**

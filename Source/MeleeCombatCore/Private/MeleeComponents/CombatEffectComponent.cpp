@@ -1,4 +1,4 @@
-#include "CombatEffectComponent.h"
+#include "MeleeComponents/CombatEffectComponent.h"
 
 void UCombatEffectComponent::BeginPlay()
 {
@@ -100,17 +100,8 @@ void UCombatEffectComponent::InitFromOwner()
 
 void UCombatEffectComponent::InitFromComponents()
 {
-    AddInterfaceFromComponents(UHitEffect::StaticClass(), m_HitEffects);
-    AddInterfaceFromComponents(UCombatingEffect::StaticClass(), m_CombatEffects);
-}
-
-void UCombatEffectComponent::AddInterfaceFromComponents(TSubclassOf<UInterface> Interface, TArray<UObject *> &array)
-{
-    auto comp = GetOwner()->GetComponentsByInterface(Interface);
-    for (int i = 0; i < comp.Num(); ++i)
-    {
-        array.Add(comp[i]);
-    }
+    UMeleeUtils::GetImplementFromActor(GetOwner() ,UHitEffect::StaticClass(), m_HitEffects, false);
+    UMeleeUtils::GetImplementFromActor(GetOwner(), UCombatingEffect::StaticClass(), m_CombatEffects, false);
 }
 
 void UCombatEffectComponent::InitEffectClasses()

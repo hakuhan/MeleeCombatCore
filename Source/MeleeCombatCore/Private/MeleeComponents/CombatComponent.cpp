@@ -1,4 +1,4 @@
-#include "CombatComponent.h"
+#include "MeleeComponents/CombatComponent.h"
 
 // Sets default values for this component's properties
 UCombatComponent::UCombatComponent()

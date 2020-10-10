@@ -7,6 +7,7 @@
 #include "Engine/EngineTypes.h"
 #include "HitEffect.h"
 #include "CombatingEffect.h"
+#include "MeleeUtils.h"
 #include "CombatEffectComponent.generated.h"
 
 UCLASS(ClassGroup = (Custom), Blueprintable, meta = (BlueprintSpawnableComponent))
@@ -80,8 +81,6 @@ public:
 
 protected:
     // check array's element is valid
-    void CheckEffectClass(TArray<UObject *>& arrays);
     UFUNCTION(BlueprintCallable)
-
-    void AddInterfaceFromComponents(TSubclassOf<UInterface> Interface, TArray<UObject *> &array);
+    void CheckEffectClass(TArray<UObject *>& arrays);
 };
