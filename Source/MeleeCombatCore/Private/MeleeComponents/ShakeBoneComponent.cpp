@@ -29,8 +29,8 @@ void UShakeBoneComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	// ...
 }
 
-void UShakeBoneComponent::ShakeBone()
+void UShakeBoneComponent::ShakeBone(FVector worldLocation)
 {
-	
+
 }
 
