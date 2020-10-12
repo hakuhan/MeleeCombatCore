@@ -13,8 +13,12 @@
 UENUM(BlueprintType)
 enum class ECombatHurt : uint8
 {
+	veryLight,
 	light,
-	Heavy
+	midum,
+	strong,
+	veryStrong,
+	super
 };
 
 // detect Weapon data structure
@@ -57,9 +61,9 @@ struct MELEECOMBATCORE_API FHitSolutionInfo : public FTableRowBase
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float hurts;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	ECombatHurt hurtType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float hurts;
 };
 
 USTRUCT(BlueprintType)
