@@ -9,6 +9,14 @@ UCombatComponent::UCombatComponent()
 	m_channel = ECollisionChannel::ECC_GameTraceChannel1;
 }
 
+void UCombatComponent::BeginDestroy()
+{
+	m_weaponTargs.Empty();
+	m_weapons.Empty();
+	m_tempHitActors.Empty();
+	Super::BeginDestroy();
+}
+
 // Called when the game starts
 void UCombatComponent::BeginPlay()
 {

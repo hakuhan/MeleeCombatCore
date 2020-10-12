@@ -5,6 +5,17 @@ void UCombatEffectComponent::BeginPlay()
     InitEffects();
 }
 
+void UCombatEffectComponent::BeginDestroy()
+{
+    m_HitEffects.Empty();
+    m_HittedActors.Empty();
+    m_CombatEffects.Empty();
+    m_HitEffectClasses.Empty();
+    m_CombatingClasses.Empty();
+	
+    Super::BeginDestroy();
+}
+
 void UCombatEffectComponent::HitEffect(FHitResult hitInfo)
 {
     CheckEffectClass(m_HitEffects);

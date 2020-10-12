@@ -1,5 +1,10 @@
 #include "HitMulti.h"
 
+UHitMulti::~UHitMulti()
+{
+    m_actors.Empty();
+}
+
 void UHitMulti::InitData_Implementation()
 {
     auto info = (FHitMultiInfo *)&m_hitInfo;

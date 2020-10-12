@@ -36,6 +36,14 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<FVector> tempSocketLocation;
+
+public:
+	~FCombatWeapon()
+	{
+		weapon = nullptr;
+		socketNames.Empty();
+		tempSocketLocation.Empty();
+	}
 };
 
 // Deal structure
@@ -50,6 +58,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FDataTableRowHandle solutionInfo;
+
+public:
+	~FCombatSolution()
+	{
+	}
 };
 
 // deal data
@@ -59,11 +72,15 @@ struct MELEECOMBATCORE_API FHitSolutionInfo : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	ECombatHurt hurtType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float hurts;
+
+public:
+	~FHitSolutionInfo()
+	{
+	}
 };
 
 USTRUCT(BlueprintType)
@@ -72,7 +89,11 @@ struct FHitMultiInfo : public FHitSolutionInfo
 	GENERATED_USTRUCT_BODY()
 
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float interval;
+
+public:
+	~FHitMultiInfo()
+	{
+	}
 };

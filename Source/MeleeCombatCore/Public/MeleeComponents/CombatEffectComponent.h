@@ -33,7 +33,8 @@ public:
     TArray<TSubclassOf<UObject>> m_CombatingClasses;
 
 public:
-    virtual void BeginPlay() override;
+    void BeginPlay() override;
+    void BeginDestroy() override;
 
     UFUNCTION(BlueprintCallable, Category = "Effect")
     void HitEffect(FHitResult hitInfo);

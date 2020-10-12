@@ -1,5 +1,10 @@
 #include "HitOnce.h"
 
+UHitOnce::~UHitOnce()
+{
+    m_actors.Empty();
+}
+
 void UHitOnce::OnHit_Implementation(AActor *attackedActor)
 {
     if (!m_actors.Contains(attackedActor))

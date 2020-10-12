@@ -3,6 +3,13 @@
 
 #include "AnimNotifyStates/CombatEffectAnimState.h"
 
+void UCombatEffectAnimState::BeginDestroy()
+{
+	m_effect = nullptr;
+
+	Super::BeginDestroy();
+}
+
 void UCombatEffectAnimState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
 {
 	m_effect = Cast<UCombatEffectComponent>(MeshComp->GetOwner()->GetComponentByClass(UCombatEffectComponent::StaticClass()));

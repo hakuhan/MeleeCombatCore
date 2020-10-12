@@ -17,6 +17,7 @@ private:
     TArray<AActor *> m_actors;
 
 public:
+    ~UHitOnce();
     virtual void OnHit_Implementation(AActor *attackedActor) override;
 
     virtual void InitData_Implementation() override;

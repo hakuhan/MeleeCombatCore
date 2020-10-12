@@ -20,6 +20,7 @@ private:
     // TArray<float> m_intervals;
 
 public:
+    ~UHitMulti();
     /*hit interval of multi attack*/
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Solution")
     float m_hitInterval = 0.1f;

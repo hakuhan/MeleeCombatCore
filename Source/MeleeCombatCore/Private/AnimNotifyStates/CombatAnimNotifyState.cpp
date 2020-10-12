@@ -3,6 +3,13 @@
 
 #include "AnimNotifyStates/CombatAnimNotifyState.h"
 
+void UCombatAnimNotifyState::BeginDestroy()
+{
+	m_combat = nullptr;
+
+	Super::BeginDestroy();
+}
+
 void UCombatAnimNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
 {
 	m_combat = Cast<UCombatComponent>(MeshComp->GetOwner()->GetComponentByClass(UCombatComponent::StaticClass()));
