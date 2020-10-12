@@ -10,8 +10,15 @@
 #include "Engine/EngineTypes.h"
 #include "CombatStructure.generated.h"
 
+UENUM(BlueprintType)
+enum class ECombatHurt : uint8
+{
+	light,
+	Heavy
+};
+
 // detect Weapon data structure
-USTRUCT(Blueprintable)
+USTRUCT(BlueprintType)
 struct MELEECOMBATCORE_API FCombatWeapon
 {
 	GENERATED_BODY()
@@ -28,7 +35,7 @@ public:
 };
 
 // Deal structure
-USTRUCT(Blueprintable)
+USTRUCT(BlueprintType)
 struct MELEECOMBATCORE_API FCombatSolution : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
@@ -42,31 +49,25 @@ public:
 };
 
 // deal data
-USTRUCT(Blueprintable)
+USTRUCT(BlueprintType)
 struct MELEECOMBATCORE_API FHitSolutionInfo : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
-	FHitSolutionInfo()
-		: hurts(1)
-	{
-	}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float hurts;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ECombatHurt hurtType;
 };
 
-USTRUCT(Blueprintable)
+USTRUCT(BlueprintType)
 struct FHitMultiInfo : public FHitSolutionInfo
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
-	FHitMultiInfo()
-	{
-		
-	}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float interval;

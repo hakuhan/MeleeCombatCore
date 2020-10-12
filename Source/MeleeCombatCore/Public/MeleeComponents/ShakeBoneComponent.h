@@ -28,8 +28,8 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
-	void ShakeBone(FVector worldLocation);
+	void ShakeBoneByLocation(FVector worldLocation);
 
 	UFUNCTION(BlueprintCallable)
-	void ShakeBone(FString boneName);
+	void ShakeBoneByName(FString boneName);
 };

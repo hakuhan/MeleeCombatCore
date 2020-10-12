@@ -29,7 +29,12 @@ void UShakeBoneComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	// ...
 }
 
-void UShakeBoneComponent::ShakeBone(FVector worldLocation)
+void UShakeBoneComponent::ShakeBoneByLocation(FVector worldLocation)
+{
+
+}
+
+void UShakeBoneComponent::ShakeBoneByName(FString boneName)
 {
 
 }
