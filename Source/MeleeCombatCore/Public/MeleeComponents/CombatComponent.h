@@ -27,9 +27,15 @@ private:
 	TArray<AActor*> m_tempHitActors;
 
 public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Detection")
+	ECombatHurt m_DefaultHurt;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Detection")
+	ECombatHurt m_HurtType;
+
 	// deal info
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")
-	FDataTableRowHandle m_hitSolutionInfo;
+	FDataTableRowHandle m_attackSolutionTable;
 
 	UPROPERTY(VisibleAnywhere, Category = "Detection")
 	UCombatEffectComponent* m_effectComponent;
@@ -55,6 +61,15 @@ public:
 	// Sets default values for this component's properties
 	UCombatComponent();
 	void BeginDestroy() override;
+
+	/*
+	Change hurt type
+	*/
+	UFUNCTION(BlueprintCallable)
+	void UpdateHurts(ECombatHurt newHurt);
+
+	UFUNCTION(BlueprintCallable)
+	void ResetHurts();
 
 protected:
 	// Called when the game starts

@@ -57,7 +57,7 @@ public:
 	TSubclassOf<UObject> solutionClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FDataTableRowHandle solutionInfo;
+	FDataTableRowHandle solutionInfoTable;
 
 public:
 	~FCombatSolution()

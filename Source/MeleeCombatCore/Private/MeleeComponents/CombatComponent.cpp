@@ -25,20 +25,53 @@ void UCombatComponent::BeginPlay()
 	UpdateWeapon();
 
 	// init deal data
-	auto dealInfo = m_hitSolutionInfo.GetRow<FCombatSolution>("Find attack deal");
+	auto dealInfo = m_attackSolutionTable.GetRow<FCombatSolution>("Find attack deal");
 	if (dealInfo)
 	{
 		auto dealObj = NewObject<UObject>(this, dealInfo->solutionClass);
-		auto solutionInfo = dealInfo->solutionInfo.GetRow<FHitSolutionInfo>("Get Deal attak data");
+		auto solutionInfo = dealInfo->solutionInfoTable.GetRow<FHitSolutionInfo>("Get Deal attak data");
 		if (dealObj && solutionInfo)
 		{
 			m_solution.SetObject(dealObj);
 			m_solution.SetInterface(Cast<IHitSolution>(dealObj));
 			m_solution->Init(*solutionInfo);
+
+			// set defaul data
+			m_DefaultHurt = solutionInfo->hurtType;
 		}
 	}
 
 	m_effectComponent = Cast<UCombatEffectComponent>(GetOwner()->GetComponentByClass(UCombatEffectComponent::StaticClass()));
+}
+
+void UCombatComponent::UpdateHurts(ECombatHurt newHurt)
+{
+	if (!m_solution)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("combat solution is Destoryed, please checking init"));
+		return;
+	}
+
+	FHitSolutionInfo newHurtInfo = m_solution->m_hitInfo;
+	auto dealInfo = m_attackSolutionTable.GetRow<FCombatSolution>("Find attack deal");
+	auto hurtTable = dealInfo->solutionInfoTable.DataTable;
+	for (auto name : hurtTable->GetRowNames())
+	{
+		auto row = hurtTable->FindRow<FHitSolutionInfo>(name, "Find all attack info", true);
+		if (row->hurtType == newHurt)
+		{
+			newHurtInfo = *row;
+			m_HurtType = newHurt;
+			break;
+		}
+	}
+
+	m_solution->UpdateInfo(newHurtInfo);
+}
+
+void UCombatComponent::ResetHurts()
+{
+	UpdateHurts(m_DefaultHurt);
 }
 
 // Called every frame

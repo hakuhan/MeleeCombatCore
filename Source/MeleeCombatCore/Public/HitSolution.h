@@ -35,8 +35,13 @@ public:
 
     void Init(FHitSolutionInfo data)
     {
-        m_hitInfo = data;
+        UpdateInfo(data);
         this->Execute_InitData(Cast<UObject>(this));
+    }
+
+    void UpdateInfo(FHitSolutionInfo data)
+    {
+        m_hitInfo = data;
     }
 
     // start event
