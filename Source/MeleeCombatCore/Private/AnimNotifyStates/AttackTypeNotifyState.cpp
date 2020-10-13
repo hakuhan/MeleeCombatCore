@@ -31,5 +31,7 @@ void UAttackTypeNotifyState::NotifyEnd(USkeletalMeshComponent *MeshComp, UAnimSe
 
 void UAttackTypeNotifyState::BeginDestroy()
 {
+    Super::BeginDestroy();
+    
     m_Combat = nullptr;
 }

@@ -7,13 +7,13 @@ void UCombatEffectComponent::BeginPlay()
 
 void UCombatEffectComponent::BeginDestroy()
 {
+    Super::BeginDestroy();
+	
     m_HitEffects.Empty();
     m_HittedActors.Empty();
     m_CombatEffects.Empty();
     m_HitEffectClasses.Empty();
     m_CombatingClasses.Empty();
-	
-    Super::BeginDestroy();
 }
 
 void UCombatEffectComponent::HitEffect(FHitResult hitInfo)

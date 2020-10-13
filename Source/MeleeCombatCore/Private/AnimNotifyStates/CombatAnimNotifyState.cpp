@@ -4,9 +4,9 @@
 
 void UCombatAnimNotifyState::BeginDestroy()
 {
-	m_combat = nullptr;
-
 	Super::BeginDestroy();
+
+	m_combat = nullptr;
 }
 
 void UCombatAnimNotifyState::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration)

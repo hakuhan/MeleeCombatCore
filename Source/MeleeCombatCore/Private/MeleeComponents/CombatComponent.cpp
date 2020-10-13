@@ -11,10 +11,10 @@ UCombatComponent::UCombatComponent()
 
 void UCombatComponent::BeginDestroy()
 {
+	Super::BeginDestroy();
 	m_weaponTargs.Empty();
 	m_weapons.Empty();
 	m_tempHitActors.Empty();
-	Super::BeginDestroy();
 }
 
 // Called when the game starts
