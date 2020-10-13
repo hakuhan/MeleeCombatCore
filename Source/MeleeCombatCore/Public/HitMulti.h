@@ -26,7 +26,8 @@ public:
     float m_hitInterval = 0.1f;
 
 private:
-    FTimerHandle timeHandler;
+    UPROPERTY()
+    TMap<AActor*, FTimerHandle> m_intervalTimers;
 
 public:
     virtual void OnHit_Implementation(AActor *attackedActor) override;
@@ -38,7 +39,7 @@ public:
     virtual void OnEndDetection_Implementation() override;
 
     UFUNCTION(BlueprintCallable)
-    bool IsCooling();
+    bool IsCooling(AActor* hittedActor);
 
 protected:
     void CoolOver();
