@@ -16,9 +16,11 @@ class MELEECOMBATCORE_API UAttackTypeNotifyState : public UAnimNotifyState
 	GENERATED_BODY()
 
 public:
-	UCombatComponent* m_combat;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hurt")
-	ECombatHurt m_hurtType;
+	UCombatComponent* m_Combat;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	ECombatHurt m_Hurt;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	ECombatSolution m_Solution;
 	
 public:
 	void BeginDestroy() override;

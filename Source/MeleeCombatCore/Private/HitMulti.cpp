@@ -7,7 +7,7 @@ UHitMulti::~UHitMulti()
 
 void UHitMulti::InitData_Implementation()
 {
-    auto info = (FHitMultiInfo *)&m_hitInfo;
+    auto info = (FHurtMulti *)&m_HurtInfo;
     if (info)
     {
         m_hitInterval = info->interval;

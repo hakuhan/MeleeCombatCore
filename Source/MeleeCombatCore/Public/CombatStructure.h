@@ -21,6 +21,16 @@ enum class ECombatHurt : uint8
 	super
 };
 
+/*
+* weapon hurt type
+*/
+UENUM(BlueprintType)
+enum class ECombatSolution : uint8
+{
+	once,
+	multi
+};
+
 // detect Weapon data structure
 USTRUCT(BlueprintType)
 struct MELEECOMBATCORE_API FCombatWeapon
@@ -53,11 +63,14 @@ struct MELEECOMBATCORE_API FCombatSolution : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ECombatSolution solutionType;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "HitSolution"))
 	TSubclassOf<UObject> solutionClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FDataTableRowHandle solutionInfoTable;
+	FDataTableRowHandle hurtTable;
 
 public:
 	~FCombatSolution()
@@ -67,7 +80,7 @@ public:
 
 // deal data
 USTRUCT(BlueprintType)
-struct MELEECOMBATCORE_API FHitSolutionInfo : public FTableRowBase
+struct MELEECOMBATCORE_API FHurt : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
@@ -78,13 +91,13 @@ public:
 	float hurts;
 
 public:
-	~FHitSolutionInfo()
+	~FHurt()
 	{
 	}
 };
 
 USTRUCT(BlueprintType)
-struct FHitMultiInfo : public FHitSolutionInfo
+struct FHurtMulti : public FHurt
 {
 	GENERATED_USTRUCT_BODY()
 
@@ -93,7 +106,7 @@ public:
 	float interval;
 
 public:
-	~FHitMultiInfo()
+	~FHurtMulti()
 	{
 	}
 };

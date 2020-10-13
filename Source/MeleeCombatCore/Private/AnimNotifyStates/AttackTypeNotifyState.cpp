@@ -4,11 +4,11 @@
 
 void UAttackTypeNotifyState::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration)
 {
-    m_combat = Cast<UCombatComponent>(MeshComp->GetOwner()->GetComponentByClass(UCombatComponent::StaticClass()));
+    m_Combat = Cast<UCombatComponent>(MeshComp->GetOwner()->GetComponentByClass(UCombatComponent::StaticClass()));
 
-    if (m_combat)
+    if (m_Combat)
     {
-        m_combat->UpdateHurts(m_hurtType);
+        m_Combat->UpdateHurts(m_Hurt, m_Solution);
     }
 }
 
@@ -18,13 +18,13 @@ void UAttackTypeNotifyState::NotifyTick(USkeletalMeshComponent *MeshComp, UAnimS
 
 void UAttackTypeNotifyState::NotifyEnd(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation)
 {
-    if (m_combat)
+    if (m_Combat)
     {
-        m_combat->ResetHurts();
+        m_Combat->ResetHurts();
     }
 }
 
 void UAttackTypeNotifyState::BeginDestroy()
 {
-    m_combat = nullptr;
+    m_Combat = nullptr;
 }

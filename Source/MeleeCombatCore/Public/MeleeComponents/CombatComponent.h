@@ -27,32 +27,42 @@ private:
 	TArray<AActor*> m_tempHitActors;
 
 public:
+#pragma region types
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Detection")
 	ECombatHurt m_DefaultHurt;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Detection")
 	ECombatHurt m_HurtType;
 
-	// deal info
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Detection")
+	ECombatSolution m_DefaultSolution;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Detection")
+	ECombatSolution m_SolutionType;
+#pragma endregion
+
+	// solution
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")
-	FDataTableRowHandle m_attackSolutionTable;
+	FDataTableRowHandle m_SolutionTable;
 
 	UPROPERTY(VisibleAnywhere, Category = "Detection")
-	UCombatEffectComponent* m_effectComponent;
+	UCombatEffectComponent* m_EffectComponent;
 
 	// tag to find out weapon
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")
 	TArray<FString> m_weaponTargs;
 
 	// weapon data
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Detection")
 	TArray<FCombatWeapon> m_weapons;
 
 	UPROPERTY(VisibleAnywhere, Category = "Detection")
 	bool m_isDetecting;
 
+#pragma region Debug
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection")
 	bool m_isShowTrace;
+#pragma endregion
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Detection", meta = (Bitmask, BitmaskEnum = "ECollisionChannel"))
 	TEnumAsByte<ECollisionChannel> m_channel;
@@ -66,7 +76,7 @@ public:
 	Change hurt type
 	*/
 	UFUNCTION(BlueprintCallable)
-	void UpdateHurts(ECombatHurt newHurt);
+	void UpdateHurts(ECombatHurt newHurt, ECombatSolution newSolution);
 
 	UFUNCTION(BlueprintCallable)
 	void ResetHurts();

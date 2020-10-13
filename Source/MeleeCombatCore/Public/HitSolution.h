@@ -22,7 +22,7 @@ class MELEECOMBATCORE_API IHitSolution
     GENERATED_BODY()
 
 public:
-    FHitSolutionInfo m_hitInfo;
+    FHurt m_HurtInfo;
 
 public:
     // Attacking
@@ -33,15 +33,15 @@ public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
     void InitData();
 
-    void Init(FHitSolutionInfo data)
+    void Init(FHurt data)
     {
-        UpdateInfo(data);
+        UpdateHurts(data);
         this->Execute_InitData(Cast<UObject>(this));
     }
 
-    void UpdateInfo(FHitSolutionInfo data)
+    void UpdateHurts(FHurt data)
     {
-        m_hitInfo = data;
+        m_HurtInfo = data;
     }
 
     // start event
@@ -61,7 +61,7 @@ protected:
         {
             for (auto reacter : reacters)
             {
-                IHitReaction::Execute_OnHitted(reacter, m_hitInfo.hurts);
+                IHitReaction::Execute_OnHitted(reacter, m_HurtInfo.hurts);
             }
             // UE_LOG(LogTemp, Warning, TEXT("Multi attack"));
         }
