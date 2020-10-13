@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "AnimNotifyStates/CombatAnimNotifyState.h"
 
 void UCombatAnimNotifyState::BeginDestroy()
@@ -10,8 +9,13 @@ void UCombatAnimNotifyState::BeginDestroy()
 	Super::BeginDestroy();
 }
 
-void UCombatAnimNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
+void UCombatAnimNotifyState::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration)
 {
+	if (!MeshComp || !MeshComp->GetOwner())
+	{
+		return;
+	}
+	
 	m_combat = Cast<UCombatComponent>(MeshComp->GetOwner()->GetComponentByClass(UCombatComponent::StaticClass()));
 
 	if (m_combat != nullptr)
@@ -20,15 +24,14 @@ void UCombatAnimNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnim
 	}
 }
 
-void UCombatAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime)
+void UCombatAnimNotifyState::NotifyTick(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float FrameDeltaTime)
 {
 	if (m_combat != nullptr)
 	{
-		
 	}
 }
 
-void UCombatAnimNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCombatAnimNotifyState::NotifyEnd(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation)
 {
 	if (m_combat != nullptr)
 	{

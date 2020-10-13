@@ -4,6 +4,11 @@
 
 void UAttackTypeNotifyState::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration)
 {
+    if (!MeshComp || !MeshComp->GetOwner())
+    {
+        return;
+    }
+    
     m_Combat = Cast<UCombatComponent>(MeshComp->GetOwner()->GetComponentByClass(UCombatComponent::StaticClass()));
 
     if (m_Combat)
