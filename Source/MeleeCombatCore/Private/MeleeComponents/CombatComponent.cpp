@@ -85,6 +85,14 @@ void UCombatComponent::UpdateHurts(ECombatHurt newHurt, ECombatSolution newSolut
 	}
 }
 
+void UCombatComponent::UpdateHurtRate(float rate)
+{
+	if (m_solution)
+	{
+		m_solution->UpdateHurtRate(rate);
+	}
+}
+
 void UCombatComponent::ResetHurts()
 {
 	UpdateHurts(m_DefaultHurt, m_DefaultSolution);
@@ -224,7 +232,3 @@ void UCombatComponent::ExecuteHit(FHitResult hit)
 	}
 }
 
-void UCombatComponent::UpdateSolution(TScriptInterface<IHitSolution> solution)
-{
-	m_solution = solution;
-}

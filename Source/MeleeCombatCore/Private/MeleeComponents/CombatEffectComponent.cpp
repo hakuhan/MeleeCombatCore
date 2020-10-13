@@ -2,6 +2,8 @@
 
 void UCombatEffectComponent::BeginPlay()
 {
+    Super::BeginPlay();
+    
     InitEffects();
 }
 

@@ -16,6 +16,7 @@ class MELEECOMBATCORE_API UCombatEffectAnimState : public UAnimNotifyState
 	GENERATED_BODY()
 
 public:
+	UPROPERTY()
 	UCombatEffectComponent *m_effect;
 
 public:

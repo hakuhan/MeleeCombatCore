@@ -23,6 +23,7 @@ class MELEECOMBATCORE_API IHitSolution
 
 public:
     FHurt m_HurtInfo;
+    float m_hurtRate = 1;
 
 public:
     // Attacking
@@ -44,6 +45,11 @@ public:
         m_HurtInfo = data;
     }
 
+    void UpdateHurtRate(float rate)
+    {
+        m_hurtRate = rate;
+    }
+
     // start event
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
     void OnStartDetection();
@@ -61,7 +67,7 @@ protected:
         {
             for (auto reacter : reacters)
             {
-                IHitReaction::Execute_OnHitted(reacter, m_HurtInfo.hurts);
+                IHitReaction::Execute_OnHitted(reacter, m_HurtInfo.hurts * m_hurtRate);
             }
             // UE_LOG(LogTemp, Warning, TEXT("Multi attack"));
         }

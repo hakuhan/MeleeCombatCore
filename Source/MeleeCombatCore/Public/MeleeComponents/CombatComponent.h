@@ -79,6 +79,9 @@ public:
 	void UpdateHurts(ECombatHurt newHurt, ECombatSolution newSolution);
 
 	UFUNCTION(BlueprintCallable)
+	void UpdateHurtRate(float rate);
+
+	UFUNCTION(BlueprintCallable)
 	void ResetHurts();
 
 protected:
@@ -104,9 +107,6 @@ public:
 	/// </summary>
 	UFUNCTION(BlueprintCallable)
 	void UpdateWeapon();
-
-	UFUNCTION(BlueprintCallable)
-	void UpdateSolution(TScriptInterface<IHitSolution> solution);
 
 private:
 	void ExecuteHit(FHitResult hit);
