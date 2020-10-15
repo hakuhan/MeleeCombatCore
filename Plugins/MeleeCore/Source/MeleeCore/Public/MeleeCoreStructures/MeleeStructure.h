@@ -31,6 +31,15 @@ enum class ECombatSolution : uint8
 	MULTI_SOLUTION
 };
 
+UENUM(BlueprintType)
+enum class ECombatHitResult : uint8
+{
+	NO_INJURY_HIT,
+	HURT_HIT,
+	DEAD_HIT,
+	DEFEND_HIT,
+};
+
 // Weapon data structure
 USTRUCT(BlueprintType)
 struct MELEECORE_API FMeleeWeapon

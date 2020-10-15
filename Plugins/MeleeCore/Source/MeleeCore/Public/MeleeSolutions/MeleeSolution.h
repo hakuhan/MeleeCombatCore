@@ -25,7 +25,7 @@ public:
 public:
     // Attacking
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-    void OnHit(AActor *attackedActor);
+    void OnHit(AActor *attackedActor, ECombatHitResult &outResult);
 
     // init
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -56,7 +56,7 @@ public:
     void OnEndDetection();
 
 protected:
-    void NoticeHit(AActor *actor)
+    void NoticeHit(AActor *actor, ECombatHitResult &outResult)
     {
         TArray<UObject *> reacters;
         UMeleeUtils::GetImplementFromActor(actor, UMeleeReaction::StaticClass(), reacters);
@@ -65,6 +65,7 @@ protected:
             for (auto reacter : reacters)
             {
                 IMeleeReaction::Execute_OnMeleeHitted(reacter, m_HurtInfo.hurts * m_HurtRate);
+                outResult = IMeleeReaction::Execute_HitResult(reacter);
             }
             // UE_LOG(LogTemp, Warning, TEXT("Multi attack"));
         }

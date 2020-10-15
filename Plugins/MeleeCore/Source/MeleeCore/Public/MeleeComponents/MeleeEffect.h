@@ -31,7 +31,7 @@ public:
 	void BeginDestroy() override;
 
 	UFUNCTION(BlueprintCallable, Category = "Effect")
-	void OnCombatHitEffect(FHitResult hitInfo);
+	void OnCombatHitEffect(FHitResult hitInfo, ECombatHitResult hitType);
 
 #pragma region ManageEffect
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Effect")

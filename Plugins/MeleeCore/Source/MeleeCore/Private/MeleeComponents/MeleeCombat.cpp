@@ -228,14 +228,15 @@ void UMeleeCombat::ExecuteHit(FHitResult hit)
 	}
 	m_HitActorTemps.Add(actor);
 
+	ECombatHitResult _hitResult = ECombatHitResult::NO_INJURY_HIT;
 	if (m_MeleeSolution)
 	{
-		IMeleeSolution::Execute_OnHit(m_MeleeSolution.GetObject(), actor);
+		IMeleeSolution::Execute_OnHit(m_MeleeSolution.GetObject(), actor, _hitResult);
 	}
 
 	if (m_EffectComponent)
 	{
-		m_EffectComponent->OnCombatHitEffect(hit);
+		m_EffectComponent->OnCombatHitEffect(hit, _hitResult);
 	}
 }
 

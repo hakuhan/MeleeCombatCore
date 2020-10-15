@@ -21,13 +21,13 @@ void UMeleeSolution_Multi::OnStartDetection_Implementation()
     m_IntervalTimers.Empty();
 }
 
-void UMeleeSolution_Multi::OnHit_Implementation(AActor *actor)
+void UMeleeSolution_Multi::OnHit_Implementation(AActor *actor, ECombatHitResult& outResult)
 {
     if (!IsCooling(actor))
     {
-        m_Actors.Add(actor);
-        NoticeHit(actor);
+        NoticeHit(actor, outResult);
 
+        m_Actors.Add(actor);
         GetWorld()->GetTimerManager().SetTimer(m_IntervalTimers[actor], this, &UMeleeSolution_Multi::CoolOver, m_MeleeInterval, false);
     }
 }
