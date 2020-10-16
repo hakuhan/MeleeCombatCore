@@ -8,6 +8,7 @@
 #include "CoreMinimal.h"
 #include "MeleeSolutions/MeleeSolution.h"
 #include "TimerManager.h"
+#include "MeleeSolutions/Actor_Countdown.h"
 #include "MeleeSolution_Multi.generated.h"
 
 UCLASS()
@@ -17,7 +18,6 @@ class UMeleeSolution_Multi : public UObject, public IMeleeSolution
 
 private:
     TArray<AActor *> m_Actors;
-    // TArray<float> m_intervals;
 
 public:
     ~UMeleeSolution_Multi();
@@ -37,6 +37,8 @@ public:
     virtual void OnStartDetection_Implementation() override;
 
     virtual void OnEndDetection_Implementation() override;
+
+    virtual void UpdateHurts(FHurt data) override;
 
     UFUNCTION(BlueprintCallable)
     bool IsCooling(AActor* hittedActor);

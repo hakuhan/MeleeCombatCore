@@ -118,8 +118,6 @@ void UMeleeCombat::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 		{
 			for (int j = 0; j < m_MeleeWeapons[i].socketNames.Num(); ++j)
 			{
-				TArray<AActor *> tempActors;
-
 				// 1. Check every single socket
 				auto debugTrace = EDrawDebugTrace::ForDuration;
 				if (!m_IsShowTrace)
@@ -228,7 +226,7 @@ void UMeleeCombat::ExecuteHit(FHitResult hit)
 	}
 	m_HitActorTemps.Add(actor);
 
-	ECombatHitResult _hitResult = ECombatHitResult::NO_INJURY_HIT;
+	ECombatHitResult _hitResult = ECombatHitResult::NO_HIT;
 	if (m_MeleeSolution)
 	{
 		IMeleeSolution::Execute_OnHit(m_MeleeSolution.GetObject(), actor, _hitResult);

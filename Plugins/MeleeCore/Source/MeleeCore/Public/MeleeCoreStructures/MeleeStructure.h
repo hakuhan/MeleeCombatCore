@@ -34,6 +34,7 @@ enum class ECombatSolution : uint8
 UENUM(BlueprintType)
 enum class ECombatHitResult : uint8
 {
+	NO_HIT,
 	NO_INJURY_HIT,
 	HURT_HIT,
 	DEAD_HIT,

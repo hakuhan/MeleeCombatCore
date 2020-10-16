@@ -37,7 +37,7 @@ public:
         this->Execute_InitData(Cast<UObject>(this));
     }
 
-    void UpdateHurts(FHurt data)
+    virtual void UpdateHurts(FHurt data)
     {
         m_HurtInfo = data;
     }

@@ -5,30 +5,35 @@
 // Sets default values for this component's properties
 UMeleeEffect::UMeleeEffect()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+    // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+    // off to improve performance if you don't need them.
+    PrimaryComponentTick.bCanEverTick = false;
 }
 
 // Called when the game starts
 void UMeleeEffect::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
     InitEffects();
 }
 
 void UMeleeEffect::BeginDestroy()
 {
-	Super::BeginDestroy();
+    Super::BeginDestroy();
 
-	m_HitEffects.Empty();
-	m_HittedActors.Empty();
-	m_HitEffectClasses.Empty();
+    m_HitEffects.Empty();
+    m_HittedActors.Empty();
+    m_HitEffectClasses.Empty();
 }
 
 void UMeleeEffect::OnCombatHitEffect(FHitResult hitInfo, ECombatHitResult hitType)
 {
+    if (hitType == ECombatHitResult::NO_HIT)
+    {
+        return;
+    }
+
     CheckEffectClass(m_HitEffects);
 
     // check first effect
@@ -83,7 +88,7 @@ void UMeleeEffect::InitFromOwner()
 
 void UMeleeEffect::InitFromComponents()
 {
-    UMeleeUtils::GetImplementFromActor(GetOwner() ,UMeleeHitEffect::StaticClass(), m_HitEffects, false);
+    UMeleeUtils::GetImplementFromActor(GetOwner(), UMeleeHitEffect::StaticClass(), m_HitEffects, false);
 }
 
 void UMeleeEffect::InitEffectClasses()
@@ -115,7 +120,7 @@ void UMeleeEffect::RemoveHitEffect(UObject *effect)
 
 void UMeleeEffect::ResetData()
 {
-	m_HittedActors.Empty();
+    m_HittedActors.Empty();
 }
 
 #pragma endregion ManageEffect
