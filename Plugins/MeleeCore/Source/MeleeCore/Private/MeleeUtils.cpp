@@ -1,8 +1,13 @@
 #include "MeleeUtils.h"
 
-void UMeleeUtils::GetImplementFromActor(AActor* owner, TSubclassOf<UInterface> interface, TArray<UObject*>& array, bool checkSelf)
+void UMeleeUtils::GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> interface, TArray<UObject *> &array, bool checkSelf)
 {
-    // Check components 
+    if (owner == nullptr)
+    {
+        return;
+    }
+
+    // Check components
     auto comp = owner->GetComponentsByInterface(interface);
     for (int i = 0; i < comp.Num(); ++i)
     {

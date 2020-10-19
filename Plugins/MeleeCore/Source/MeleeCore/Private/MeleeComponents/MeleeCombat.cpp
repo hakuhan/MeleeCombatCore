@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "MeleeComponents/MeleeCombat.h"
 
 // Sets default values for this component's properties
@@ -29,7 +28,7 @@ void UMeleeCombat::BeginPlay()
 
 	// init solution data
 	auto solutionInfo = m_MeleeSolutionTable.GetRow<FMeleeSolutionTable>("Find combat solution");
-	if (solutionInfo)
+	if (solutionInfo != nullptr)
 	{
 		m_DefaultSolution = solutionInfo->solutionType;
 
@@ -51,6 +50,11 @@ void UMeleeCombat::BeginPlay()
 
 void UMeleeCombat::UpdateHurts(EMeleeHurt newHurt, ECombatSolution newSolution)
 {
+	if (m_MeleeSolution == nullptr)
+	{
+		return;
+	}
+
 	FMeleeSolutionTable *solutionInfo = m_MeleeSolutionTable.GetRow<FMeleeSolutionTable>("Find combat solution");
 	if (newSolution != m_SolutionType)
 	{
@@ -94,7 +98,7 @@ void UMeleeCombat::UpdateHurts(EMeleeHurt newHurt, ECombatSolution newSolution)
 
 void UMeleeCombat::UpdateHurtRate(float rate)
 {
-	if (m_MeleeSolution)
+	if (m_MeleeSolution != nullptr)
 	{
 		m_MeleeSolution->UpdateHurtRate(rate);
 	}
@@ -169,7 +173,7 @@ void UMeleeCombat::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 void UMeleeCombat::StartDetection()
 {
-	if (m_MeleeSolution)
+	if (m_MeleeSolution != nullptr)
 	{
 		IMeleeSolution::Execute_OnStartDetection(m_MeleeSolution.GetObject());
 	}
@@ -192,7 +196,7 @@ void UMeleeCombat::ResetData()
 
 void UMeleeCombat::EndDetection()
 {
-	if (m_MeleeSolution)
+	if (m_MeleeSolution != nullptr)
 	{
 		IMeleeSolution::Execute_OnEndDetection(m_MeleeSolution.GetObject());
 	}
@@ -227,14 +231,13 @@ void UMeleeCombat::ExecuteHit(FHitResult hit)
 	m_HitActorTemps.Add(actor);
 
 	ECombatHitResult _hitResult = ECombatHitResult::NO_HIT;
-	if (m_MeleeSolution)
+	if (m_MeleeSolution != nullptr)
 	{
 		IMeleeSolution::Execute_OnHit(m_MeleeSolution.GetObject(), actor, _hitResult);
 	}
 
-	if (m_EffectComponent)
+	if (m_EffectComponent != nullptr)
 	{
 		m_EffectComponent->OnCombatHitEffect(hit, _hitResult);
 	}
 }
-

@@ -9,7 +9,7 @@ UMeleeSolution_Multi::~UMeleeSolution_Multi()
 void UMeleeSolution_Multi::InitData_Implementation()
 {
     auto info = (FHurtMulti *)&m_HurtInfo;
-    if (info)
+    if (info != nullptr)
     {
         m_MeleeInterval = info->interval;
     }

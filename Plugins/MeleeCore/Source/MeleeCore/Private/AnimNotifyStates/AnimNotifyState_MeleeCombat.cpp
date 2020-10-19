@@ -12,7 +12,7 @@ void UAnimNotifyState_MeleeCombat::BeginDestroy()
 
 void UAnimNotifyState_MeleeCombat::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration)
 {
-    if (!MeshComp || !MeshComp->GetOwner())
+    if (MeshComp != nullptr || !MeshComp->GetOwner())
     {
         return;
     }
@@ -22,7 +22,7 @@ void UAnimNotifyState_MeleeCombat::NotifyBegin(USkeletalMeshComponent *MeshComp,
 
     m_MeleeCombat = Cast<UMeleeCombat>(MeshComp->GetOwner()->GetComponentByClass(UMeleeCombat::StaticClass()));
 
-    if (m_MeleeCombat)
+    if (m_MeleeCombat != nullptr && m_HurtCurve != nullptr)
     {
         m_MeleeCombat->StartDetection();
         m_MeleeCombat->UpdateHurts(m_Hurt, m_Solution);
@@ -32,7 +32,7 @@ void UAnimNotifyState_MeleeCombat::NotifyBegin(USkeletalMeshComponent *MeshComp,
 
 void UAnimNotifyState_MeleeCombat::NotifyTick(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float FrameDeltaTime)
 {
-    if (m_MeleeCombat && m_HurtCurve)
+    if (m_MeleeCombat != nullptr && m_HurtCurve != nullptr)
     {
         m_TimeBuffer += FrameDeltaTime;
         float currentRate = m_HurtCurve->GetFloatValue(m_TimeBuffer / m_TotalDuration);
@@ -42,7 +42,7 @@ void UAnimNotifyState_MeleeCombat::NotifyTick(USkeletalMeshComponent *MeshComp, 
 
 void UAnimNotifyState_MeleeCombat::NotifyEnd(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation)
 {
-    if (m_MeleeCombat)
+    if (m_MeleeCombat != nullptr)
     {
         m_MeleeCombat->EndDetection();
         m_MeleeCombat->ResetHurts();
