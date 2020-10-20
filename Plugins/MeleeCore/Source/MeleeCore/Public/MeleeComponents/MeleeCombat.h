@@ -23,7 +23,7 @@ private:
 	UPROPERTY()
 	TArray<AActor *> m_HitActorTemps;
 	UPROPERTY()
-	uint8 m_weaponMask = static_cast<uint8>(EAttackWeapon::Melee_All);
+	uint8 m_weaponMask;
 
 public:
 #pragma region types

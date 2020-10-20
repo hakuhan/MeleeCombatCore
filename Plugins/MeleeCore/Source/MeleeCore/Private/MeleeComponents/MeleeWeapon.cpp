@@ -33,5 +33,5 @@ void UMeleeWeapon::BeginDestroy()
 
 bool UMeleeWeapon::IsTargetWeapon(uint8 weaponMask)
 {
-	return weaponMask & static_cast<uint8>(info.weaponType); 
+	return weaponMask & info.weaponType;
 }
