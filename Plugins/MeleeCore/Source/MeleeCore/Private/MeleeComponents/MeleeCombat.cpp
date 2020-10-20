@@ -14,7 +14,6 @@ UMeleeCombat::UMeleeCombat()
 void UMeleeCombat::BeginDestroy()
 {
 	Super::BeginDestroy();
-	m_MeleeWeaponTargs.Empty();
 	m_MeleeWeapons.Empty();
 	m_HitActorTemps.Empty();
 }
@@ -104,6 +103,11 @@ void UMeleeCombat::UpdateHurtRate(float rate)
 	}
 }
 
+void UMeleeCombat::UpdateWeaponMask(uint8 weaponMask)
+{
+	m_weaponMask = weaponMask;
+}
+
 void UMeleeCombat::ResetHurts()
 {
 	UpdateHurts(m_DefaultHurt, m_DefaultSolution);
@@ -120,7 +124,12 @@ void UMeleeCombat::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 		// attack check
 		for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
 		{
-			for (int j = 0; j < m_MeleeWeapons[i].socketNames.Num(); ++j)
+			if (!m_MeleeWeapons[i]->IsTargetWeapon(m_weaponMask))
+			{
+				continue;
+			}
+
+			for (int j = 0; j < m_MeleeWeapons[i]->info.socketNames.Num(); ++j)
 			{
 				// 1. Check every single socket
 				auto debugTrace = EDrawDebugTrace::ForDuration;
@@ -133,13 +142,13 @@ void UMeleeCombat::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 				auto channel = UEngineTypes::ConvertToTraceType(m_Channel);
 
 				// check slot location cache
-				auto socketName = m_MeleeWeapons[i].socketNames[j];
-				FVector crtLocation = m_MeleeWeapons[i].weapon->GetSocketLocation(socketName);
-				if (m_MeleeWeapons[i].tempSocketLocation.Num() <= j)
+				auto socketName = m_MeleeWeapons[i]->info.socketNames[j];
+				FVector crtLocation = m_MeleeWeapons[i]->GetSocketLocation(socketName);
+				if (m_MeleeWeapons[i]->info.tempSocketLocation.Num() <= j)
 				{
-					m_MeleeWeapons[i].tempSocketLocation.Add(crtLocation);
+					m_MeleeWeapons[i]->info.tempSocketLocation.Add(crtLocation);
 				}
-				FVector preLocation = m_MeleeWeapons[i].tempSocketLocation[j];
+				FVector preLocation = m_MeleeWeapons[i]->info.tempSocketLocation[j];
 
 				auto world = GetOwner()->GetWorld();
 				TArray<FHitResult> hits;
@@ -152,10 +161,10 @@ void UMeleeCombat::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 				// 2. Check trace between sokets
 				int k = j + 1;
-				if (k < m_MeleeWeapons[i].socketNames.Num())
+				if (k < m_MeleeWeapons[i]->info.socketNames.Num())
 				{
-					auto nextSocket = m_MeleeWeapons[i].socketNames[k];
-					auto nextSocketLocation = m_MeleeWeapons[i].weapon->GetSocketLocation(nextSocket);
+					auto nextSocket = m_MeleeWeapons[i]->info.socketNames[k];
+					auto nextSocketLocation = m_MeleeWeapons[i]->GetSocketLocation(nextSocket);
 					TArray<FHitResult> hitsBySockets;
 					UKismetSystemLibrary::LineTraceMulti(world, crtLocation, nextSocketLocation, channel, true, arrayIgnoreActor, debugTrace, hitsBySockets, true, traceColor, collisionColor);
 
@@ -165,7 +174,7 @@ void UMeleeCombat::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 					}
 				}
 
-				m_MeleeWeapons[i].tempSocketLocation[j] = crtLocation;
+				m_MeleeWeapons[i]->info.tempSocketLocation[j] = crtLocation;
 			}
 		}
 	}
@@ -186,7 +195,7 @@ void UMeleeCombat::ResetData()
 {
 	for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
 	{
-		m_MeleeWeapons[i].tempSocketLocation.Empty();
+		m_MeleeWeapons[i]->info.tempSocketLocation.Empty();
 	}
 	if (m_EffectComponent)
 	{
@@ -207,18 +216,7 @@ void UMeleeCombat::UpdateWeapon()
 {
 	m_MeleeWeapons.Empty();
 
-	// Add weapon info
-	for (auto tag : m_MeleeWeaponTargs)
-	{
-		auto weapons = GetOwner()->GetComponentsByTag(UMeshComponent::StaticClass(), FName(tag));
-		for (auto w : weapons)
-		{
-			auto wData = new FMeleeWeapon();
-			wData->weapon = Cast<UMeshComponent>(w);
-			wData->socketNames.Append(wData->weapon->GetAllSocketNames());
-			m_MeleeWeapons.Add(*wData);
-		}
-	}
+	GetOwner()->GetComponents<UMeleeWeapon>(m_MeleeWeapons);
 }
 
 void UMeleeCombat::ExecuteHit(FHitResult hit)

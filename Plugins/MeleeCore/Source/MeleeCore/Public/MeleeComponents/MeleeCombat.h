@@ -8,6 +8,7 @@
 #include "MeleeComponents/MeleeEffect.h"
 #include "MeleeSolutions/MeleeSolution.h"
 #include "MeleeCoreStructures/MeleeStructure.h"
+#include "MeleeComponents/MeleeWeapon.h"
 #include "MeleeCombat.generated.h"
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -21,6 +22,8 @@ private:
 	TScriptInterface<IMeleeSolution> m_MeleeSolution;
 	UPROPERTY()
 	TArray<AActor *> m_HitActorTemps;
+	UPROPERTY()
+	uint8 m_weaponMask = static_cast<uint8>(EAttackWeapon::Melee_All);
 
 public:
 #pragma region types
@@ -44,13 +47,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Melee")
 	UMeleeEffect *m_EffectComponent;
 
-	// tag to find out weapon
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee")
-	TArray<FString> m_MeleeWeaponTargs;
-
 	// weapon data
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Melee")
-	TArray<FMeleeWeapon> m_MeleeWeapons;
+	TArray<UMeleeWeapon*> m_MeleeWeapons;
 
 	UPROPERTY(VisibleAnywhere, Category = "Melee")
 	bool m_IsDetecting;
@@ -82,6 +81,9 @@ public:
 	/* Change hurt rate */
 	UFUNCTION(BlueprintCallable)
 	void UpdateHurtRate(float rate);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateWeaponMask(uint8 weaponMask);
 
 	/* Reset hurt to default */
 	UFUNCTION(BlueprintCallable)

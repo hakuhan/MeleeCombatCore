@@ -26,6 +26,9 @@ public:
 	ECombatSolution m_Solution;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UCurveFloat *m_HurtCurve;
+	// Working weapon
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta=(BItmask,BitmaskEnum="EAttackWeapon"))
+	uint8 m_WeaponFlags;
 	UPROPERTY()
 	float m_TotalDuration = 0;
 	UPROPERTY()

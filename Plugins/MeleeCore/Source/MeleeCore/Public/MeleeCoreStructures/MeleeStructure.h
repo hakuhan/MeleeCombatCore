@@ -21,6 +21,23 @@ enum class EMeleeHurt : uint8
 	SUPER_HURT
 };
 
+UENUM(BlueprintType, Meta = (Bitflags))
+enum class EAttackWeapon : uint8
+{
+	Melee_None,
+	Melee_All,
+	Melee_LeftHand,
+	Melee_RightHand,
+	Melee_LeftFoot,
+	Melee_RightFoot,
+	// Melee_None = 0,
+	// Melee_All = (1 << 0),
+	// Melee_LeftHand = (1 << 1),
+	// Melee_RightHand = (1 << 2),
+	// Melee_LeftFoot = (1 << 3),
+	// Melee_RightFoot = (1 << 4),
+};
+
 /*
 * weapon hurt type
 */
@@ -43,24 +60,29 @@ enum class ECombatHitResult : uint8
 
 // Weapon data structure
 USTRUCT(BlueprintType)
-struct MELEECORE_API FMeleeWeapon
+struct MELEECORE_API FMeleeWeaponInfo
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(VisibleAnywhere)
-	UMeshComponent *weapon;
+	UPROPERTY(EditAnywhere)
+	EAttackWeapon weaponType;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TArray<FName> socketNames;
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<FVector> tempSocketLocation;
 
 public:
-	~FMeleeWeapon()
+	FMeleeWeaponInfo() {}
+	FMeleeWeaponInfo(EAttackWeapon defaultWeaponType, TArray<FName> defaultSoketNames)
 	{
-		weapon = nullptr;
+		weaponType = defaultWeaponType;
+		socketNames = defaultSoketNames;
+	}
+	~FMeleeWeaponInfo()
+	{
 		socketNames.Empty();
 		tempSocketLocation.Empty();
 	}
