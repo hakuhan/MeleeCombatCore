@@ -2,6 +2,15 @@
 
 #include "AnimNotifyStates/AnimNotifyState_MeleeCombat.h"
 
+UAnimNotifyState_MeleeCombat::UAnimNotifyState_MeleeCombat()
+{
+    auto curveObj = ConstructorHelpers::FObjectFinder<UCurveFloat>(TEXT("/MeleeCore/Curves/C_DefaultCombat.C_DefaultCombat"));
+    if (curveObj.Object != nullptr)
+    {
+        m_HurtCurve = curveObj.Object;
+    }
+}
+
 void UAnimNotifyState_MeleeCombat::BeginDestroy()
 {
     Super::BeginDestroy();
@@ -12,7 +21,7 @@ void UAnimNotifyState_MeleeCombat::BeginDestroy()
 
 void UAnimNotifyState_MeleeCombat::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration)
 {
-    if (MeshComp != nullptr || !MeshComp->GetOwner())
+    if (MeshComp == nullptr || MeshComp->GetOwner() == nullptr)
     {
         return;
     }

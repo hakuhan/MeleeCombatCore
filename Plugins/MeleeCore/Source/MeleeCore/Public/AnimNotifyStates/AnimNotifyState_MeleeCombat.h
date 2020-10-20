@@ -32,6 +32,7 @@ public:
 	float m_TimeBuffer = 0;
 
 public:
+	UAnimNotifyState_MeleeCombat();
 	void BeginDestroy() override;
 	virtual void NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration);
 	virtual void NotifyTick(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float FrameDeltaTime);
