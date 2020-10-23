@@ -29,9 +29,9 @@ public class MeleeCore : ModuleRules
 				"CoreUObject", 
 				"Engine", 
 				"InputCore", 
-				"AnimGraph", 
-				"AnimGraphRunTime", 
-				"BlueprintGraph",
+				// "AnimGraph", 
+				// "AnimGraphRunTime", 
+				// "BlueprintGraph",
 				// ... add other public dependencies that you statically link with here ...
 			}
             );
@@ -44,9 +44,9 @@ public class MeleeCore : ModuleRules
                 "Engine",
                 "Slate",
                 "SlateCore",
-                "AnimGraph", 
-				"AnimGraphRunTime", 
-				"BlueprintGraph",
+                // "AnimGraph", 
+				// "AnimGraphRunTime", 
+				// "BlueprintGraph",
 				// ... add private dependencies that you statically link with here ...	
 			}
             );

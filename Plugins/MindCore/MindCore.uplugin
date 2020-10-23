@@ -1,11 +1,11 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
-	"FriendlyName": "MeleeCore",
-	"Description": "Melee Core that contains melee detection and hurts",
+	"VersionName": "0.1",
+	"FriendlyName": "MindCore",
+	"Description": "Mind contains special AI and Memory",
 	"Category": "Other",
-	"CreatedBy": "Bai Han",
+	"CreatedBy": "Baihan",
 	"CreatedByURL": "",
 	"DocsURL": "",
 	"MarketplaceURL": "",
@@ -16,7 +16,7 @@
 	"Installed": false,
 	"Modules": [
 		{
-			"Name": "MeleeCore",
+			"Name": "MindCore",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		}
