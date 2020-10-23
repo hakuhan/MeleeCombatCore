@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "Structure/WishThing.h"
 #include "Wish.generated.h"
 
 UINTERFACE(Blueprintable)
@@ -16,10 +17,12 @@ class MINDCORE_API UWish : public UInterface
 class MINDCORE_API IWish
 {
     GENERATED_BODY()
-public:
 
+    friend class IImagine;
+
+public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void CreateWish();
+    void CreateWish(TArray<FWishThing>& outWishes);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void UpdateWish();
+    void UpdateWish(TArray<FWishThing>& currentWishes);
 };
