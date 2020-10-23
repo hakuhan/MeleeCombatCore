@@ -7,6 +7,8 @@
 
 #include "Structure/Connection.h"
 #include "Structure/WishThing.h"
+#include "Core/Imagine.h"
+#include "Core/Remember.h"
 #include "plan.generated.h"
 
 UINTERFACE()
@@ -20,6 +22,7 @@ class MINDCORE_API IPlan
     GENERATED_BODY()
 
     friend class IImagine;
+    friend class IRemember;
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Plan")

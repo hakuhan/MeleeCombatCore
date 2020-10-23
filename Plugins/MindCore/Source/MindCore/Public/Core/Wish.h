@@ -6,6 +6,8 @@
 #pragma once
 
 #include "Structure/WishThing.h"
+#include "Core/Imagine.h"
+#include "Core/Remember.h"
 #include "Wish.generated.h"
 
 UINTERFACE(Blueprintable)
@@ -19,6 +21,7 @@ class MINDCORE_API IWish
     GENERATED_BODY()
 
     friend class IImagine;
+    friend class IRemember;
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")

@@ -6,6 +6,8 @@
 #pragma once
 
 #include "Structure/ActionBasis.h"
+#include "Core/Imagine.h"
+#include "Core/Remember.h"
 #include "Action.generated.h"
 
 UINTERFACE()
@@ -19,6 +21,7 @@ class MINDCORE_API IAction
     GENERATED_BODY()
 
     friend class IImagine;
+    friend class IRemember;
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")

@@ -7,7 +7,7 @@
 void FMeleeCoreModule::StartupModule()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Melee core loaded!"));
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+	// This code will execute after your module is loaded into Remember; the exact timing is specified in the .uplugin file per-module
 }
 
 void FMeleeCoreModule::ShutdownModule()
