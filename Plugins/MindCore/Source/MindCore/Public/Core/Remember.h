@@ -19,8 +19,12 @@ class MINDCORE_API IRemember
     GENERATED_BODY()
 
 public:
-    void Store();
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
+    void Store(FMemoryFragment& outFragment);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     void Recall(int memoryID);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     void Share(int memoryID);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     void Accept(int memoryID);
 };
