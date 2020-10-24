@@ -12,14 +12,15 @@
 	"settings": {
 		"typescript.tsc.autoDetect": "off",
 		"files.associations": {
-			"deque": "cpp",
+			"filesystem": "cpp",
+			"xstring": "cpp",
+			"string": "cpp",
+			"iosfwd": "cpp",
+			"array": "cpp",
 			"vector": "cpp",
-			"xiosbase": "cpp",
-			"hash_map": "cpp",
-			"hash_set": "cpp",
-			"list": "cpp",
-			"map": "cpp",
-			"set": "cpp"
+			"xutility": "cpp",
+			"iterator": "cpp",
+			"string_view": "cpp"
 		}
 	},
 	"extensions": {

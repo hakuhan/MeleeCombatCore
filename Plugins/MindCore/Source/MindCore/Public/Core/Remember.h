@@ -20,7 +20,9 @@ class MINDCORE_API IRemember
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void Store(FMemoryFragment& outFragment);
+    void CreateMemory(FMemoryFragment& outFragment);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
+    void Store(const FMemoryFragment& fragment);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     void Recall(int memoryID);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")

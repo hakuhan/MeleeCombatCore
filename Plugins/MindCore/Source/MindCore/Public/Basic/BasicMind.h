@@ -22,12 +22,9 @@ class MINDCORE_API UBasicMind : public UActorComponent, public IMind
 {
     GENERATED_BODY()
 
-public:
-    void BeginPlay() override;
-    void BeginDestroy() override;
-    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
-
 protected:
+    UPROPERTY()
+    TScriptInterface<IRemember> m_remember;
     UPROPERTY()
     TScriptInterface<IWish> m_wish;
     UPROPERTY()
@@ -37,7 +34,23 @@ protected:
     UPROPERTY()
     TArray<TScriptInterface<IAction>> m_actions;
     UPROPERTY()
-    TScriptInterface<IRemember> m_remember;
-    UPROPERTY()
     TScriptInterface<IImagine> m_imagine;
+
+public:
+    void BeginPlay() override;
+    void BeginDestroy() override;
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
+    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
+    virtual void DoWish_Implementation() override;
+    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
+    virtual void DoPlan_Implementation() override;
+    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
+    virtual void DoSuperintend_Implementation() override;
+    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
+    virtual void DoAction_Implementation() override;
+    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
+    virtual void DoImagine_Implementation() override;
+    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
+    virtual void DoRemember_Implementation() override;
 };
