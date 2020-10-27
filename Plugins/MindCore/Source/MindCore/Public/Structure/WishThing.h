@@ -10,9 +10,9 @@ struct MINDCORE_API FWishThing : public FThing
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="WishThing")
-    TArray<int> Wishing;
+    TArray<FString> Wishing;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="WishThing")
-    TArray<int> owned;
+    TArray<FString> owned;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="WishThing")
-    TArray<int> seeking;
+    TArray<FString> seeking;
 };

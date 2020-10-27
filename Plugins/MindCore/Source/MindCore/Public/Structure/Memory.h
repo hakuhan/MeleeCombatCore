@@ -14,12 +14,26 @@
 
 #include "Memory.generated.h"
 
+UENUM(BlueprintType)
+enum class EMemoryState : uint8
+{
+    Memory_Empty UMETA(DisplayName="Empty"),
+    Memory_Creating UMETA(DisplayName="Creating"),
+    Memory_Happy UMETA(DisplayName="Happy"),
+    Memory_Satisfy UMETA(DisplayName="Satisfy"),
+    Memory_Insensible UMETA(DisplayName="Insensible"),
+    Memory_Contrived UMETA(DisplayName="Contrived"),
+    Memory_Sad UMETA(DisplayName="Sad"),
+};
+
 USTRUCT(BlueprintType)
-struct MINDCORE_API FMemoryFragment
+struct MINDCORE_API FMemoryFragment : public FThing
 {
     GENERATED_USTRUCT_BODY()
 
 public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
+    EMemoryState memoryState;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
     FWishThing wishData;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
@@ -34,5 +48,15 @@ struct MINDCORE_API FMindMemory : public FThing
     GENERATED_USTRUCT_BODY()
 
 public:
-    TArray<FMemoryFragment> fragment;
+    TArray<FMemoryFragment> fragments;
+
+    void Clean()
+    {
+        fragments.Empty();
+    }
+
+    ~FMindMemory()
+    {
+        fragments.Empty();
+    }
 };

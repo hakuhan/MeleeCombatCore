@@ -22,7 +22,6 @@ struct FLinkInfo : public FThing
     GENERATED_USTRUCT_BODY()
 
 public:
-    int linkID;
     int priority;
     ELinkState state;
 };

@@ -17,11 +17,11 @@ struct FWay : public FThing
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Way")
-    int ConnectionID;
+    FString Connection;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Way")
-    TArray<int> usingActionIDs;
+    TArray<FActionBasis> usingActions;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Way")
-    int currentActionID;
+    int currentIndex;
 };

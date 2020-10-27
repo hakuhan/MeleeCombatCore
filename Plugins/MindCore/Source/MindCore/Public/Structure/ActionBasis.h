@@ -29,7 +29,7 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActionBasis")
     EActionState state;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActionBasis")
-    int preThingID;
+    FString preThing;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActionBasis")
-    int targetThingID;
+    FString targetThing;
 };

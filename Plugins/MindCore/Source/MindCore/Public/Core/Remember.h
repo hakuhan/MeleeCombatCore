@@ -20,13 +20,23 @@ class MINDCORE_API IRemember
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void CreateMemory(FMemoryFragment& outFragment);
+    void GetAllWishes(TArray<FWishThing>& outWishes);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void Store(const FMemoryFragment& fragment);
+    void CurrentMemory(FMemoryFragment &outMemory);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void Recall(int memoryID);
+    void CreateMemory(FMemoryFragment &outMemory);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void Share(int memoryID);
+    bool Conatins(FString memoryID);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void Accept(int memoryID);
+    void GetMemory(FString memoryID, FMemoryFragment &outMemory);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
+    void Store(const FMemoryFragment &fragment);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
+    bool Share(FString memoryID, const TScriptInterface<IRemember> &target);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
+    void Accept(FString memoryID, FMemoryFragment &inMemory);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
+    bool RemoveMemory(FString memoryID);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
+    void Clean();
 };
