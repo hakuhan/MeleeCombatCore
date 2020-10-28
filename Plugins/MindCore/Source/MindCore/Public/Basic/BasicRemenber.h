@@ -21,6 +21,8 @@ public:
     UPROPERTY(BlueprintReadWrite)
     FMindMemory m_Memory;
     int m_CurrentIndex;
+
+public:
     UBasicRemenber();
     ~UBasicRemenber();
 
@@ -34,6 +36,8 @@ public:
     virtual void CreateMemory_Implementation(FMemoryFragment &outMemory) override;
 
     virtual void GetMemory_Implementation(const FString& memoryID, FMemoryFragment &outMemory) override;
+
+    virtual void LoadMemory_Implementation();
 
     virtual void Store_Implementation(const FMemoryFragment &fragment) override;
 

@@ -69,6 +69,11 @@ void UBasicRemenber::Store_Implementation(const FMemoryFragment &fragment)
     // TODO save game
 }
 
+void UBasicRemenber::LoadMemory_Implementation()
+{
+    // TODO load game
+}
+
 bool UBasicRemenber::Share_Implementation(const FString& memoryID, const TScriptInterface<IRemember> &target)
 {
     bool result = false;

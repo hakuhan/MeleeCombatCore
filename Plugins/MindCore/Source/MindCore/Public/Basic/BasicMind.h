@@ -53,4 +53,18 @@ public:
     virtual void DoImagine_Implementation() override;
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     virtual void DoRemember_Implementation() override;
+
+    template <typename T>
+    bool IsMemberValid(TScriptInterface<T> interface)
+    {
+        bool result = true;
+
+        if (interface == nullptr || interface.GetObject() == nullptr)
+        {
+            result = false;
+            UE_LOG(LogTemp, Warning, TEXT("Mind Interface mission: %s"), typeid(T).name());
+        }
+
+        return result;
+    }
 };
