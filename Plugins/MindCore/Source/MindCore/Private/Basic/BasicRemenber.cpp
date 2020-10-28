@@ -34,7 +34,7 @@ void UBasicRemenber::CurrentMemory_Implementation(FMemoryFragment &outFragment)
     }
 }
 
-bool UBasicRemenber::Conatins_Implementation(FString memoryID)
+bool UBasicRemenber::Contains_Implementation(const FString& memoryID)
 {
     bool result = false;
 
@@ -52,7 +52,7 @@ void UBasicRemenber::CreateMemory_Implementation(FMemoryFragment &outMemory)
     outMemory = outMemory;
 }
 
-void UBasicRemenber::GetMemory_Implementation(FString memoryID, FMemoryFragment &outMemory)
+void UBasicRemenber::GetMemory_Implementation(const FString& memoryID, FMemoryFragment &outMemory)
 {
     for (auto fragment : m_Memory.fragments)
     {
@@ -69,10 +69,10 @@ void UBasicRemenber::Store_Implementation(const FMemoryFragment &fragment)
     // TODO save game
 }
 
-bool UBasicRemenber::Share_Implementation(FString memoryID, const TScriptInterface<IRemember> &target)
+bool UBasicRemenber::Share_Implementation(const FString& memoryID, const TScriptInterface<IRemember> &target)
 {
     bool result = false;
-    if (Conatins_Implementation(memoryID) && target.GetObject() != nullptr)
+    if (Contains_Implementation(memoryID) && target.GetObject() != nullptr)
     {
         // Get memory
         FMemoryFragment memoryFragment;
@@ -86,15 +86,15 @@ bool UBasicRemenber::Share_Implementation(FString memoryID, const TScriptInterfa
     return result;
 }
 
-void UBasicRemenber::Accept_Implementation(FString memoryID, FMemoryFragment &inMemory)
+void UBasicRemenber::Accept_Implementation(const FString& memoryID, FMemoryFragment &inMemory)
 {
     m_Memory.fragments.Add(inMemory);
 }
 
-bool UBasicRemenber::RemoveMemory_Implementation(FString memoryID)
+bool UBasicRemenber::RemoveMemory_Implementation(const FString& memoryID)
 {
     bool result = false;
-    if (Conatins_Implementation(memoryID))
+    if (Contains_Implementation(memoryID))
     {
         m_Memory.fragments.RemoveAll([=](const FMemoryFragment &memory) { return memoryID == memory.thingType; });
         result = true;

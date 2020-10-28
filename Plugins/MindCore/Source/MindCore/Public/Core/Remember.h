@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
+
 #include "Structure/Memory.h"
 #include "Remember.generated.h"
 
@@ -26,17 +28,17 @@ public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     void CreateMemory(FMemoryFragment &outMemory);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    bool Conatins(FString memoryID);
+    bool Contains(const FString& memoryID);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void GetMemory(FString memoryID, FMemoryFragment &outMemory);
+    void GetMemory(const FString& memoryID, FMemoryFragment &outMemory);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     void Store(const FMemoryFragment &fragment);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    bool Share(FString memoryID, const TScriptInterface<IRemember> &target);
+    bool Share(const FString& memoryID, const TScriptInterface<IRemember> &target);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void Accept(FString memoryID, FMemoryFragment &inMemory);
+    void Accept(const FString& memoryID, FMemoryFragment &inMemory);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    bool RemoveMemory(FString memoryID);
+    bool RemoveMemory(const FString& memoryID);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     void Clean();
 };

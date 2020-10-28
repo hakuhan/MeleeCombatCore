@@ -29,19 +29,19 @@ public:
 
     virtual void CurrentMemory_Implementation(FMemoryFragment &outFragment) override;
 
-    virtual bool Conatins_Implementation(FString memoryID);
+    virtual bool Contains_Implementation(const FString& memoryID);
 
     virtual void CreateMemory_Implementation(FMemoryFragment &outMemory) override;
 
-    virtual void GetMemory_Implementation(FString memoryID, FMemoryFragment &outMemory) override;
+    virtual void GetMemory_Implementation(const FString& memoryID, FMemoryFragment &outMemory) override;
 
     virtual void Store_Implementation(const FMemoryFragment &fragment) override;
 
-    virtual bool Share_Implementation(FString memoryID, const TScriptInterface<IRemember> &target) override;
+    virtual bool Share_Implementation(const FString& memoryID, const TScriptInterface<IRemember> &target) override;
 
-    virtual void Accept_Implementation(FString memoryID, FMemoryFragment &inMemory) override;
+    virtual void Accept_Implementation(const FString& memoryID, FMemoryFragment &inMemory) override;
 
-    virtual bool RemoveMemory_Implementation(FString memoryID) override;
+    virtual bool RemoveMemory_Implementation(const FString& memoryID) override;
 
     virtual void Clean_Implementation() override;
 
