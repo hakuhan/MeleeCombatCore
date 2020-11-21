@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "AnimNotify/AnimNotifyState_MeleeCombat.h"
 
 UAnimNotifyState_MeleeCombat::UAnimNotifyState_MeleeCombat()

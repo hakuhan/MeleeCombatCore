@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotify.h"
-
+#include "Components/SkeletalMeshComponent.h"
 #include "MeleeUtils.h"
 #include "MeleeNotifyInterface/MeleeComboInterface.h"
 #include "AnimNotify_MeleeComboOver.generated.h"

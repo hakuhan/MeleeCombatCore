@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Curves/CurveFloat.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
 #include "MeleeComponents/MeleeCombat.h"
 #include "MeleeComponents/MeleeEffect.h"
@@ -19,7 +22,7 @@ class MELEECORE_API UAnimNotifyState_MeleeCombat : public UAnimNotifyState
 public:
 	UPROPERTY()
 	UMeleeCombat *m_MeleeCombat;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	EMeleeHurt m_Hurt;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
@@ -27,7 +30,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UCurveFloat *m_HurtCurve;
 	// Working weapon
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta=(BItmask,BitmaskEnum="EAttackWeapon"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (BItmask, BitmaskEnum = "EAttackWeapon"))
 	uint8 m_WeaponFlags;
 	UPROPERTY()
 	float m_TotalDuration = 0;

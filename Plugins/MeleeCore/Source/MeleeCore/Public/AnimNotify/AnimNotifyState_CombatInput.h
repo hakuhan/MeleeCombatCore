@@ -6,6 +6,7 @@
 #pragma once
 
 #include "Animation/AnimNotifies/AnimNotifyState.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "MeleeNotifyInterface/MeleeInputInterface.h"
 #include "MeleeUtils.h"
 #include "AnimNotifyState_CombatInput.generated.h"

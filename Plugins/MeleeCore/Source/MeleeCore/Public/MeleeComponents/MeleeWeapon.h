@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
 #include "MeleeCoreStructures/MeleeStructure.h"
+#include "Components/StaticMeshComponent.h"
 #include "MeleeWeapon.generated.h"
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
