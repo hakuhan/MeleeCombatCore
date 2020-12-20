@@ -1,13 +1,14 @@
 {
 	"files.exclude": {
-		"D:/Unreal Projects/MeleeCombatCore/.git": true,
-		"D:/Unreal Projects/MeleeCombatCore/.vscode": true,
-		"D:/Unreal Projects/MeleeCombatCore/Content": true,
-		"D:/Unreal Projects/MeleeCombatCore/DerivedDataCache": true,
-		"D:/Unreal Projects/MeleeCombatCore/Intermediate": true,
-		"D:/Unreal Projects/MeleeCombatCore/Saved": true,
-		"D:/Unreal Projects/MeleeCombatCore/Plugins/MeleeCore/Content": true,
-		"D:/Unreal Projects/MeleeCombatCore/Plugins/MeleeCore/Intermediate": true,
-		"D:/Unreal Projects/MeleeCombatCore/Plugins/MindCore/Intermediate": true
+		"C:/Users/BC/Documents/Unreal Projects/MeleeCombatCore/.git": true,
+		"C:/Users/BC/Documents/Unreal Projects/MeleeCombatCore/.vs": true,
+		"C:/Users/BC/Documents/Unreal Projects/MeleeCombatCore/.vscode": true,
+		"C:/Users/BC/Documents/Unreal Projects/MeleeCombatCore/Content": true,
+		"C:/Users/BC/Documents/Unreal Projects/MeleeCombatCore/DerivedDataCache": true,
+		"C:/Users/BC/Documents/Unreal Projects/MeleeCombatCore/Intermediate": true,
+		"C:/Users/BC/Documents/Unreal Projects/MeleeCombatCore/Saved": true,
+		"C:/Users/BC/Documents/Unreal Projects/MeleeCombatCore/Plugins/MeleeCore/Content": true,
+		"C:/Users/BC/Documents/Unreal Projects/MeleeCombatCore/Plugins/MeleeCore/Intermediate": true,
+		"C:/Users/BC/Documents/Unreal Projects/MeleeCombatCore/Plugins/MindCore/Intermediate": true
 	}
 }

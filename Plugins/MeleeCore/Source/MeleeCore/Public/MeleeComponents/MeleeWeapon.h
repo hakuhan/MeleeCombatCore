@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "MeleeCoreStructures/MeleeStructure.h"
-#include "Components/StaticMeshComponent.h"
+#include "Components/MeshComponent.h"
 #include "MeleeWeapon.generated.h"
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class MELEECORE_API UMeleeWeapon : public UStaticMeshComponent
+class MELEECORE_API UMeleeWeapon : public UMeshComponent
 {
 	GENERATED_BODY()
 
