@@ -17,7 +17,10 @@ public class MeleeCore : ModuleRules
 
         PrivateIncludePaths.AddRange(
             new string[] {
-				// ... add other private include paths required here ...
+				"MeleeCore/Public/CombatComponents",
+				"MeleeCore/Public/CombatSolutions",
+				"MeleeCore/Public/NotifyInterfaces",
+				"MeleeCore/Public/MeleeCoreStructures",
 			}
             );
 

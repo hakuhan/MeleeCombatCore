@@ -1,4 +1,4 @@
-#include "MeleeSolutions/MeleeSolution_Multi.h"
+#include "MeleeSolution_Multi.h"
 
 UMeleeSolution_Multi::~UMeleeSolution_Multi()
 {

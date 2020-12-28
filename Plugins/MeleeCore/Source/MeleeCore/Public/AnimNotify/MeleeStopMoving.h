@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "MeleeNotifyInterface/MeleeMoveInterface.h"
+#include "CombatMoveInterface.h"
 #include "MeleeUtils.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "MeleeStopMoving.generated.h"

@@ -6,7 +6,7 @@
 #include "Animation/AnimNotifies/AnimNotify.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "MeleeUtils.h"
-#include "MeleeNotifyInterface/MeleeComboInterface.h"
+#include "ComboInterface.h"
 #include "AnimNotify_MeleeComboOver.generated.h"
 
 /**

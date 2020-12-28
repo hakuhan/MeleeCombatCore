@@ -10,12 +10,12 @@ void UAnimNotify_MeleeComboOver::Notify(USkeletalMeshComponent *MeshComp, UAnimS
     }
 
     TArray<UObject *> _comboObjs;
-    UMeleeUtils::GetImplementFromActor(MeshComp->GetOwner(), UMeleeComboInterface::StaticClass(), _comboObjs);
+    UMeleeUtils::GetImplementFromActor(MeshComp->GetOwner(), UComboInterface::StaticClass(), _comboObjs);
     if (_comboObjs.Num() > 0)
     {
         for (auto _comboObj : _comboObjs)
         {
-            IMeleeComboInterface::Execute_OnComboOver(_comboObj);
+            IComboInterface::Execute_OnComboOver(_comboObj);
         }
     }
 }

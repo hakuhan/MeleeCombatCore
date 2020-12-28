@@ -6,9 +6,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MeleeSolutions/MeleeSolution.h"
+#include "MeleeSolution.h"
 #include "TimerManager.h"
-#include "MeleeSolutions/Actor_Countdown.h"
+#include "Actor_Countdown.h"
 #include "MeleeSolution_Multi.generated.h"
 
 UCLASS()

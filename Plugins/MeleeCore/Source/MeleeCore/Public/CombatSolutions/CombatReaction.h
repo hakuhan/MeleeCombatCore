@@ -5,15 +5,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MeleeReaction.generated.h"
+#include "CombatReaction.generated.h"
 
 UINTERFACE(Blueprintable)
-class MELEECORE_API UMeleeReaction : public UInterface
+class MELEECORE_API UCombatReaction : public UInterface
 {
     GENERATED_BODY()
 };
 
-class MELEECORE_API IMeleeReaction
+class MELEECORE_API ICombatReaction
 {
     GENERATED_BODY()
 

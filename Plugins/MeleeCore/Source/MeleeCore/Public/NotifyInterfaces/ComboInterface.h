@@ -5,15 +5,15 @@
 
 #pragma once
 
-#include "MeleeComboInterface.generated.h"
+#include "ComboInterface.generated.h"
 
 UINTERFACE()
-class MELEECORE_API UMeleeComboInterface : public UInterface
+class MELEECORE_API UComboInterface : public UInterface
 {
     GENERATED_BODY()
 };
 
-class MELEECORE_API IMeleeComboInterface
+class MELEECORE_API IComboInterface
 {
     GENERATED_BODY()
 public:

@@ -4,7 +4,7 @@
 */
 
 
-#include "MeleeComponents/MeleeWeapon.h"
+#include "MeleeWeapon.h"
 
 // Sets default values for this component's properties
 UMeleeWeapon::UMeleeWeapon()

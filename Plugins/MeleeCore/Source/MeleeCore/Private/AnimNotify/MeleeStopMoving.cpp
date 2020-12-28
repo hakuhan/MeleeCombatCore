@@ -23,12 +23,12 @@ void UMeleeStopMoving::NotifyEnd(USkeletalMeshComponent *MeshComp, UAnimSequence
 void UMeleeStopMoving::UpdateMoveState(AActor *actor, bool canMove)
 {
     TArray<UObject *> _moveOjbs;
-    UMeleeUtils::GetImplementFromActor(actor, UMeleeMoveInterface::StaticClass(), _moveOjbs);
+    UMeleeUtils::GetImplementFromActor(actor, UCombatMoveInterface::StaticClass(), _moveOjbs);
     if (_moveOjbs.Num() > 0)
     {
         for (auto inputObj : _moveOjbs)
         {
-            IMeleeMoveInterface::Execute_UpdateMoveState(inputObj, canMove);
+            ICombatMoveInterface::Execute_UpdateMoveState(inputObj, canMove);
         }
     }
     _moveOjbs.Empty();

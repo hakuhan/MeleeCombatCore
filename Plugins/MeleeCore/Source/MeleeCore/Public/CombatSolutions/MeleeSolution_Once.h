@@ -4,7 +4,7 @@
 */
 #pragma once
 #include "CoreMinimal.h"
-#include "MeleeSolutions/MeleeSolution.h"
+#include "MeleeSolution.h"
 #include "MeleeSolution_Once.generated.h"
 
 UCLASS(Blueprintable)

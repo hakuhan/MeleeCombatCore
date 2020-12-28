@@ -7,8 +7,8 @@
 #include "Curves/CurveFloat.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "MeleeComponents/DetectMelee.h"
-#include "MeleeComponents/MeleeEffect.h"
+#include "DetectMelee.h"
+#include "MeleeEffect.h"
 #include "MeleeDetection.generated.h"
 
 /**

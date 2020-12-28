@@ -1,14 +1,14 @@
 #pragma once
 
-#include "MeleeMoveInterface.generated.h"
+#include "CombatMoveInterface.generated.h"
 
 UINTERFACE(Blueprintable)
-class MELEECORE_API UMeleeMoveInterface : public UInterface
+class MELEECORE_API UCombatMoveInterface : public UInterface
 {
     GENERATED_BODY()
 };
 
-class MELEECORE_API IMeleeMoveInterface
+class MELEECORE_API ICombatMoveInterface
 {
     GENERATED_BODY()
 public:

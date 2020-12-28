@@ -4,7 +4,7 @@
 */
 #pragma once
 #include "MeleeCoreStructures/MeleeStructure.h"
-#include "MeleeReaction.h"
+#include "CombatReaction.h"
 #include "MeleeUtils.h"
 #include "MeleeSolution.generated.h"
 
@@ -59,13 +59,13 @@ protected:
     void NoticeHit(AActor *actor, ECombatHitResult &outResult)
     {
         TArray<UObject *> reacters;
-        UMeleeUtils::GetImplementFromActor(actor, UMeleeReaction::StaticClass(), reacters);
+        UMeleeUtils::GetImplementFromActor(actor, UCombatReaction::StaticClass(), reacters);
         if (reacters.Num() > 0)
         {
             for (auto reacter : reacters)
             {
-                IMeleeReaction::Execute_OnMeleeHitted(reacter, m_HurtInfo.hurts * m_HurtRate);
-                outResult = IMeleeReaction::Execute_HitResult(reacter);
+                ICombatReaction::Execute_OnMeleeHitted(reacter, m_HurtInfo.hurts * m_HurtRate);
+                outResult = ICombatReaction::Execute_HitResult(reacter);
             }
             // UE_LOG(LogTemp, Warning, TEXT("Multi attack"));
         }

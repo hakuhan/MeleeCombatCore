@@ -5,10 +5,10 @@
 #include "CoreMinimal.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/ActorComponent.h"
-#include "MeleeComponents/MeleeEffect.h"
-#include "MeleeSolutions/MeleeSolution.h"
-#include "MeleeCoreStructures/MeleeStructure.h"
-#include "MeleeComponents/MeleeWeapon.h"
+#include "MeleeEffect.h"
+#include "MeleeSolution.h"
+#include "MeleeStructure.h"
+#include "MeleeWeapon.h"
 #include "DetectMelee.generated.h"
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
