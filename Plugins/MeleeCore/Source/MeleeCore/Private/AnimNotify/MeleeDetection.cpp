@@ -1,6 +1,6 @@
-#include "AnimNotify/AnimNotifyState_MeleeCombat.h"
+#include "AnimNotify/MeleeDetection.h"
 
-UAnimNotifyState_MeleeCombat::UAnimNotifyState_MeleeCombat()
+UMeleeDetection::UMeleeDetection()
 {
     auto curveObj = ConstructorHelpers::FObjectFinder<UCurveFloat>(TEXT("/MeleeCore/Curves/C_DefaultCombat.C_DefaultCombat"));
     if (curveObj.Object != nullptr)
@@ -9,7 +9,7 @@ UAnimNotifyState_MeleeCombat::UAnimNotifyState_MeleeCombat()
     }
 }
 
-void UAnimNotifyState_MeleeCombat::BeginDestroy()
+void UMeleeDetection::BeginDestroy()
 {
     Super::BeginDestroy();
 
@@ -17,7 +17,7 @@ void UAnimNotifyState_MeleeCombat::BeginDestroy()
     m_HurtCurve = nullptr;
 }
 
-void UAnimNotifyState_MeleeCombat::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration)
+void UMeleeDetection::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration)
 {
     if (MeshComp == nullptr || MeshComp->GetOwner() == nullptr)
     {
@@ -38,7 +38,7 @@ void UAnimNotifyState_MeleeCombat::NotifyBegin(USkeletalMeshComponent *MeshComp,
     }
 }
 
-void UAnimNotifyState_MeleeCombat::NotifyTick(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float FrameDeltaTime)
+void UMeleeDetection::NotifyTick(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float FrameDeltaTime)
 {
     if (m_MeleeCombat != nullptr && m_HurtCurve != nullptr)
     {
@@ -48,7 +48,7 @@ void UAnimNotifyState_MeleeCombat::NotifyTick(USkeletalMeshComponent *MeshComp, 
     }
 }
 
-void UAnimNotifyState_MeleeCombat::NotifyEnd(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation)
+void UMeleeDetection::NotifyEnd(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation)
 {
     if (m_MeleeCombat != nullptr)
     {

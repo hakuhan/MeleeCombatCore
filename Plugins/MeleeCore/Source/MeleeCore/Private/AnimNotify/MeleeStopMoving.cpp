@@ -1,6 +1,6 @@
-#include "AnimNotify/AnimNotifyState_CombatStopMove.h"
+#include "AnimNotify/MeleeStopMoving.h"
 
-void UAnimNotifyState_CombatStopMove::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration)
+void UMeleeStopMoving::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration)
 {
     if (MeshComp == nullptr || MeshComp->GetOwner() == nullptr)
     {
@@ -10,7 +10,7 @@ void UAnimNotifyState_CombatStopMove::NotifyBegin(USkeletalMeshComponent *MeshCo
     UpdateMoveState(MeshComp->GetOwner(), false);
 }
 
-void UAnimNotifyState_CombatStopMove::NotifyEnd(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation)
+void UMeleeStopMoving::NotifyEnd(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation)
 {
     if (MeshComp == nullptr || MeshComp->GetOwner() == nullptr)
     {
@@ -20,7 +20,7 @@ void UAnimNotifyState_CombatStopMove::NotifyEnd(USkeletalMeshComponent *MeshComp
     UpdateMoveState(MeshComp->GetOwner(), true);
 }
 
-void UAnimNotifyState_CombatStopMove::UpdateMoveState(AActor *actor, bool canMove)
+void UMeleeStopMoving::UpdateMoveState(AActor *actor, bool canMove)
 {
     TArray<UObject *> _moveOjbs;
     UMeleeUtils::GetImplementFromActor(actor, UMeleeMoveInterface::StaticClass(), _moveOjbs);

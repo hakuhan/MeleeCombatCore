@@ -9,13 +9,13 @@
 #include "Animation/AnimNotifies/AnimNotifyState.h"
 #include "MeleeComponents/MeleeCombat.h"
 #include "MeleeComponents/MeleeEffect.h"
-#include "AnimNotifyState_MeleeCombat.generated.h"
+#include "MeleeDetection.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MELEECORE_API UAnimNotifyState_MeleeCombat : public UAnimNotifyState
+class MELEECORE_API UMeleeDetection : public UAnimNotifyState
 {
 	GENERATED_BODY()
 
@@ -38,7 +38,7 @@ public:
 	float m_TimeBuffer = 0;
 
 public:
-	UAnimNotifyState_MeleeCombat();
+	UMeleeDetection();
 	void BeginDestroy() override;
 	virtual void NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration);
 	virtual void NotifyTick(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float FrameDeltaTime);
