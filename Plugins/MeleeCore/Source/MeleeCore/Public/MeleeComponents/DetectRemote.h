@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "RemoteCombat.generated.h"
+#include "DetectRemote.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class MELEECORE_API URemoteCombat : public UActorComponent
+class MELEECORE_API UDetectRemote : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	URemoteCombat();
+	UDetectRemote();
 
 protected:
 	// Called when the game starts

@@ -7,7 +7,7 @@
 #include "Curves/CurveFloat.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "MeleeComponents/MeleeCombat.h"
+#include "MeleeComponents/DetectMelee.h"
 #include "MeleeComponents/MeleeEffect.h"
 #include "MeleeDetection.generated.h"
 
@@ -21,7 +21,7 @@ class MELEECORE_API UMeleeDetection : public UAnimNotifyState
 
 public:
 	UPROPERTY()
-	UMeleeCombat *m_MeleeCombat;
+	UDetectMelee *m_MeleeCombat;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	EMeleeHurt m_Hurt;

@@ -27,7 +27,7 @@ void UMeleeDetection::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenc
     m_TotalDuration = TotalDuration;
     m_TimeBuffer = 0;
 
-    m_MeleeCombat = Cast<UMeleeCombat>(MeshComp->GetOwner()->GetComponentByClass(UMeleeCombat::StaticClass()));
+    m_MeleeCombat = Cast<UDetectMelee>(MeshComp->GetOwner()->GetComponentByClass(UDetectMelee::StaticClass()));
 
     if (m_MeleeCombat != nullptr && m_HurtCurve != nullptr)
     {

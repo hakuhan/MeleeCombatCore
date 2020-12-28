@@ -9,10 +9,10 @@
 #include "MeleeSolutions/MeleeSolution.h"
 #include "MeleeCoreStructures/MeleeStructure.h"
 #include "MeleeComponents/MeleeWeapon.h"
-#include "MeleeCombat.generated.h"
+#include "DetectMelee.generated.h"
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class MELEECORE_API UMeleeCombat : public UActorComponent
+class MELEECORE_API UDetectMelee : public UActorComponent
 {
 	GENERATED_BODY()
 
@@ -69,7 +69,7 @@ protected:
 
 public:
 	// Sets default values for this component's properties
-	UMeleeCombat();
+	UDetectMelee();
 
 #pragma region HurtControl
 	/*

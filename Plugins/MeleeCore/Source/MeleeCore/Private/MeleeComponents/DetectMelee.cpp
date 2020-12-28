@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MeleeComponents/MeleeCombat.h"
+#include "MeleeComponents/DetectMelee.h"
 
 // Sets default values for this component's properties
-UMeleeCombat::UMeleeCombat()
+UDetectMelee::UDetectMelee()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 	m_IsDetecting = false;
@@ -11,7 +11,7 @@ UMeleeCombat::UMeleeCombat()
 	m_Channel = ECollisionChannel::ECC_GameTraceChannel1;
 }
 
-void UMeleeCombat::BeginDestroy()
+void UDetectMelee::BeginDestroy()
 {
 	Super::BeginDestroy();
 	m_MeleeWeapons.Empty();
@@ -19,7 +19,7 @@ void UMeleeCombat::BeginDestroy()
 }
 
 // Called when the game starts
-void UMeleeCombat::BeginPlay()
+void UDetectMelee::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -47,7 +47,7 @@ void UMeleeCombat::BeginPlay()
 	m_EffectComponent = Cast<UMeleeEffect>(GetOwner()->GetComponentByClass(UMeleeEffect::StaticClass()));
 }
 
-void UMeleeCombat::UpdateHurts(EMeleeHurt newHurt, ECombatSolution newSolution)
+void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, ECombatSolution newSolution)
 {
 	if (m_MeleeSolution == nullptr)
 	{
@@ -95,7 +95,7 @@ void UMeleeCombat::UpdateHurts(EMeleeHurt newHurt, ECombatSolution newSolution)
 	}
 }
 
-void UMeleeCombat::UpdateHurtRate(float rate)
+void UDetectMelee::UpdateHurtRate(float rate)
 {
 	if (m_MeleeSolution != nullptr)
 	{
@@ -103,18 +103,18 @@ void UMeleeCombat::UpdateHurtRate(float rate)
 	}
 }
 
-void UMeleeCombat::UpdateWeaponMask(uint8 weaponMask)
+void UDetectMelee::UpdateWeaponMask(uint8 weaponMask)
 {
 	m_weaponMask = weaponMask;
 }
 
-void UMeleeCombat::ResetHurts()
+void UDetectMelee::ResetHurts()
 {
 	UpdateHurts(m_DefaultHurt, m_DefaultSolution);
 }
 
 // Called every frame
-void UMeleeCombat::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	m_HitActorTemps.Empty();
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -180,7 +180,7 @@ void UMeleeCombat::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	}
 }
 
-void UMeleeCombat::StartDetection()
+void UDetectMelee::StartDetection()
 {
 	if (m_MeleeSolution != nullptr)
 	{
@@ -191,7 +191,7 @@ void UMeleeCombat::StartDetection()
 	ResetData();
 }
 
-void UMeleeCombat::ResetData()
+void UDetectMelee::ResetData()
 {
 	for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
 	{
@@ -203,7 +203,7 @@ void UMeleeCombat::ResetData()
 	}
 }
 
-void UMeleeCombat::EndDetection()
+void UDetectMelee::EndDetection()
 {
 	if (m_MeleeSolution != nullptr)
 	{
@@ -212,14 +212,14 @@ void UMeleeCombat::EndDetection()
 	m_IsDetecting = false;
 }
 
-void UMeleeCombat::UpdateWeapon()
+void UDetectMelee::UpdateWeapon()
 {
 	m_MeleeWeapons.Empty();
 
 	GetOwner()->GetComponents<UMeleeWeapon>(m_MeleeWeapons);
 }
 
-void UMeleeCombat::ExecuteHit(FHitResult hit)
+void UDetectMelee::ExecuteHit(FHitResult hit)
 {
 	AActor *actor = hit.GetActor();
 	if (m_HitActorTemps.Contains(actor))
