@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MeleeEffect.h"
+#include "MeleeDetection/MeleeEffect.h"
 
 // Sets default values for this component's properties
 UMeleeEffect::UMeleeEffect()

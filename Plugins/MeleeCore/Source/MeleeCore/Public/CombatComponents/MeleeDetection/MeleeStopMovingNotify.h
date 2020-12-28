@@ -4,10 +4,10 @@
 #include "CombatMoveInterface.h"
 #include "MeleeUtils.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "MeleeStopMoving.generated.h"
+#include "MeleeStopMovingNotify.generated.h"
 
 UCLASS()
-class MELEECORE_API UMeleeStopMoving : public UAnimNotifyState
+class MELEECORE_API UMeleeStopMovingNotify : public UAnimNotifyState
 {
     GENERATED_BODY()
 public:

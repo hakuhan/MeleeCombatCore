@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "RemoteDetection.generated.h"
+#include "RemoteDetectionNotify.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MELEECORE_API URemoteDetection : public UAnimNotifyState
+class MELEECORE_API URemoteDetectionNotify : public UAnimNotifyState
 {
 	GENERATED_BODY()
 	

@@ -21,6 +21,7 @@ public class MeleeCore : ModuleRules
 				"MeleeCore/Public/CombatSolutions",
 				"MeleeCore/Public/NotifyInterfaces",
 				"MeleeCore/Public/MeleeCoreStructures",
+				"MeleeCore/Public/AnimNotify",
 			}
             );
 

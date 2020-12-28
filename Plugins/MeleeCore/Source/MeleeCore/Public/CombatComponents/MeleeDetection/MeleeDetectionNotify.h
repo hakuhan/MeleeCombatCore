@@ -7,15 +7,15 @@
 #include "Curves/CurveFloat.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "DetectMelee.h"
-#include "MeleeEffect.h"
-#include "MeleeDetection.generated.h"
+#include "MeleeDetection/DetectMelee.h"
+#include "MeleeDetection/MeleeEffect.h"
+#include "MeleeDetectionNotify.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MELEECORE_API UMeleeDetection : public UAnimNotifyState
+class MELEECORE_API UMeleeDetectionNotify : public UAnimNotifyState
 {
 	GENERATED_BODY()
 
@@ -38,7 +38,7 @@ public:
 	float m_TimeBuffer = 0;
 
 public:
-	UMeleeDetection();
+	UMeleeDetectionNotify();
 	void BeginDestroy() override;
 	virtual void NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float TotalDuration);
 	virtual void NotifyTick(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation, float FrameDeltaTime);

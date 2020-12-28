@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AnimNotify/AnimNotify_MeleeComboOver.h"
+#include "AnimNotify_MeleeComboOver.h"
 
 void UAnimNotify_MeleeComboOver::Notify(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation)
 {
