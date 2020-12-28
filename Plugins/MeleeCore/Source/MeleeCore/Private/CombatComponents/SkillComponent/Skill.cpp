@@ -1,0 +1,97 @@
+#include "SkillComponent/Skill.h"
+
+void USkill::Tick(float DeltaTime)
+{
+    if (!m_DynamicData)
+    {
+        return;
+    }
+
+    // montage state
+    auto montageInst = m_TargetAnim->GetActiveInstanceForMontage(m_Info.Montage);
+    if (!m_Info.Montage || !m_TargetAnim || !montageInst)
+    {
+        m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_END;
+        m_Data.IsEnable = false;
+        // UE_LOG(LogTemp, Warning, TEXT("End Skill:%s"), *(m_Info.Name));
+    }
+    else if (montageInst->IsPlaying())
+    {
+        m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_WORK;
+    
+        if (m_DynamicData->IsSwitchable)
+        {
+            m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_SWITCHABLE;
+        }
+
+    }
+
+    // Stop
+    if (m_DynamicData->IsSkillLineEnd)
+    {
+        Terminate();
+    }
+}
+
+void USkill::UpdateData(const FSkillInfo& info, ASkillDynamicData* dynamicData)
+{
+    m_Info = info;
+    m_Data = FSkillData();
+    m_DynamicData = dynamicData;
+
+}
+
+void USkill::ExecuteSkill(AActor* target)
+{
+    if (USkeletalMeshComponent *mesh = target->FindComponentByClass<USkeletalMeshComponent>())
+    {
+        UAnimInstance *animInst = mesh->GetAnimInstance();
+        if (animInst && m_Info.Montage != nullptr)
+        {
+            animInst->Montage_Play(m_Info.Montage);
+            m_TargetAnim = animInst;
+            m_Data.IsEnable = true;
+        }
+    }
+}
+
+
+bool USkill::IsMatch(const FSkillInfo& info)
+{
+    return m_Info == info;   
+}
+
+bool USkill::CanSwitch()
+{
+    return m_Data.ExecuteState == ESkillExecuteState::SKILL_EXECUTE_SWITCHABLE;
+}
+
+void USkill::Terminate()
+{
+    if (!m_TargetAnim)
+    {
+        return;
+    }
+
+    auto montageInst = m_TargetAnim->GetActiveInstanceForMontage(m_Info.Montage);
+    if (montageInst)
+    {
+        montageInst->Terminate();
+        UE_LOG(LogTemp, Warning, TEXT("Terminate Skill: %s"), *(m_Info.Name));
+    }
+}
+
+void USkill::Stop(const FAlphaBlend& InBlendOut)
+{
+    if (!m_TargetAnim)
+    {
+        return;
+    }
+
+    auto montageInst = m_TargetAnim->GetActiveInstanceForMontage(m_Info.Montage);
+    if (montageInst)
+    {
+        montageInst->Stop(InBlendOut);
+        UE_LOG(LogTemp, Warning, TEXT("Stop Skill: %s"), *(m_Info.Name));
+    }
+}
