@@ -1,12 +1,12 @@
-#include "MeleeSolution_Multi.h"
+#include "CombatSolution_Multi.h"
 
-UMeleeSolution_Multi::~UMeleeSolution_Multi()
+UCombatSolution_Multi::~UCombatSolution_Multi()
 {
     m_Actors.Empty();
     m_IntervalTimers.Empty();
 }
 
-void UMeleeSolution_Multi::InitData_Implementation()
+void UCombatSolution_Multi::InitData_Implementation()
 {
     auto info = (FHurtMulti *)&m_HurtInfo;
     if (info != nullptr)
@@ -15,28 +15,28 @@ void UMeleeSolution_Multi::InitData_Implementation()
     }
 }
 
-void UMeleeSolution_Multi::OnStartDetection_Implementation()
+void UCombatSolution_Multi::OnStartDetection_Implementation()
 {
     m_Actors.Empty();
     m_IntervalTimers.Empty();
 }
 
-void UMeleeSolution_Multi::OnHit_Implementation(AActor *actor, ECombatHitResult &outResult)
+void UCombatSolution_Multi::OnHit_Implementation(AActor *actor, ECombatHitResult &outResult)
 {
     if (!IsCooling(actor))
     {
         NoticeHit(actor, outResult);
 
         m_Actors.Add(actor);
-        GetWorld()->GetTimerManager().SetTimer(m_IntervalTimers[actor], this, &UMeleeSolution_Multi::CoolOver, m_MeleeInterval, false);
+        GetWorld()->GetTimerManager().SetTimer(m_IntervalTimers[actor], this, &UCombatSolution_Multi::CoolOver, m_MeleeInterval, false);
     }
 }
 
-void UMeleeSolution_Multi::OnEndDetection_Implementation()
+void UCombatSolution_Multi::OnEndDetection_Implementation()
 {
 }
 
-bool UMeleeSolution_Multi::IsCooling(AActor *hittedActor)
+bool UCombatSolution_Multi::IsCooling(AActor *hittedActor)
 {
     bool result = false;
     if (!m_IntervalTimers.Contains(hittedActor))
@@ -55,15 +55,15 @@ bool UMeleeSolution_Multi::IsCooling(AActor *hittedActor)
     return result;
 }
 
-void UMeleeSolution_Multi::CoolOver()
+void UCombatSolution_Multi::CoolOver()
 {
     m_IntervalTimers.Empty();
     // UE_LOG(LogTemp, Warning, TEXT("Cool over"));
 }
 
-void UMeleeSolution_Multi::UpdateHurts(FHurt data)
+void UCombatSolution_Multi::UpdateHurts(FHurt data)
 {
-    IMeleeSolution::UpdateHurts(data);
+    ICombatSolution::UpdateHurts(data);
     auto info = (FHurtMulti *)&data;
     if (info)
     {

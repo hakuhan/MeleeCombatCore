@@ -6,15 +6,15 @@
 #include "MeleeCoreStructures/MeleeStructure.h"
 #include "CombatReaction.h"
 #include "MeleeUtils.h"
-#include "MeleeSolution.generated.h"
+#include "CombatSolution.generated.h"
 
 UINTERFACE(Blueprintable)
-class MELEECORE_API UMeleeSolution : public UInterface
+class MELEECORE_API UCombatSolution : public UInterface
 {
     GENERATED_BODY()
 };
 
-class MELEECORE_API IMeleeSolution
+class MELEECORE_API ICombatSolution
 {
     GENERATED_BODY()
 

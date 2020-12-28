@@ -26,7 +26,7 @@ void UDetectMelee::BeginPlay()
 	UpdateWeapon();
 
 	// init solution data
-	auto solutionInfo = m_MeleeSolutionTable.GetRow<FMeleeSolutionTable>("Find combat solution");
+	auto solutionInfo = m_CombatSolutionTable.GetRow<FCombatSolutionTable>("Find combat solution");
 	if (solutionInfo != nullptr)
 	{
 		m_DefaultSolution = solutionInfo->solutionType;
@@ -35,9 +35,9 @@ void UDetectMelee::BeginPlay()
 		auto hurtInfo = solutionInfo->hurtTable.GetRow<FHurt>("Find combat hurt");
 		if (dealObj && hurtInfo)
 		{
-			m_MeleeSolution.SetObject(dealObj);
-			m_MeleeSolution.SetInterface(Cast<IMeleeSolution>(dealObj));
-			m_MeleeSolution->Init(*hurtInfo);
+			m_CombatSolution.SetObject(dealObj);
+			m_CombatSolution.SetInterface(Cast<ICombatSolution>(dealObj));
+			m_CombatSolution->Init(*hurtInfo);
 
 			// set defaul data
 			m_DefaultHurt = hurtInfo->hurtType;
@@ -49,23 +49,23 @@ void UDetectMelee::BeginPlay()
 
 void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, ECombatSolution newSolution)
 {
-	if (m_MeleeSolution == nullptr)
+	if (m_CombatSolution == nullptr)
 	{
 		return;
 	}
 
-	FMeleeSolutionTable *solutionInfo = m_MeleeSolutionTable.GetRow<FMeleeSolutionTable>("Find combat solution");
+	FCombatSolutionTable *solutionInfo = m_CombatSolutionTable.GetRow<FCombatSolutionTable>("Find combat solution");
 	if (newSolution != m_SolutionType)
 	{
-		for (auto solutionName : m_MeleeSolutionTable.DataTable->GetRowNames())
+		for (auto solutionName : m_CombatSolutionTable.DataTable->GetRowNames())
 		{
-			auto sRow = m_MeleeSolutionTable.DataTable->FindRow<FMeleeSolutionTable>(solutionName, "Find combat solution", true);
+			auto sRow = m_CombatSolutionTable.DataTable->FindRow<FCombatSolutionTable>(solutionName, "Find combat solution", true);
 			if (sRow->solutionType == newSolution)
 			{
 				solutionInfo = sRow;
 				auto solutionObj = NewObject<UObject>(this, sRow->solutionClass);
-				m_MeleeSolution.SetObject(solutionObj);
-				m_MeleeSolution.SetInterface(Cast<IMeleeSolution>(solutionObj));
+				m_CombatSolution.SetObject(solutionObj);
+				m_CombatSolution.SetInterface(Cast<ICombatSolution>(solutionObj));
 				m_SolutionType = newSolution;
 				break;
 			}
@@ -74,7 +74,7 @@ void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, ECombatSolution newSolution)
 
 	if (newHurt != m_HurtType)
 	{
-		FHurt newHurtInfo = m_MeleeSolution->m_HurtInfo;
+		FHurt newHurtInfo = m_CombatSolution->m_HurtInfo;
 		auto hurtTable = solutionInfo->hurtTable.DataTable;
 		if (!hurtTable)
 		{
@@ -91,15 +91,15 @@ void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, ECombatSolution newSolution)
 			}
 		}
 
-		m_MeleeSolution->UpdateHurts(newHurtInfo);
+		m_CombatSolution->UpdateHurts(newHurtInfo);
 	}
 }
 
 void UDetectMelee::UpdateHurtRate(float rate)
 {
-	if (m_MeleeSolution != nullptr)
+	if (m_CombatSolution != nullptr)
 	{
-		m_MeleeSolution->UpdateHurtRate(rate);
+		m_CombatSolution->UpdateHurtRate(rate);
 	}
 }
 
@@ -182,9 +182,9 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 void UDetectMelee::StartDetection()
 {
-	if (m_MeleeSolution != nullptr)
+	if (m_CombatSolution != nullptr)
 	{
-		IMeleeSolution::Execute_OnStartDetection(m_MeleeSolution.GetObject());
+		ICombatSolution::Execute_OnStartDetection(m_CombatSolution.GetObject());
 	}
 	m_IsDetecting = true;
 
@@ -205,9 +205,9 @@ void UDetectMelee::ResetData()
 
 void UDetectMelee::EndDetection()
 {
-	if (m_MeleeSolution != nullptr)
+	if (m_CombatSolution != nullptr)
 	{
-		IMeleeSolution::Execute_OnEndDetection(m_MeleeSolution.GetObject());
+		ICombatSolution::Execute_OnEndDetection(m_CombatSolution.GetObject());
 	}
 	m_IsDetecting = false;
 }
@@ -229,9 +229,9 @@ void UDetectMelee::ExecuteHit(FHitResult hit)
 	m_HitActorTemps.Add(actor);
 
 	ECombatHitResult _hitResult = ECombatHitResult::NO_HIT;
-	if (m_MeleeSolution != nullptr)
+	if (m_CombatSolution != nullptr)
 	{
-		IMeleeSolution::Execute_OnHit(m_MeleeSolution.GetObject(), actor, _hitResult);
+		ICombatSolution::Execute_OnHit(m_CombatSolution.GetObject(), actor, _hitResult);
 	}
 
 	if (m_EffectComponent != nullptr)

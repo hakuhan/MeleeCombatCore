@@ -77,7 +77,7 @@ public:
 
 // Melee structure
 USTRUCT(BlueprintType)
-struct MELEECORE_API FMeleeSolutionTable : public FTableRowBase
+struct MELEECORE_API FCombatSolutionTable : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
@@ -85,7 +85,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	ECombatSolution solutionType;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "MeleeSolution"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "CombatSolution"))
 	TSubclassOf<UObject> solutionClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

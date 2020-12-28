@@ -1,11 +1,11 @@
-#include "MeleeSolution_Once.h"
+#include "CombatSolution_Once.h"
 
-UMeleeSolution_Once::~UMeleeSolution_Once()
+UCombatSolution_Once::~UCombatSolution_Once()
 {
     m_Actors.Empty();
 }
 
-void UMeleeSolution_Once::OnHit_Implementation(AActor *attackedActor, ECombatHitResult& outResult)
+void UCombatSolution_Once::OnHit_Implementation(AActor *attackedActor, ECombatHitResult& outResult)
 {
     if (!m_Actors.Contains(attackedActor))
     {
@@ -14,15 +14,15 @@ void UMeleeSolution_Once::OnHit_Implementation(AActor *attackedActor, ECombatHit
     }
 }
 
-void UMeleeSolution_Once::InitData_Implementation()
+void UCombatSolution_Once::InitData_Implementation()
 {
 }
 
-void UMeleeSolution_Once::OnStartDetection_Implementation()
+void UCombatSolution_Once::OnStartDetection_Implementation()
 {
     m_Actors.Empty();
 }
 
-void UMeleeSolution_Once::OnEndDetection_Implementation()
+void UCombatSolution_Once::OnEndDetection_Implementation()
 {
 }

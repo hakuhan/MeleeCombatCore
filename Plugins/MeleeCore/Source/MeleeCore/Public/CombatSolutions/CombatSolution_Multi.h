@@ -6,13 +6,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MeleeSolution.h"
+#include "CombatSolution.h"
 #include "TimerManager.h"
 #include "Actor_Countdown.h"
-#include "MeleeSolution_Multi.generated.h"
+#include "CombatSolution_Multi.generated.h"
 
 UCLASS()
-class UMeleeSolution_Multi : public UObject, public IMeleeSolution
+class UCombatSolution_Multi : public UObject, public ICombatSolution
 {
     GENERATED_BODY()
 
@@ -20,7 +20,7 @@ private:
     TArray<AActor *> m_Actors;
 
 public:
-    ~UMeleeSolution_Multi();
+    ~UCombatSolution_Multi();
     /*hit interval of multi attack*/
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Solution")
     float m_MeleeInterval = 0.1f;

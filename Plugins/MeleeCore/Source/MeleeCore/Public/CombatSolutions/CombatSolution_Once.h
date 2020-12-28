@@ -4,11 +4,11 @@
 */
 #pragma once
 #include "CoreMinimal.h"
-#include "MeleeSolution.h"
-#include "MeleeSolution_Once.generated.h"
+#include "CombatSolution.h"
+#include "CombatSolution_Once.generated.h"
 
 UCLASS(Blueprintable)
-class MELEECORE_API UMeleeSolution_Once : public UObject, public IMeleeSolution
+class MELEECORE_API UCombatSolution_Once : public UObject, public ICombatSolution
 {
     GENERATED_BODY()
 
@@ -16,7 +16,7 @@ private:
     TArray<AActor *> m_Actors;
 
 public:
-    ~UMeleeSolution_Once();
+    ~UCombatSolution_Once();
     virtual void OnHit_Implementation(AActor *attackedActor, ECombatHitResult &outResult) override;
 
     virtual void InitData_Implementation() override;

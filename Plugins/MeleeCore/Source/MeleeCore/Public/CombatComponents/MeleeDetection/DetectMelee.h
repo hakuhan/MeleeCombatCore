@@ -6,7 +6,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/ActorComponent.h"
 #include "MeleeEffect.h"
-#include "MeleeSolution.h"
+#include "CombatSolution.h"
 #include "MeleeStructure.h"
 #include "MeleeWeapon.h"
 #include "DetectMelee.generated.h"
@@ -19,7 +19,7 @@ class MELEECORE_API UDetectMelee : public UActorComponent
 private:
 	// deal handler
 	UPROPERTY()
-	TScriptInterface<IMeleeSolution> m_MeleeSolution;
+	TScriptInterface<ICombatSolution> m_CombatSolution;
 	UPROPERTY()
 	TArray<AActor *> m_HitActorTemps;
 	UPROPERTY()
@@ -42,7 +42,7 @@ public:
 
 	// solution
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee")
-	FDataTableRowHandle m_MeleeSolutionTable;
+	FDataTableRowHandle m_CombatSolutionTable;
 
 	UPROPERTY(VisibleAnywhere, Category = "Melee")
 	UMeleeEffect *m_EffectComponent;
