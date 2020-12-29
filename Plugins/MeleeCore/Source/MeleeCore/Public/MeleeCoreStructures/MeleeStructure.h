@@ -34,7 +34,7 @@ enum class EAttackWeapon : uint8
 * weapon hurt type
 */
 UENUM(BlueprintType)
-enum class ECombatSolution : uint8
+enum class EDetectionSolution : uint8
 {
 	ONCE_SOLUTION,
 	MULTI_SOLUTION
@@ -83,7 +83,7 @@ struct MELEECORE_API FCombatSolutionTable : public FTableRowBase
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	ECombatSolution solutionType;
+	EDetectionSolution solutionType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "CombatSolution"))
 	TSubclassOf<UObject> solutionClass;

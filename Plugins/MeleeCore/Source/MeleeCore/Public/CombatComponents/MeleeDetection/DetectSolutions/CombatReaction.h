@@ -20,8 +20,6 @@ class MELEECORE_API ICombatReaction
 public:
     UFUNCTION(BlueprintNativeEvent)
     void OnMeleeHitted(float hurts);
-    // void OnMeleeHitted(float hurts, UPARAM(ref) ECombatHitResult &outResult);
-    // ECombatHitResult OnMeleeHitted(float hurts);
 
     UFUNCTION(BlueprintNativeEvent)
     ECombatHitResult HitResult();

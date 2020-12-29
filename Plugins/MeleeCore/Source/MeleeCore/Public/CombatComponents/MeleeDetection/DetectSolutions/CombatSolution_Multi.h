@@ -8,7 +8,7 @@
 #include "CoreMinimal.h"
 #include "CombatSolution.h"
 #include "TimerManager.h"
-#include "Actor_Countdown.h"
+#include "MeleeDetection/DetectSolutions/Actor_Countdown.h"
 #include "CombatSolution_Multi.generated.h"
 
 UCLASS()

@@ -1,4 +1,4 @@
-#include "CombatSolution_Multi.h"
+#include "MeleeDetection/DetectSolutions/CombatSolution_Multi.h"
 
 UCombatSolution_Multi::~UCombatSolution_Multi()
 {

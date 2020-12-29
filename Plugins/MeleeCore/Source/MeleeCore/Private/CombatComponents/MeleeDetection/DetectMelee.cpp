@@ -47,7 +47,7 @@ void UDetectMelee::BeginPlay()
 	m_EffectComponent = Cast<UMeleeEffect>(GetOwner()->GetComponentByClass(UMeleeEffect::StaticClass()));
 }
 
-void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, ECombatSolution newSolution)
+void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, EDetectionSolution newSolution)
 {
 	if (m_CombatSolution == nullptr)
 	{

@@ -26,7 +26,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	EMeleeHurt m_Hurt;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	ECombatSolution m_Solution;
+	EDetectionSolution m_Solution;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UCurveFloat *m_HurtCurve;
 	// Working weapon

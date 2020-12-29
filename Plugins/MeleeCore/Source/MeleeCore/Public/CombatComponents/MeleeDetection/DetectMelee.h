@@ -6,7 +6,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/ActorComponent.h"
 #include "MeleeEffect.h"
-#include "CombatSolution.h"
+#include "MeleeDetection/DetectSolutions/CombatSolution.h"
 #include "MeleeStructure.h"
 #include "MeleeWeapon.h"
 #include "DetectMelee.generated.h"
@@ -26,7 +26,7 @@ private:
 	uint8 m_weaponMask;
 
 public:
-#pragma region types
+#pragma region Solutions
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Melee")
 	EMeleeHurt m_DefaultHurt;
 
@@ -34,10 +34,10 @@ public:
 	EMeleeHurt m_HurtType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Melee")
-	ECombatSolution m_DefaultSolution;
+	EDetectionSolution m_DefaultSolution;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Melee")
-	ECombatSolution m_SolutionType;
+	EDetectionSolution m_SolutionType;
 #pragma endregion
 
 	// solution
@@ -76,7 +76,7 @@ public:
 	Change hurt
 	*/
 	UFUNCTION(BlueprintCallable)
-	void UpdateHurts(EMeleeHurt newHurt, ECombatSolution newSolution);
+	void UpdateHurts(EMeleeHurt newHurt, EDetectionSolution newSolution);
 
 	/* Change hurt rate */
 	UFUNCTION(BlueprintCallable)
