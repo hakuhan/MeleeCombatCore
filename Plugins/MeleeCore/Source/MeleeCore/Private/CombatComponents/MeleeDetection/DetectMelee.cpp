@@ -155,8 +155,6 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 				auto world = GetOwner()->GetWorld();
 				m_Hits.Empty();
-				// UE_LOG(LogTemp, Warning, TEXT("Cur: x:%.2f,y:%.2f,z:%.2f"), crtLocation.X, crtLocation.Y, crtLocation.Z);
-				// UE_LOG(LogTemp, Warning, TEXT("Pre: x:%.2f,y:%.2f,z:%.2f"), preLocation.X, preLocation.Y, preLocation.Z);
 				UKismetSystemLibrary::LineTraceMulti(world, preLocation, crtLocation, channel, true, m_IgnoreActors, debugTraceType, m_Hits, true, m_TraceColor, m_HittedColor);
 				for (auto hit : m_Hits)
 				{
