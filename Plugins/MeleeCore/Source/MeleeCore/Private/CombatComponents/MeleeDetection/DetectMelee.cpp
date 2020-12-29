@@ -204,6 +204,7 @@ void UDetectMelee::ResetData()
 			continue;
 		}
 		m_WeaponDataTemp.TempSocketLocation.Empty();
+		m_MeleeWeapons[i]->SetData(m_WeaponDataTemp);
 	}
 	if (m_EffectComponent)
 	{
