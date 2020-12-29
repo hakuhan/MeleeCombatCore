@@ -65,7 +65,7 @@ protected:
             for (auto reacter : reacters)
             {
                 ICombatReaction::Execute_OnMeleeHitted(reacter, m_HurtInfo.hurts * m_HurtRate);
-                outResult = ICombatReaction::Execute_HitResult(reacter);
+                outResult = ICombatReaction::Execute_GetHitResult(reacter);
             }
             // UE_LOG(LogTemp, Warning, TEXT("Multi attack"));
         }

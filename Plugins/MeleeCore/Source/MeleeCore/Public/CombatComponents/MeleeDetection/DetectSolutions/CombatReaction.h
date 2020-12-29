@@ -22,6 +22,6 @@ public:
     void OnMeleeHitted(float hurts);
 
     UFUNCTION(BlueprintNativeEvent)
-    ECombatHitResult HitResult();
+    ECombatHitResult GetHitResult();
 
 };
