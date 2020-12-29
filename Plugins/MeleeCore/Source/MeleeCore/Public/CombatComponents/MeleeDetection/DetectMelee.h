@@ -22,7 +22,18 @@ private:
 	UPROPERTY()
 	TArray<AActor *> m_HitActorTemps;
 	UPROPERTY()
-	uint8 m_weaponMask;
+	uint8 m_WeaponMask;
+
+#pragma region Tick caches
+	UPROPERTY()
+	FMeleeWeaponInfo m_WeaponInfoTemp;
+	UPROPERTY()
+	FWeaponData m_WeaponDataTemp;
+	UPROPERTY()
+	TArray<FHitResult> m_Hits;
+	UPROPERTY()
+	TArray<AActor *> m_IgnoreActors;
+#pragma endregion
 
 public:
 #pragma region Solutions
@@ -56,6 +67,11 @@ public:
 #pragma region Debug
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee")
 	bool m_IsShowTrace;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee")
+	FLinearColor m_TraceColor = FLinearColor::Green;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee")
+	FLinearColor m_HittedColor = FLinearColor::Red;
+
 #pragma endregion
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee", meta = (Bitmask, BitmaskEnum = "ECollisionChannel"))

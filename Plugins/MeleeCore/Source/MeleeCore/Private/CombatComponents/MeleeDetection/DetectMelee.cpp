@@ -105,7 +105,7 @@ void UDetectMelee::UpdateHurtRate(float rate)
 
 void UDetectMelee::UpdateWeaponMask(uint8 weaponMask)
 {
-	m_weaponMask = weaponMask;
+	m_WeaponMask = weaponMask;
 }
 
 void UDetectMelee::ResetHurts()
@@ -121,61 +121,67 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 	if (m_IsDetecting)
 	{
+		auto channel = UEngineTypes::ConvertToTraceType(m_Channel);
+		auto debugTraceType = m_IsShowTrace ? EDrawDebugTrace::Type::ForDuration : EDrawDebugTrace::Type::None;
+
 		// attack check
 		for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
 		{
-			if (!m_MeleeWeapons[i]->IsTargetWeapon(m_weaponMask))
+			if (!m_MeleeWeapons[i]->IsTargetWeapon(m_WeaponMask))
 			{
 				continue;
 			}
 
-			for (int j = 0; j < m_MeleeWeapons[i]->GetInfo().SocketNames.Num(); ++j)
+			// Get weapon info and data
+			if (!m_MeleeWeapons[i]->GetInfo(m_WeaponInfoTemp))
+			{
+				continue;
+			}
+			if (!m_MeleeWeapons[i]->GetData(m_WeaponDataTemp))
+			{
+				continue;
+			}
+
+			for (int j = 0; j < m_WeaponInfoTemp.SocketNames.Num(); ++j)
 			{
 				// 1. Check every single socket
-				auto debugTrace = EDrawDebugTrace::ForDuration;
-				if (!m_IsShowTrace)
-				{
-					debugTrace = EDrawDebugTrace::None;
-				}
-				auto traceColor = FLinearColor::Green;
-				auto collisionColor = FLinearColor::Red;
-				auto channel = UEngineTypes::ConvertToTraceType(m_Channel);
-
 				// check slot location cache
-				auto socketName = m_MeleeWeapons[i]->GetInfo().SocketNames[j];
-				FVector crtLocation = m_MeleeWeapons[i]->GetDetectLocation(socketName);
-				if (m_MeleeWeapons[i]->GetData().TempSocketLocation.Num() <= j)
+				FVector crtLocation = m_MeleeWeapons[i]->GetDetectLocation(m_WeaponInfoTemp.SocketNames[j]);
+				if (m_WeaponDataTemp.TempSocketLocation.Num() <= j)
 				{
-					m_MeleeWeapons[i]->GetData().TempSocketLocation.Add(crtLocation);
+					m_WeaponDataTemp.TempSocketLocation.Add(crtLocation);
 				}
-				FVector preLocation = m_MeleeWeapons[i]->GetData().TempSocketLocation[j];
+				FVector preLocation = m_WeaponDataTemp.TempSocketLocation[j];
 
 				auto world = GetOwner()->GetWorld();
-				TArray<FHitResult> hits;
-				TArray<AActor *> arrayIgnoreActor;
-				UKismetSystemLibrary::LineTraceMulti(world, preLocation, crtLocation, channel, true, arrayIgnoreActor, debugTrace, hits, true, traceColor, collisionColor);
-				for (auto hit : hits)
+				m_Hits.Empty();
+				// UE_LOG(LogTemp, Warning, TEXT("Cur: x:%.2f,y:%.2f,z:%.2f"), crtLocation.X, crtLocation.Y, crtLocation.Z);
+				// UE_LOG(LogTemp, Warning, TEXT("Pre: x:%.2f,y:%.2f,z:%.2f"), preLocation.X, preLocation.Y, preLocation.Z);
+				UKismetSystemLibrary::LineTraceMulti(world, preLocation, crtLocation, channel, true, m_IgnoreActors, debugTraceType, m_Hits, true, m_TraceColor, m_HittedColor);
+				for (auto hit : m_Hits)
 				{
 					ExecuteHit(hit);
 				}
 
 				// 2. Check trace between sokets
 				int k = j + 1;
-				if (k < m_MeleeWeapons[i]->GetInfo().SocketNames.Num())
+				if (k < m_WeaponInfoTemp.SocketNames.Num())
 				{
-					auto nextSocket = m_MeleeWeapons[i]->GetInfo().SocketNames[k];
-					auto nextSocketLocation = m_MeleeWeapons[i]->GetDetectLocation(nextSocket);
-					TArray<FHitResult> hitsBySockets;
-					UKismetSystemLibrary::LineTraceMulti(world, crtLocation, nextSocketLocation, channel, true, arrayIgnoreActor, debugTrace, hitsBySockets, true, traceColor, collisionColor);
+					auto nextSocketLocation = m_MeleeWeapons[i]->GetDetectLocation(m_WeaponInfoTemp.SocketNames[k]);
+					m_Hits.Empty();
+					UKismetSystemLibrary::LineTraceMulti(world, crtLocation, nextSocketLocation, channel, true, m_IgnoreActors, debugTraceType, m_Hits, true, m_TraceColor, m_HittedColor);
 
-					for (auto h : hitsBySockets)
+					for (auto h : m_Hits)
 					{
 						ExecuteHit(h);
 					}
 				}
 
-				m_MeleeWeapons[i]->GetData().TempSocketLocation[j] = crtLocation;
+				m_WeaponDataTemp.TempSocketLocation[j] = crtLocation;
 			}
+
+			// Update data
+			m_MeleeWeapons[i]->SetData(m_WeaponDataTemp);
 		}
 	}
 }
@@ -195,7 +201,11 @@ void UDetectMelee::ResetData()
 {
 	for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
 	{
-		m_MeleeWeapons[i]->GetData().TempSocketLocation.Empty();
+		if (!m_MeleeWeapons[i]->GetData(m_WeaponDataTemp))
+		{
+			continue;
+		}
+		m_WeaponDataTemp.TempSocketLocation.Empty();
 	}
 	if (m_EffectComponent)
 	{

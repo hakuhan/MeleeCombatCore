@@ -35,13 +35,22 @@ class MELEECORE_API IMeleeWeapon
 	GENERATED_BODY()
 
 public:
-	virtual FMeleeWeaponInfo GetInfo() = 0;
-	virtual FWeaponData GetData() = 0;
+	virtual bool GetInfo(FMeleeWeaponInfo& outInfo) = 0;
+	virtual bool GetData(FWeaponData& outData) = 0;
+	virtual void SetData(const FWeaponData& inData) = 0;
 
 	virtual FVector GetDetectLocation(FName SocketName) = 0;
 	bool IsTargetWeapon(uint8 WeaponMask)
 	{
-		return WeaponMask & GetInfo().WeaponType;
+		bool result = false;
+
+		FMeleeWeaponInfo _info; 
+		result = GetInfo(_info);
+		if (result)
+		{
+			result = _info.WeaponType & WeaponMask;
+		}
+		return result;
 	}
 };
 
@@ -64,14 +73,20 @@ protected:
 	{
 		return GetSocketLocation(SocketName);
 	}
-	virtual FMeleeWeaponInfo GetInfo() override
+	virtual bool GetInfo(FMeleeWeaponInfo& outInfo) override
 	{
-		return m_Info;
+		outInfo = m_Info;
+		return true; 
 	}
 
-	virtual FWeaponData GetData() override
+	virtual bool GetData(FWeaponData& outData) override
 	{
-		return m_Data;
+		outData = m_Data;
+		return true;
+	}
+	virtual void SetData(const FWeaponData& inData) override
+	{
+		m_Data = inData;
 	}
 };
 
@@ -94,13 +109,19 @@ protected:
 	{
 		return GetSocketLocation(SocketName);
 	}
-	virtual FMeleeWeaponInfo GetInfo() override
+	virtual bool GetInfo(FMeleeWeaponInfo& outInfo) override
 	{
-		return m_Info;
+		outInfo = m_Info;
+		return true; 
 	}
 
-	virtual FWeaponData GetData() override
+	virtual bool GetData(FWeaponData& outData) override
 	{
-		return m_Data;
+		outData = m_Data;
+		return true;
+	}
+	virtual void SetData(const FWeaponData& inData) override
+	{
+		m_Data = inData;
 	}
 };

@@ -58,7 +58,7 @@ class MELEECORE_API USkillComponent : public UActorComponent
 public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     FDataTableRowHandle m_InfoTable;
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
     FSkillTable m_Info;
 protected:
     UPROPERTY()
