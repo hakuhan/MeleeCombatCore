@@ -6,32 +6,35 @@
 
 #include "MeleeDetection/MeleeWeapon.h"
 
-// Sets default values for this component's properties
-UMeleeWeapon::UMeleeWeapon()
+#pragma region SimpleWeapon
+USimpleWeapon::USimpleWeapon()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
-	infoPtr = new FMeleeWeaponInfo();
-	info = *(infoPtr);
 }
 
 
 // Called when the game starts
-void UMeleeWeapon::BeginPlay()
+void USimpleWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	info.socketNames.Append(GetAllSocketNames());
+	m_Info.SocketNames.Append(GetAllSocketNames());
 }
 
-void UMeleeWeapon::BeginDestroy()
+#pragma endregion
+
+#pragma region SkeletalWeapon
+
+USkeletalWeapon::USkeletalWeapon()
 {
-	Super::BeginDestroy();
-
-	delete infoPtr;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
-bool UMeleeWeapon::IsTargetWeapon(uint8 weaponMask)
+void USkeletalWeapon::BeginPlay()
 {
-	return weaponMask & info.weaponType;
+	Super::BeginPlay();
+
+	m_Info.SocketNames.Append(GetAllSocketNames());
 }
+
+#pragma endregion

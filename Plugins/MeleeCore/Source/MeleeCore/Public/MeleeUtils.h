@@ -11,7 +11,6 @@ public:
     /** Find implementation of interface at actor*/
     UFUNCTION(BlueprintCallable)
     static void GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> interface, TArray<UObject *> &array, bool checkSelf = true);
-
     // template <typename InterfaceType>
     // typedef void (InterfaceType::*InterfaceFunc)(AActor *caller, ...);
     // DECLARE_DYNAMIC_DELEGATE_OneParam(FCallInterfaceDelegate, bool, isOn);

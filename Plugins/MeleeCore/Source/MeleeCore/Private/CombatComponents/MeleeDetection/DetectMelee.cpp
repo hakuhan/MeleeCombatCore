@@ -129,7 +129,7 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 				continue;
 			}
 
-			for (int j = 0; j < m_MeleeWeapons[i]->info.socketNames.Num(); ++j)
+			for (int j = 0; j < m_MeleeWeapons[i]->GetInfo().SocketNames.Num(); ++j)
 			{
 				// 1. Check every single socket
 				auto debugTrace = EDrawDebugTrace::ForDuration;
@@ -142,13 +142,13 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 				auto channel = UEngineTypes::ConvertToTraceType(m_Channel);
 
 				// check slot location cache
-				auto socketName = m_MeleeWeapons[i]->info.socketNames[j];
-				FVector crtLocation = m_MeleeWeapons[i]->GetSocketLocation(socketName);
-				if (m_MeleeWeapons[i]->info.tempSocketLocation.Num() <= j)
+				auto socketName = m_MeleeWeapons[i]->GetInfo().SocketNames[j];
+				FVector crtLocation = m_MeleeWeapons[i]->GetDetectLocation(socketName);
+				if (m_MeleeWeapons[i]->GetData().TempSocketLocation.Num() <= j)
 				{
-					m_MeleeWeapons[i]->info.tempSocketLocation.Add(crtLocation);
+					m_MeleeWeapons[i]->GetData().TempSocketLocation.Add(crtLocation);
 				}
-				FVector preLocation = m_MeleeWeapons[i]->info.tempSocketLocation[j];
+				FVector preLocation = m_MeleeWeapons[i]->GetData().TempSocketLocation[j];
 
 				auto world = GetOwner()->GetWorld();
 				TArray<FHitResult> hits;
@@ -161,10 +161,10 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 				// 2. Check trace between sokets
 				int k = j + 1;
-				if (k < m_MeleeWeapons[i]->info.socketNames.Num())
+				if (k < m_MeleeWeapons[i]->GetInfo().SocketNames.Num())
 				{
-					auto nextSocket = m_MeleeWeapons[i]->info.socketNames[k];
-					auto nextSocketLocation = m_MeleeWeapons[i]->GetSocketLocation(nextSocket);
+					auto nextSocket = m_MeleeWeapons[i]->GetInfo().SocketNames[k];
+					auto nextSocketLocation = m_MeleeWeapons[i]->GetDetectLocation(nextSocket);
 					TArray<FHitResult> hitsBySockets;
 					UKismetSystemLibrary::LineTraceMulti(world, crtLocation, nextSocketLocation, channel, true, arrayIgnoreActor, debugTrace, hitsBySockets, true, traceColor, collisionColor);
 
@@ -174,7 +174,7 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 					}
 				}
 
-				m_MeleeWeapons[i]->info.tempSocketLocation[j] = crtLocation;
+				m_MeleeWeapons[i]->GetData().TempSocketLocation[j] = crtLocation;
 			}
 		}
 	}
@@ -195,7 +195,7 @@ void UDetectMelee::ResetData()
 {
 	for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
 	{
-		m_MeleeWeapons[i]->info.tempSocketLocation.Empty();
+		m_MeleeWeapons[i]->GetData().TempSocketLocation.Empty();
 	}
 	if (m_EffectComponent)
 	{
@@ -216,7 +216,15 @@ void UDetectMelee::UpdateWeapon()
 {
 	m_MeleeWeapons.Empty();
 
-	GetOwner()->GetComponents<UMeleeWeapon>(m_MeleeWeapons);
+	TArray<UObject*> weapons;
+	UMeleeUtils::GetImplementFromActor(GetOwner(), UMeleeWeapon::StaticClass(), weapons, false);
+	for (auto _obj : weapons)
+	{
+		TScriptInterface<IMeleeWeapon> _weapon;
+		_weapon.SetObject(_obj);
+		_weapon.SetInterface(Cast<IMeleeWeapon>(_obj));;
+		m_MeleeWeapons.Add(_weapon);
+	}
 }
 
 void UDetectMelee::ExecuteHit(FHitResult hit)

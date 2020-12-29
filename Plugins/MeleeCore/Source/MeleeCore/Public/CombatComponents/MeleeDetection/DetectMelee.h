@@ -17,7 +17,6 @@ class MELEECORE_API UDetectMelee : public UActorComponent
 	GENERATED_BODY()
 
 private:
-	// deal handler
 	UPROPERTY()
 	TScriptInterface<ICombatSolution> m_CombatSolution;
 	UPROPERTY()
@@ -49,7 +48,7 @@ public:
 
 	// weapon data
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Melee")
-	TArray<UMeleeWeapon*> m_MeleeWeapons;
+	TArray<TScriptInterface<IMeleeWeapon>> m_MeleeWeapons;
 
 	UPROPERTY(VisibleAnywhere, Category = "Melee")
 	bool m_IsDetecting;

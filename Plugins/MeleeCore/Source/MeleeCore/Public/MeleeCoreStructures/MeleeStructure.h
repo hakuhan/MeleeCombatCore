@@ -50,31 +50,6 @@ enum class ECombatHitResult : uint8
 	DEFEND_HIT,
 };
 
-// Weapon data structure
-USTRUCT(BlueprintType)
-struct MELEECORE_API FMeleeWeaponInfo
-{
-	GENERATED_BODY()
-
-public:
-	UPROPERTY(EditAnywhere, meta=(BItmask,BitmaskEnum="EAttackWeapon"))
-	uint8 weaponType;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TArray<FName> socketNames;
-
-	UPROPERTY(VisibleAnywhere)
-	TArray<FVector> tempSocketLocation;
-
-public:
-	FMeleeWeaponInfo() {}
-	~FMeleeWeaponInfo()
-	{
-		socketNames.Empty();
-		tempSocketLocation.Empty();
-	}
-};
-
 // Melee structure
 USTRUCT(BlueprintType)
 struct MELEECORE_API FCombatSolutionTable : public FTableRowBase
