@@ -74,6 +74,9 @@ public:
     bool ExecuteSkill();
 
     UFUNCTION(BlueprintCallable)
+    bool ExecuteSkillLine(const FString& skillLineName);
+
+    UFUNCTION(BlueprintCallable)
     bool IsExecuting();
 
     UFUNCTION(BlueprintCallable)

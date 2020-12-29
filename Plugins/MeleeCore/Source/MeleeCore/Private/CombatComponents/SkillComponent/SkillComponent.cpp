@@ -94,6 +94,22 @@ bool USkillComponent::IsExecuting()
     return m_LineControl->IsExecuting();
 }
 
+bool USkillComponent::ExecuteSkillLine(const FString& skillLineName)
+{
+    bool result = false;
+    if (IsCurrentSkillLine(skillLineName))
+    {
+        result = ExecuteSkill();
+    }
+    else
+    {
+        result = SwitchSkillWithRule(skillLineName, FString());
+    }
+    
+    return result;
+}
+
+
 void USkillComponent::StopSkill(bool terminate, const FAlphaBlend& InBlendOut)
 {
     if (IsExecuting())
