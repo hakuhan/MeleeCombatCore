@@ -145,6 +145,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ResetData();
 
+	UFUNCTION(BlueprintCallable)
+	void GetWeapons(TArray<TScriptInterface<IMeleeWeapon>>& outWeapons)
+	{
+		outWeapons = m_MeleeWeapons;
+	}
+
 	/// <summary>
 	/// Update weapon and slot info
 	/// </summary>

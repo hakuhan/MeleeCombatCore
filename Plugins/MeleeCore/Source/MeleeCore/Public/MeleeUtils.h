@@ -1,6 +1,9 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "MeleeDetection/MeleeWeaponInfo.h"
 #include "MeleeUtils.generated.h"
+
+class UDetectMelee;
 
 UCLASS(ClassGroup = (Custom), meta = (MeleeUtils))
 class MELEECORE_API UMeleeUtils : public UObject
@@ -11,6 +14,11 @@ public:
     /** Find implementation of interface at actor*/
     UFUNCTION(BlueprintCallable)
     static void GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> interface, TArray<UObject *> &array, bool checkSelf = true);
+
+    // Control weapon state of detect melee
+    UFUNCTION(BlueprintCallable)
+	static bool CtrWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable = true, bool refreshWeapons = true);
+
     // template <typename InterfaceType>
     // typedef void (InterfaceType::*InterfaceFunc)(AActor *caller, ...);
     // DECLARE_DYNAMIC_DELEGATE_OneParam(FCallInterfaceDelegate, bool, isOn);

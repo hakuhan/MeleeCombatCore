@@ -30,7 +30,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UCurveFloat *m_HurtCurve;
 	// Working weapon
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (BItmask, BitmaskEnum = "EAttackWeapon"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (Bitmask, BitmaskEnum = "EAttackWeapon"))
 	uint8 m_WeaponFlags;
 	UPROPERTY()
 	float m_TotalDuration = 0;

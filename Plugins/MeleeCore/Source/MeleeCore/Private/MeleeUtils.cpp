@@ -1,4 +1,5 @@
 #include "MeleeUtils.h"
+#include "MeleeDetection/DetectMelee.h"
 
 void UMeleeUtils::GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> interface, TArray<UObject *> &array, bool checkSelf)
 {
@@ -20,6 +21,37 @@ void UMeleeUtils::GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> i
         array.Add(owner);
     }
 }
+
+bool UMeleeUtils::CtrWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bitmask, BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable, bool refreshWeapons)
+{
+    bool result = false;
+
+    if (detectMelee == nullptr || detectMelee->GetOwner() == nullptr)
+    {
+        UE_LOG(LogTemp, Warning,TEXT("Delect component or actor does not valid!"));
+        return result;
+    }
+
+    if (refreshWeapons)
+    {
+        detectMelee->UpdateWeapon();
+    }
+
+    // Change weapon state
+    TArray<TScriptInterface<IMeleeWeapon>> weapons;
+    detectMelee->GetWeapons(weapons);
+    for (auto w : weapons)
+    {
+        if (w && w->IsTargetWeapon(WeaponType))
+        {
+            w->SetWeaponEnabled(enable);
+            result = true;
+        }
+    }
+
+    return result;
+}
+
 
 // template <typename InterfaceType>
 // void UMeleeUtils::CallInterfaceFromActor(AActor *actor, TScriptInterface<InterfaceType> interface, UMeleeUtils::FCallInterfaceDelegate function , bool value)

@@ -18,9 +18,17 @@ struct FWeaponData
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=MeleeWeapon)
 	TArray<FVector> TempSocketLocation;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=MeleeWeapon)
+	bool IsEnabled = true;
 public:
-	FWeaponData() {}
+	FWeaponData() 
+	{
+		IsEnabled = true;
+	}
+	FWeaponData(bool isEnabled) 
+	{
+		IsEnabled = isEnabled;
+	}
 	~FWeaponData()
 	{
 		TempSocketLocation.Empty();
@@ -41,6 +49,11 @@ public:
 	virtual bool GetInfo(FMeleeWeaponInfo& outInfo) = 0;
 	virtual bool GetData(FWeaponData& outData) = 0;
 	virtual void SetData(const FWeaponData& inData) = 0;
+	virtual bool IsWeaponEnabled()
+	{
+		return true;
+	}
+	virtual void SetWeaponEnabled(bool enable) = 0;
 
 	virtual FVector GetDetectLocation(FName SocketName) = 0;
 	bool IsTargetWeapon(uint8 WeaponMask)
@@ -91,6 +104,14 @@ protected:
 	{
 		m_Data = inData;
 	}
+	virtual bool IsWeaponEnabled() override
+	{
+		return m_Data.IsEnabled;
+	}
+	virtual void SetWeaponEnabled(bool enable) override
+	{
+		m_Data.IsEnabled = enable;
+	}
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -126,5 +147,13 @@ protected:
 	virtual void SetData(const FWeaponData& inData) override
 	{
 		m_Data = inData;
+	}
+	virtual bool IsWeaponEnabled() override
+	{
+		return m_Data.IsEnabled;
+	}
+	virtual void SetWeaponEnabled(bool enable) override
+	{
+		m_Data.IsEnabled = enable;
 	}
 };

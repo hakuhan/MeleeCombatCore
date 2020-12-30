@@ -127,7 +127,8 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 		// attack check
 		for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
 		{
-			if (!m_MeleeWeapons[i]->IsTargetWeapon(m_WeaponMask))
+			if (!m_MeleeWeapons[i]->IsTargetWeapon(m_WeaponMask) 
+				|| !m_MeleeWeapons[i]->IsWeaponEnabled())
 			{
 				continue;
 			}
