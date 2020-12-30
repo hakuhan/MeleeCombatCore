@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "MeleeHitEffect.h"
+#include "CombatHitEffect.h"
 #include "MeleeUtils.h"
 #include "MeleeEffect.generated.h"
 
@@ -24,7 +24,7 @@ protected:
 	TArray<UObject *> m_HitEffects;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "MeleeHitEffect"), Category = "Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "CombatHitEffect"), Category = "Effect")
 	TArray<TSubclassOf<UObject>> m_HitEffectClasses;
 
 public:

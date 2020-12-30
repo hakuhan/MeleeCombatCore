@@ -43,14 +43,14 @@ void UMeleeEffect::OnCombatHitEffect(FHitResult hitInfo, ECombatHitResult hitTyp
         m_HittedActors.Add(actor);
         for (auto effect : m_HitEffects)
         {
-            IMeleeHitEffect::Execute_OnMeleeFirstHitEffect(effect, hitInfo, hitType);
+            ICombatHitEffect::Execute_OnMeleeFirstHitEffect(effect, hitInfo, hitType);
         }
         return;
     }
 
     for (auto effect : m_HitEffects)
     {
-        IMeleeHitEffect::Execute_OnMeleeHitEffect(effect, hitInfo, hitType);
+        ICombatHitEffect::Execute_OnCombatHitEffect(effect, hitInfo, hitType);
     }
 }
 
@@ -80,7 +80,7 @@ void UMeleeEffect::InitEffects_Implementation()
 void UMeleeEffect::InitFromOwner()
 {
     auto owner = GetOwner();
-    if (owner->GetClass()->ImplementsInterface(UMeleeHitEffect::StaticClass()))
+    if (owner->GetClass()->ImplementsInterface(UCombatHitEffect::StaticClass()))
     {
         m_HitEffects.Add(owner);
     }
@@ -88,7 +88,7 @@ void UMeleeEffect::InitFromOwner()
 
 void UMeleeEffect::InitFromComponents()
 {
-    UMeleeUtils::GetImplementFromActor(GetOwner(), UMeleeHitEffect::StaticClass(), m_HitEffects, false);
+    UMeleeUtils::GetImplementFromActor(GetOwner(), UCombatHitEffect::StaticClass(), m_HitEffects, false);
 }
 
 void UMeleeEffect::InitEffectClasses()
@@ -104,7 +104,7 @@ void UMeleeEffect::InitEffectClasses()
 
 void UMeleeEffect::AddHitEffect(UObject *effect)
 {
-    if (effect && effect->GetClass()->ImplementsInterface(UMeleeHitEffect::StaticClass()))
+    if (effect && effect->GetClass()->ImplementsInterface(UCombatHitEffect::StaticClass()))
     {
         m_HitEffects.Add(effect);
     }
