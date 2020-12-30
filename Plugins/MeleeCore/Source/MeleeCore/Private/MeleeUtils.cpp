@@ -22,7 +22,7 @@ void UMeleeUtils::GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> i
     }
 }
 
-bool UMeleeUtils::CtrWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bitmask, BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable, bool refreshWeapons)
+bool UMeleeUtils::EnableWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bitmask, BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable, bool refreshWeapons)
 {
     bool result = false;
 

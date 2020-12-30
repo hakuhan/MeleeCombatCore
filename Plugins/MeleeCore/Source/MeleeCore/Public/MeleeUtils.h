@@ -17,7 +17,7 @@ public:
 
     // Control weapon state of detect melee
     UFUNCTION(BlueprintCallable)
-	static bool CtrWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable = true, bool refreshWeapons = true);
+	static bool EnableWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable = true, bool refreshWeapons = true);
 
     // template <typename InterfaceType>
     // typedef void (InterfaceType::*InterfaceFunc)(AActor *caller, ...);
