@@ -4,6 +4,8 @@
 #include "MeleeUtils.generated.h"
 
 class UDetectMelee;
+class IMeleeWeapon;
+class UMeleeWeapon;
 
 UCLASS(ClassGroup = (Custom), meta = (MeleeUtils))
 class MELEECORE_API UMeleeUtils : public UObject
@@ -18,6 +20,15 @@ public:
     // Control weapon state of detect melee
     UFUNCTION(BlueprintCallable)
 	static bool EnableWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable = true, bool refreshWeapons = true);
+
+    // Add weapon to actor
+    UFUNCTION(BlueprintCallable)
+    static bool AddWeapon(AActor* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket);
+    // UFUNCTION(BlueprintCallable)
+    // static void TestWeapon(UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon)
+    // {
+
+    // }
 
     // template <typename InterfaceType>
     // typedef void (InterfaceType::*InterfaceFunc)(AActor *caller, ...);

@@ -52,6 +52,15 @@ bool UMeleeUtils::EnableWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bit
     return result;
 }
 
+bool UMeleeUtils::AddWeapon(AActor* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket)
+{
+    bool result = false;
+
+
+    return result;
+}
+
+
 
 // template <typename InterfaceType>
 // void UMeleeUtils::CallInterfaceFromActor(AActor *actor, TScriptInterface<InterfaceType> interface, UMeleeUtils::FCallInterfaceDelegate function , bool value)
