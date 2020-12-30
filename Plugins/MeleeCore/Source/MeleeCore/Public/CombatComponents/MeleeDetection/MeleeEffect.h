@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "MeleeDetection/DetectSolutions/MeleeHitEffect.h"
+#include "MeleeHitEffect.h"
 #include "MeleeUtils.h"
 #include "MeleeEffect.generated.h"
 

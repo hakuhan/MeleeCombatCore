@@ -6,7 +6,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/ActorComponent.h"
 #include "MeleeEffect.h"
-#include "MeleeDetection/DetectSolutions/CombatSolution.h"
+#include "CombatSolution.h"
 #include "MeleeStructure.h"
 #include "MeleeWeapon.h"
 #include "DetectMelee.generated.h"

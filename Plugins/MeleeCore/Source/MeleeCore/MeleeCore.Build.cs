@@ -17,12 +17,10 @@ public class MeleeCore : ModuleRules
 
         PrivateIncludePaths.AddRange(
             new string[] {
-				"MeleeCore/Public/CombatComponents",
-				"MeleeCore/Public/CombatSolutions",
-				"MeleeCore/Public/NotifyInterfaces",
-				"MeleeCore/Public/MeleeCoreStructures",
-				"MeleeCore/Public/AnimNotify",
-			}
+                "MeleeCore/Public/CombatComponents",
+                "MeleeCore/Public/MeleeCoreStructures",
+                "MeleeCore/Public/DetectSolutions",
+            }
             );
 
 
@@ -30,9 +28,9 @@ public class MeleeCore : ModuleRules
             new string[]
             {
                 "Core",
-				"CoreUObject", 
-				"Engine", 
-				"InputCore", 
+                "CoreUObject",
+                "Engine",
+                "InputCore", 
 				// "AnimGraph", 
 				// "AnimGraphRunTime", 
 				// "BlueprintGraph",
