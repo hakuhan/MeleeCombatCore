@@ -2,6 +2,16 @@
 
 #include "MeleeWeaponInfo.generated.h"
 
+UENUM(BlueprintType, Meta = (Bitflags))
+enum class EAttackWeapon : uint8
+{
+	Melee_LeftHand,
+	Melee_RightHand,
+	Melee_LeftFoot,
+	Melee_RightFoot,
+};
+
+
 USTRUCT(BlueprintType)
 struct MELEECORE_API FMeleeWeaponInfo
 {

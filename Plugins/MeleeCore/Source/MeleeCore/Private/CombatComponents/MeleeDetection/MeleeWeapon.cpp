@@ -1,9 +1,3 @@
-/*
-	Author: baihan 
-	class purpose: Mark Melee weapon 
-*/
-
-
 #include "MeleeDetection/MeleeWeapon.h"
 
 #pragma region SimpleWeapon

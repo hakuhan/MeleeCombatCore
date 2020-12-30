@@ -7,7 +7,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/EngineTypes.h"
-#include "MeleeCoreStructures/MeleeStructure.h"
+#include "CombatSolution.h"
 #include "CombatHitEffect.generated.h"
 
 UINTERFACE(Blueprintable)

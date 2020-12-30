@@ -1,10 +1,13 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+/*
+	Author: baihan 
+	class purpose: Mark Melee weapon 
+*/
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MeleeCoreStructures/MeleeStructure.h"
-#include "Components/MeshComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "MeleeDetection/MeleeWeaponInfo.h"
 #include "MeleeWeapon.generated.h"
 
@@ -91,7 +94,7 @@ protected:
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class MELEECORE_API USkeletalWeapon : public UStaticMeshComponent, public IMeleeWeapon
+class MELEECORE_API USkeletalWeapon : public USkeletalMeshComponent, public IMeleeWeapon
 {
 	GENERATED_BODY()
 

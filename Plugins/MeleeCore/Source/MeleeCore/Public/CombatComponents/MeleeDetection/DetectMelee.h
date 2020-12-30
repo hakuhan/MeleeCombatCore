@@ -6,10 +6,37 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/ActorComponent.h"
 #include "MeleeEffect.h"
+#include "DetectTypes.h"
 #include "CombatSolution.h"
-#include "MeleeStructure.h"
 #include "MeleeWeapon.h"
 #include "DetectMelee.generated.h"
+
+/*
+* weapon hurt type
+*/
+UENUM(BlueprintType)
+enum class EDetectionSolution : uint8
+{
+	ONCE_SOLUTION,
+	MULTI_SOLUTION
+};
+
+// Melee structure
+USTRUCT(BlueprintType)
+struct MELEECORE_API FCombatSolutionTable : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EDetectionSolution solutionType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MustImplement = "CombatSolution"))
+	TSubclassOf<UObject> solutionClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FDataTableRowHandle hurtTable;
+};
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class MELEECORE_API UDetectMelee : public UActorComponent

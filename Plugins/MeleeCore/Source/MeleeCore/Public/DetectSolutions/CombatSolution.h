@@ -3,10 +3,28 @@
     class purpose: Interface for melee solutoin 
 */
 #pragma once
-#include "MeleeCoreStructures/MeleeStructure.h"
 #include "CombatReaction.h"
+#include "Engine/DataTable.h"
 #include "MeleeUtils.h"
+#include "DetectTypes.h"
 #include "CombatSolution.generated.h"
+
+USTRUCT(BlueprintType)
+struct MELEECORE_API FHurt : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EMeleeHurt hurtType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float hurts;
+
+public:
+	~FHurt()
+	{
+	}
+};
 
 UINTERFACE(Blueprintable)
 class MELEECORE_API UCombatSolution : public UInterface

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DetectTypes.h"
 #include "CombatReaction.generated.h"
 
 UINTERFACE(Blueprintable)

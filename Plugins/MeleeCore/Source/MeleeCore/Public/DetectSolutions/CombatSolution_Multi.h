@@ -11,6 +11,21 @@
 #include "Actor_Countdown.h"
 #include "CombatSolution_Multi.generated.h"
 
+USTRUCT(BlueprintType)
+struct MELEECORE_API FHurtMulti : public FHurt
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float interval;
+
+public:
+	~FHurtMulti()
+	{
+	}
+};
+
 UCLASS()
 class UCombatSolution_Multi : public UObject, public ICombatSolution
 {
