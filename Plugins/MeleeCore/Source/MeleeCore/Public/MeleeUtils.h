@@ -19,11 +19,14 @@ public:
 
     // Control weapon state of detect melee
     UFUNCTION(BlueprintCallable)
-	static bool EnableWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable = true, bool refreshWeapons = true);
+	static bool EnableWeaponByType(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable = true, bool refreshWeapons = true);
 
-    // Add weapon to actor
+    // Attach exist weapon to actor
     UFUNCTION(BlueprintCallable)
-    static bool AddWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket);
+    static bool AttachWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket);
+
+    UFUNCTION(BlueprintCallable)
+    static bool DetachhWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType);
     // UFUNCTION(BlueprintCallable)
     // static void TestWeapon(UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon)
     // {

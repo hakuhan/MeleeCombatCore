@@ -1,5 +1,5 @@
 #include "MeleeUtils.h"
-#include "MeleeDetection/DetectMelee.h"
+#include "MeleeDetection/target.h"
 
 void UMeleeUtils::GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> interface, TArray<UObject *> &array, bool checkSelf)
 {
@@ -22,11 +22,11 @@ void UMeleeUtils::GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> i
     }
 }
 
-bool UMeleeUtils::EnableWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bitmask, BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable, bool refreshWeapons)
+bool UMeleeUtils::EnableWeaponByType(Utarget *target, UPARAM(meta=(Bitmask, BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable, bool refreshWeapons)
 {
     bool result = false;
 
-    if (detectMelee == nullptr || detectMelee->GetOwner() == nullptr)
+    if (target == nullptr || target->GetOwner() == nullptr)
     {
         UE_LOG(LogTemp, Warning,TEXT("Delect component or actor does not valid!"));
         return result;
@@ -34,12 +34,12 @@ bool UMeleeUtils::EnableWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bit
 
     if (refreshWeapons)
     {
-        detectMelee->UpdateWeapon();
+        target->UpdateWeapon();
     }
 
     // Change weapon state
     TArray<TScriptInterface<IMeleeWeapon>> weapons;
-    detectMelee->GetWeapons(weapons);
+    target->GetWeapons(weapons);
     for (auto w : weapons)
     {
         if (w && w->IsTargetWeapon(WeaponType))
@@ -52,7 +52,7 @@ bool UMeleeUtils::EnableWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bit
     return result;
 }
 
-bool UMeleeUtils::AddWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket)
+bool UMeleeUtils::AttachWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket)
 {
     bool result = false;
 
@@ -73,6 +73,35 @@ bool UMeleeUtils::AddWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstract 
     return result;
 }
 
+bool DetachhWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType)
+{
+    bool result = false;
+
+    if (target == nullptr || target->GetOwner() == nullptr)
+    {
+        UE_LOG(LogTemp, Warning,TEXT("Delect component or actor does not valid!"));
+        return result;
+    }
+
+    TArray<TScriptInterface<IMeleeWeapon>> weapons;
+    target->GetWeapons(weapons);
+    for (auto w : weapons)
+    {
+        if (w && w->IsTargetWeapon(WeaponType))
+        {
+            // w->SetWeaponEnabled(enable);
+            auto targetWeapon = dynamic_cast<USceneComponent*>(w.GetObject());
+            if (targetWeapon)
+            {
+                targetWeapon->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+                result = true;
+            }
+            break;
+        }
+    }
+
+    return result;
+}
 
 
 // template <typename InterfaceType>
