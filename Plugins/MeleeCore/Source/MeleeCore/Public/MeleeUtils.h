@@ -23,7 +23,7 @@ public:
 
     // Add weapon to actor
     UFUNCTION(BlueprintCallable)
-    static bool AddWeapon(AActor* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket);
+    static bool AddWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket);
     // UFUNCTION(BlueprintCallable)
     // static void TestWeapon(UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon)
     // {

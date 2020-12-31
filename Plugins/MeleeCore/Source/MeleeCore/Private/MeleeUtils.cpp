@@ -52,10 +52,23 @@ bool UMeleeUtils::EnableWeaponByType(UDetectMelee *detectMelee, UPARAM(meta=(Bit
     return result;
 }
 
-bool UMeleeUtils::AddWeapon(AActor* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket)
+bool UMeleeUtils::AddWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket)
 {
     bool result = false;
 
+    // check attached
+    TArray<USceneComponent*> parents;
+    weapon->GetParentComponents(parents);
+    if (parents.FindByPredicate([&](USceneComponent* p){
+        return p == target && weapon->GetAttachSocketName().ToString() == socket;
+    }))
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Weapon: %s aready attached!"), *weapon->GetName());
+        return result;
+    }
+
+    // attach
+    result = weapon->AttachToComponent(target, FAttachmentTransformRules::SnapToTargetIncludingScale, FName(*socket));
 
     return result;
 }
