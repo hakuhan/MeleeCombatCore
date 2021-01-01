@@ -1,5 +1,5 @@
 #include "MeleeUtils.h"
-#include "MeleeDetection/target.h"
+#include "MeleeDetection/DetectMelee.h"
 
 void UMeleeUtils::GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> interface, TArray<UObject *> &array, bool checkSelf)
 {
@@ -22,7 +22,7 @@ void UMeleeUtils::GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> i
     }
 }
 
-bool UMeleeUtils::EnableWeaponByType(Utarget *target, UPARAM(meta=(Bitmask, BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable, bool refreshWeapons)
+bool UMeleeUtils::EnableWeaponByType(UDetectMelee *target, UPARAM(meta=(Bitmask, BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable, bool refreshWeapons)
 {
     bool result = false;
 
@@ -73,13 +73,13 @@ bool UMeleeUtils::AttachWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstra
     return result;
 }
 
-bool DetachhWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType)
+bool UMeleeUtils::DetachWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType)
 {
     bool result = false;
 
     if (target == nullptr || target->GetOwner() == nullptr)
     {
-        UE_LOG(LogTemp, Warning,TEXT("Delect component or actor does not valid!"));
+        UE_LOG(LogTemp, Warning,TEXT("Target component or actor does not valid!"));
         return result;
     }
 
@@ -89,11 +89,13 @@ bool DetachhWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMa
     {
         if (w && w->IsTargetWeapon(WeaponType))
         {
-            // w->SetWeaponEnabled(enable);
             auto targetWeapon = dynamic_cast<USceneComponent*>(w.GetObject());
             if (targetWeapon)
             {
                 targetWeapon->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+                
+                // TODO destroy or not
+                targetWeapon->DestroyComponent();
                 result = true;
             }
             break;
