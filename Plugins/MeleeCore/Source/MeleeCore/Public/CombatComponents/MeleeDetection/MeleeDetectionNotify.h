@@ -8,6 +8,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
 #include "MeleeDetection/DetectMelee.h"
+#include "MeleeDetection/DetectSolution.h"
 #include "MeleeDetection/MeleeEffect.h"
 #include "MeleeDetectionNotify.generated.h"
 
@@ -24,9 +25,11 @@ public:
 	UDetectMelee *m_MeleeCombat;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	EDetectType m_DetectType = EDetectType::RAY;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	EMeleeHurt m_Hurt;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	EDetectionSolution m_Solution;
+	EHurtType m_Solution;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	UCurveFloat *m_HurtCurve;
 	// Working weapon

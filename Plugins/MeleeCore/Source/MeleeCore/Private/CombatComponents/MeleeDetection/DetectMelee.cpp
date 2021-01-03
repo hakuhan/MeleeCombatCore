@@ -6,9 +6,6 @@
 UDetectMelee::UDetectMelee()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	m_IsDetecting = false;
-	m_IsShowTrace = false;
-	m_Channel = ECollisionChannel::ECC_GameTraceChannel1;
 }
 
 void UDetectMelee::BeginDestroy()
@@ -25,56 +22,73 @@ void UDetectMelee::BeginPlay()
 
 	UpdateWeapon();
 
-	// init solution data
-	auto solutionInfo = m_CombatSolutionTable.GetRow<FCombatSolutionTable>("Find combat solution");
+	// Init Detect solution
+	auto detectSolution = m_DetectSolutionTable.GetRow<FDetectSolutionTable>("Find combat solution");
+	if (detectSolution)
+	{
+		m_DetectType = detectSolution->DetectType;
+		auto detectObj = NewObject<UObject>(this, detectSolution->Class);
+		if (detectObj)
+		{
+			m_DetectSolution.SetObject(detectObj);
+			m_DetectSolution.SetInterface(Cast<IDetectSolution>(detectObj));
+			m_DetectSolution->Init(detectSolution->DetectInfo);
+		}
+
+	}
+
+	// Init hurt solution data
+	auto solutionInfo = m_HurtSolutionTable.GetRow<FHurtSolutionTable>("Find combat solution");
 	if (solutionInfo != nullptr)
 	{
-		m_DefaultSolution = solutionInfo->solutionType;
+		m_DefaultHurtSolution = solutionInfo->solutionType;
+		m_HurtSolutionType = m_DefaultHurtSolution;
 
-		auto dealObj = NewObject<UObject>(this, solutionInfo->solutionClass);
+		auto hurtObj = NewObject<UObject>(this, solutionInfo->solutionClass);
 		auto hurtInfo = solutionInfo->hurtTable.GetRow<FHurt>("Find combat hurt");
-		if (dealObj && hurtInfo)
+		if (hurtObj && hurtInfo)
 		{
-			m_CombatSolution.SetObject(dealObj);
-			m_CombatSolution.SetInterface(Cast<ICombatSolution>(dealObj));
-			m_CombatSolution->Init(*hurtInfo);
+			m_HurtSolution.SetObject(hurtObj);
+			m_HurtSolution.SetInterface(Cast<ICombatSolution>(hurtObj));
+			m_HurtSolution->Init(*hurtInfo);
 
 			// set defaul data
 			m_DefaultHurt = hurtInfo->hurtType;
+			m_Hurt = m_DefaultHurt;
 		}
 	}
 
 	m_EffectComponent = Cast<UMeleeEffect>(GetOwner()->GetComponentByClass(UMeleeEffect::StaticClass()));
 }
 
-void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, EDetectionSolution newSolution)
+void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, EHurtType newSolution)
 {
-	if (m_CombatSolution == nullptr)
+	if (m_HurtSolution == nullptr)
 	{
 		return;
 	}
 
-	FCombatSolutionTable *solutionInfo = m_CombatSolutionTable.GetRow<FCombatSolutionTable>("Find combat solution");
-	if (newSolution != m_SolutionType)
+	FHurtSolutionTable *solutionInfo = m_HurtSolutionTable.GetRow<FHurtSolutionTable>("Find combat solution");
+	if (newSolution != m_HurtSolutionType)
 	{
-		for (auto solutionName : m_CombatSolutionTable.DataTable->GetRowNames())
+		for (auto solutionName : m_HurtSolutionTable.DataTable->GetRowNames())
 		{
-			auto sRow = m_CombatSolutionTable.DataTable->FindRow<FCombatSolutionTable>(solutionName, "Find combat solution", true);
+			auto sRow = m_HurtSolutionTable.DataTable->FindRow<FHurtSolutionTable>(solutionName, "Find combat solution", true);
 			if (sRow->solutionType == newSolution)
 			{
 				solutionInfo = sRow;
 				auto solutionObj = NewObject<UObject>(this, sRow->solutionClass);
-				m_CombatSolution.SetObject(solutionObj);
-				m_CombatSolution.SetInterface(Cast<ICombatSolution>(solutionObj));
-				m_SolutionType = newSolution;
+				m_HurtSolution.SetObject(solutionObj);
+				m_HurtSolution.SetInterface(Cast<ICombatSolution>(solutionObj));
+				m_HurtSolutionType = newSolution;
 				break;
 			}
 		}
 	}
 
-	if (newHurt != m_HurtType)
+	if (newHurt != m_Hurt)
 	{
-		FHurt newHurtInfo = m_CombatSolution->m_HurtInfo;
+		FHurt newHurtInfo = m_HurtSolution->m_HurtInfo;
 		auto hurtTable = solutionInfo->hurtTable.DataTable;
 		if (!hurtTable)
 		{
@@ -86,20 +100,41 @@ void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, EDetectionSolution newSolutio
 			if (row->hurtType == newHurt)
 			{
 				newHurtInfo = *row;
-				m_HurtType = newHurt;
+				m_Hurt = newHurt;
 				break;
 			}
 		}
 
-		m_CombatSolution->UpdateHurts(newHurtInfo);
+		m_HurtSolution->UpdateHurts(newHurtInfo);
 	}
 }
 
+void UDetectMelee::UpdateDetect(EDetectType type)
+{
+	if (type != m_DetectType)
+	{
+		for (auto solutionName : m_DetectSolutionTable.DataTable->GetRowNames())
+		{
+			auto sRow = m_DetectSolutionTable.DataTable->FindRow<FDetectSolutionTable>(solutionName, "Find Detect Solution", true);
+			if (sRow->DetectType == type)
+			{
+				auto solutionObj = NewObject<UObject>(this, sRow->Class);
+				m_DetectSolution.SetObject(solutionObj);
+				m_DetectSolution.SetInterface(Cast<ICombatSolution>(solutionObj));
+				m_DetectSolution->Init(sRow->DetectInfo);
+				m_DetectType = type;
+				break;
+			}
+		}
+	}
+}
+
+
 void UDetectMelee::UpdateHurtRate(float rate)
 {
-	if (m_CombatSolution != nullptr)
+	if (m_HurtSolution != nullptr)
 	{
-		m_CombatSolution->UpdateHurtRate(rate);
+		m_HurtSolution->UpdateHurtRate(rate);
 	}
 }
 
@@ -110,19 +145,16 @@ void UDetectMelee::UpdateWeaponMask(uint8 weaponMask)
 
 void UDetectMelee::ResetHurts()
 {
-	UpdateHurts(m_DefaultHurt, m_DefaultSolution);
+	UpdateHurts(m_DefaultHurt, m_DefaultHurtSolution);
 }
 
 // Called every frame
 void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
-	m_HitActorTemps.Empty();
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
 	if (m_IsDetecting)
 	{
-		auto channel = UEngineTypes::ConvertToTraceType(m_Channel);
-		auto debugTraceType = m_IsShowTrace ? EDrawDebugTrace::Type::ForDuration : EDrawDebugTrace::Type::None;
+		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+		m_HitActorTemps.Empty();
 
 		// attack check
 		for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
@@ -154,12 +186,12 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 				}
 				FVector preLocation = m_WeaponDataTemp.TempSocketLocation[j];
 
-				auto world = GetOwner()->GetWorld();
-				m_Hits.Empty();
-				UKismetSystemLibrary::LineTraceMulti(world, preLocation, crtLocation, channel, true, m_IgnoreActors, debugTraceType, m_Hits, true, m_TraceColor, m_HittedColor);
-				for (auto hit : m_Hits)
+				if (m_DetectSolution.GetObject() && m_DetectSolution->Detect(GetOwner(), crtLocation, preLocation, m_DetectTemp, true))
 				{
-					ExecuteHit(hit);
+					for (auto _detect : m_DetectTemp)
+					{
+						ExecuteHit(_detect);
+					}
 				}
 
 				// 2. Check trace between sokets
@@ -167,12 +199,12 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 				if (k < m_WeaponInfoTemp.SocketNames.Num())
 				{
 					auto nextSocketLocation = m_MeleeWeapons[i]->GetDetectLocation(m_WeaponInfoTemp.SocketNames[k]);
-					m_Hits.Empty();
-					UKismetSystemLibrary::LineTraceMulti(world, crtLocation, nextSocketLocation, channel, true, m_IgnoreActors, debugTraceType, m_Hits, true, m_TraceColor, m_HittedColor);
-
-					for (auto h : m_Hits)
+					if (m_DetectSolution.GetObject() && m_DetectSolution->Detect(GetOwner(), crtLocation, nextSocketLocation, m_DetectTemp, false))
 					{
-						ExecuteHit(h);
+						for (auto _detect : m_DetectTemp)
+						{
+							ExecuteHit(_detect);
+						}
 					}
 				}
 
@@ -187,9 +219,9 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 void UDetectMelee::StartDetection()
 {
-	if (m_CombatSolution != nullptr)
+	if (m_HurtSolution != nullptr)
 	{
-		ICombatSolution::Execute_OnStartDetection(m_CombatSolution.GetObject());
+		ICombatSolution::Execute_OnStartDetection(m_HurtSolution.GetObject());
 	}
 	m_IsDetecting = true;
 
@@ -215,9 +247,9 @@ void UDetectMelee::ResetData()
 
 void UDetectMelee::EndDetection()
 {
-	if (m_CombatSolution != nullptr)
+	if (m_HurtSolution != nullptr)
 	{
-		ICombatSolution::Execute_OnEndDetection(m_CombatSolution.GetObject());
+		ICombatSolution::Execute_OnEndDetection(m_HurtSolution.GetObject());
 	}
 	m_IsDetecting = false;
 }
@@ -237,9 +269,9 @@ void UDetectMelee::UpdateWeapon()
 	}
 }
 
-void UDetectMelee::ExecuteHit(FHitResult hit)
+void UDetectMelee::ExecuteHit(FDetectInfo hit)
 {
-	AActor *actor = hit.GetActor();
+	AActor *actor = hit.target;
 	if (m_HitActorTemps.Contains(actor))
 	{
 		return;
@@ -247,9 +279,9 @@ void UDetectMelee::ExecuteHit(FHitResult hit)
 	m_HitActorTemps.Add(actor);
 
 	ECombatHitResult _hitResult = ECombatHitResult::NO_HIT;
-	if (m_CombatSolution != nullptr)
+	if (m_HurtSolution != nullptr)
 	{
-		ICombatSolution::Execute_OnHit(m_CombatSolution.GetObject(), actor, _hitResult);
+		ICombatSolution::Execute_OnHit(m_HurtSolution.GetObject(), actor, _hitResult);
 	}
 
 	if (m_EffectComponent != nullptr)

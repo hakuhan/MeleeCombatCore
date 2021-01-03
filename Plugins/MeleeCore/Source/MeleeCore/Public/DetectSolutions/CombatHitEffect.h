@@ -8,6 +8,7 @@
 #include "CoreMinimal.h"
 #include "Engine/EngineTypes.h"
 #include "CombatSolution.h"
+#include "MeleeDetection/DetectSolution.h"
 #include "CombatHitEffect.generated.h"
 
 UINTERFACE(Blueprintable)
@@ -21,7 +22,7 @@ class MELEECORE_API ICombatHitEffect
     GENERATED_BODY()
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-    void OnMeleeFirstHitEffect(FHitResult hitInfo, ECombatHitResult hitType);
+    void OnMeleeFirstHitEffect(FDetectInfo hitInfo, ECombatHitResult hitType);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-    void OnCombatHitEffect(FHitResult hitInfo, ECombatHitResult hitType);
+    void OnCombatHitEffect(FDetectInfo hitInfo, ECombatHitResult hitType);
 };

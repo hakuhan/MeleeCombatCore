@@ -27,7 +27,7 @@ void UMeleeEffect::BeginDestroy()
     m_HitEffectClasses.Empty();
 }
 
-void UMeleeEffect::OnCombatHitEffect(FHitResult hitInfo, ECombatHitResult hitType)
+void UMeleeEffect::OnCombatHitEffect(FDetectInfo hitInfo, ECombatHitResult hitType)
 {
     if (hitType == ECombatHitResult::NO_HIT)
     {
@@ -37,7 +37,7 @@ void UMeleeEffect::OnCombatHitEffect(FHitResult hitInfo, ECombatHitResult hitTyp
     CheckEffectClass(m_HitEffects);
 
     // check first effect
-    auto actor = hitInfo.GetActor();
+    auto actor = hitInfo.target;
     if (!m_HittedActors.Contains(actor))
     {
         m_HittedActors.Add(actor);
