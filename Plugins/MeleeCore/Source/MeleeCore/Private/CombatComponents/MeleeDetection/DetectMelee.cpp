@@ -78,6 +78,7 @@ void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, EHurtType newSolution)
 			{
 				solutionInfo = sRow;
 				auto solutionObj = NewObject<UObject>(this, sRow->solutionClass);
+				m_HurtSolution.SetObject(nullptr);
 				m_HurtSolution.SetObject(solutionObj);
 				m_HurtSolution.SetInterface(Cast<ICombatSolution>(solutionObj));
 				m_HurtSolutionType = newSolution;
@@ -119,6 +120,7 @@ void UDetectMelee::UpdateDetect(EDetectType type)
 			if (sRow->DetectType == type)
 			{
 				auto solutionObj = NewObject<UObject>(this, sRow->Class);
+				m_DetectSolution.SetObject(nullptr);
 				m_DetectSolution.SetObject(solutionObj);
 				m_DetectSolution.SetInterface(Cast<ICombatSolution>(solutionObj));
 				m_DetectSolution->Init(sRow->DetectInfo);
