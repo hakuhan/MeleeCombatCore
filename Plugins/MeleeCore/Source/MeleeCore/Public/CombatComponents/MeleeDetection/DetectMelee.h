@@ -113,22 +113,25 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee")
 	FDataTableRowHandle m_DetectSolutionTable;
 
-	// hurt solution
+	// Hurt solution
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee")
 	FDataTableRowHandle m_HurtSolutionTable;
 
+	// Effects
 	UPROPERTY(VisibleAnywhere, Category = "Melee")
 	UMeleeEffect *m_EffectComponent;
 
-	// weapon data
+	// Weapon data
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Melee")
 	TArray<TScriptInterface<IMeleeWeapon>> m_MeleeWeapons;
 
 	UPROPERTY(VisibleAnywhere, Category = "Melee")
 	bool m_IsDetecting;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee")
+	bool m_IsDebug = false;
+
 protected:
-	// Called when the game starts
 	void BeginPlay() override;
 	void BeginDestroy() override;
 

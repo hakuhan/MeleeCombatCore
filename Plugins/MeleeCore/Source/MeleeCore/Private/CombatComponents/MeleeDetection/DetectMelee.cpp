@@ -158,6 +158,14 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 		m_HitActorTemps.Empty();
 
+		if (!m_DetectSolution.GetObject())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Detect solution of: %s is invalid"), *(GetOwner()->GetName()));
+			return;
+		}
+
+		m_DetectSolution->SetDebug(m_IsDebug);
+
 		// attack check
 		for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
 		{
@@ -188,7 +196,7 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 				}
 				FVector preLocation = m_WeaponDataTemp.TempSocketLocation[j];
 
-				if (m_DetectSolution.GetObject() && m_DetectSolution->Detect(GetOwner(), crtLocation, preLocation, m_DetectTemp, true))
+				if (m_DetectSolution->Detect(GetOwner(), crtLocation, preLocation, m_DetectTemp, true))
 				{
 					for (auto _detect : m_DetectTemp)
 					{
@@ -201,7 +209,7 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 				if (k < m_WeaponInfoTemp.SocketNames.Num())
 				{
 					auto nextSocketLocation = m_MeleeWeapons[i]->GetDetectLocation(m_WeaponInfoTemp.SocketNames[k]);
-					if (m_DetectSolution.GetObject() && m_DetectSolution->Detect(GetOwner(), crtLocation, nextSocketLocation, m_DetectTemp, false))
+					if (m_DetectSolution->Detect(GetOwner(), crtLocation, nextSocketLocation, m_DetectTemp, false))
 					{
 						for (auto _detect : m_DetectTemp)
 						{

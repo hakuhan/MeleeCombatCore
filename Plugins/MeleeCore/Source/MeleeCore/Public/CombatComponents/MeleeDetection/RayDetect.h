@@ -10,7 +10,7 @@ struct FRayDetectInfo : public FTableRowBase
 {
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=RayDetect)
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=RayDetect)
     bool IsShowTrace;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=RayDetect)
     FLinearColor RayColor = FLinearColor::Green;
@@ -25,6 +25,8 @@ UCLASS()
 class MELEECORE_API URayDetect : public UObject, public IDetectSolution
 {
     GENERATED_BODY()
+
+    UPROPERTY()
     FRayDetectInfo m_Info;
 
     UPROPERTY()
@@ -42,7 +44,7 @@ public:
         }
     };
 
-    bool Detect(AActor* const current, FVector curDetectPos, FVector preDetectPos, TArray<FDetectInfo>& outDetect, bool IsCheckPerframe = false) override
+    bool Detect(AActor* const current, FVector curDetectPos, FVector preDetectPos, TArray<FDetectInfo>& outDetect, const bool IsCheckPerframe) override
     {
         bool result = false;
         m_Hits.Empty();
@@ -64,4 +66,8 @@ public:
         return result;
     }
 
+    void SetDebug(bool debugMode) override
+    {
+        m_Info.IsShowTrace = debugMode;
+    }
 };
