@@ -30,4 +30,5 @@ public:
     virtual void Init(FDataTableRowHandle table) = 0;
     virtual bool Detect(AActor* const current, FVector curDetectPos, FVector preDetectPos, TArray<FDetectInfo>& outDetect, const bool IsCheckPerframe) = 0;
     virtual void SetDebug(bool debugMode) = 0;
+    virtual void OnEndDetection() {}
 };

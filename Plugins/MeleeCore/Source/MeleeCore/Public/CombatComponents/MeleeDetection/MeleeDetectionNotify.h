@@ -10,6 +10,7 @@
 #include "MeleeDetection/DetectMelee.h"
 #include "MeleeDetection/DetectSolution.h"
 #include "MeleeDetection/MeleeEffect.h"
+#include "MeleeDetection/CollisionDetect.h"
 #include "MeleeDetectionNotify.generated.h"
 
 /**
@@ -35,6 +36,10 @@ public:
 	// Working weapon
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (Bitmask, BitmaskEnum = "EAttackWeapon"))
 	uint8 m_WeaponFlags;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	FCollisionDetectData m_CollisionData;
+
+private:
 	UPROPERTY()
 	float m_TotalDuration = 0;
 	UPROPERTY()

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MeleeDetection/DetectMelee.h"
+#include "MeleeDetection/CollisionDetect.h"
 
 // Sets default values for this component's properties
 UDetectMelee::UDetectMelee()
@@ -122,7 +123,7 @@ void UDetectMelee::UpdateDetect(EDetectType type)
 				auto solutionObj = NewObject<UObject>(this, sRow->Class);
 				m_DetectSolution.SetObject(nullptr);
 				m_DetectSolution.SetObject(solutionObj);
-				m_DetectSolution.SetInterface(Cast<ICombatSolution>(solutionObj));
+				m_DetectSolution.SetInterface(Cast<IDetectSolution>(solutionObj));
 				m_DetectSolution->Init(sRow->DetectInfo);
 				m_DetectType = type;
 				break;
@@ -130,6 +131,19 @@ void UDetectMelee::UpdateDetect(EDetectType type)
 		}
 	}
 }
+
+void UDetectMelee::UpdateCollisionData(const FCollisionDetectData& data)
+{
+	if (m_DetectType == EDetectType::COLLISION && m_DetectSolution.GetObject())
+	{
+		auto _collisionObj = dynamic_cast<UCollisionDetect*>(m_DetectSolution.GetObject());
+		if (_collisionObj)
+		{
+			_collisionObj->UpdateData(data);
+		}
+	}
+}
+
 
 
 void UDetectMelee::UpdateHurtRate(float rate)
@@ -261,6 +275,11 @@ void UDetectMelee::EndDetection()
 	{
 		ICombatSolution::Execute_OnEndDetection(m_HurtSolution.GetObject());
 	}
+	if (m_DetectSolution != nullptr)
+	{
+		m_DetectSolution->OnEndDetection();
+	}
+
 	m_IsDetecting = false;
 }
 
@@ -279,7 +298,7 @@ void UDetectMelee::UpdateWeapon()
 	}
 }
 
-void UDetectMelee::ExecuteHit(FDetectInfo hit)
+void UDetectMelee::ExecuteHit(FDetectInfo& hit)
 {
 	AActor *actor = hit.target;
 	if (m_HitActorTemps.Contains(actor))

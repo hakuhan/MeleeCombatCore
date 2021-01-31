@@ -31,11 +31,13 @@ void UMeleeDetectionNotify::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimS
 
     if (m_MeleeCombat != nullptr && m_HurtCurve != nullptr)
     {
-        m_MeleeCombat->StartDetection();
         m_MeleeCombat->UpdateDetect(m_DetectType);
+        m_MeleeCombat->UpdateCollisionData(m_CollisionData);
         m_MeleeCombat->UpdateHurts(m_Hurt, m_Solution);
         m_MeleeCombat->UpdateHurtRate(m_HurtCurve->GetFloatValue(0));
         m_MeleeCombat->UpdateWeaponMask(m_WeaponFlags);
+        
+        m_MeleeCombat->StartDetection();
     }
 }
 

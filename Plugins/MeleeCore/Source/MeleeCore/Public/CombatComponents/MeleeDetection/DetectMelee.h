@@ -162,6 +162,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateDetect(EDetectType type);
 
+	UFUNCTION(BlueprintCallable)
+	void UpdateCollisionData(const FCollisionDetectData& data);
+
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 	// Detection
@@ -188,5 +191,5 @@ public:
 #pragma endregion
 
 private:
-	void ExecuteHit(FDetectInfo hit);
+	void ExecuteHit(FDetectInfo& hit);
 };
