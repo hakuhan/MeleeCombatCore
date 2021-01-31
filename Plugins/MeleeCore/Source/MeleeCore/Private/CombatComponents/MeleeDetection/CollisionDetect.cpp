@@ -28,7 +28,7 @@ bool UCollisionDetect::Detect(AActor* const current, FVector curDetectPos, FVect
     // detect duration
     DestroyCheck();
 
-    if (IsCheckPerframe)
+    if (!IsCheckPerframe)
     {
         return result;
     }

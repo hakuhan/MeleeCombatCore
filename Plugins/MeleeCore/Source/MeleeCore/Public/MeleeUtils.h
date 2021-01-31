@@ -26,7 +26,7 @@ public:
     static bool AttachWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket);
 
     UFUNCTION(BlueprintCallable)
-    static bool DetachWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType);
+    static bool DetachWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType, USceneComponent* weaponPtr = nullptr);
     // UFUNCTION(BlueprintCallable)
     // static void TestWeapon(UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon)
     // {

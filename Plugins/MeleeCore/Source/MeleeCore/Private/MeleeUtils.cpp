@@ -73,7 +73,7 @@ bool UMeleeUtils::AttachWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstra
     return result;
 }
 
-bool UMeleeUtils::DetachWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType)
+bool UMeleeUtils::DetachWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType, USceneComponent* weaponPtr)
 {
     bool result = false;
 
@@ -90,15 +90,14 @@ bool UMeleeUtils::DetachWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEn
         if (w && w->IsTargetWeapon(WeaponType))
         {
             auto targetWeapon = dynamic_cast<USceneComponent*>(w.GetObject());
-            if (targetWeapon)
+            if (targetWeapon && (weaponPtr == nullptr || weaponPtr == targetWeapon))
             {
                 targetWeapon->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-                
-                // TODO destroy or not
+                // TODO Create a weapon containner to contains detached weapon
                 targetWeapon->DestroyComponent();
                 result = true;
+                break;
             }
-            break;
         }
     }
 
