@@ -51,7 +51,7 @@ struct FSkillComponentData
     }
 };
 
-UCLASS(ClassGroup=(XComponent), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(MeleeCore), meta=(BlueprintSpawnableComponent))
 class MELEECORE_API USkillComponent : public UActorComponent
 {
     GENERATED_BODY()

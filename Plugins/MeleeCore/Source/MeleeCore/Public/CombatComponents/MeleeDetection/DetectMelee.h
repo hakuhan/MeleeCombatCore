@@ -65,7 +65,7 @@ public:
 	FDataTableRowHandle hurtTable;
 };
 
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS(ClassGroup = (MeleeCore), meta = (BlueprintSpawnableComponent))
 class MELEECORE_API UDetectMelee : public UActorComponent
 {
 	GENERATED_BODY()

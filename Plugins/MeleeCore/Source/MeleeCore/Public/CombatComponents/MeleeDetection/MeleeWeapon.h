@@ -70,7 +70,7 @@ public:
 	}
 };
 
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS(ClassGroup = (MeleeCore), meta = (BlueprintSpawnableComponent))
 class MELEECORE_API USimpleWeapon : public UStaticMeshComponent, public IMeleeWeapon
 {
 	GENERATED_BODY()
@@ -114,7 +114,7 @@ protected:
 	}
 };
 
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS(ClassGroup = (MeleeCore), meta = (BlueprintSpawnableComponent))
 class MELEECORE_API USkeletalWeapon : public USkeletalMeshComponent, public IMeleeWeapon
 {
 	GENERATED_BODY()
@@ -158,7 +158,7 @@ protected:
 	}
 };
 
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS(ClassGroup = (MeleeCore), meta = (BlueprintSpawnableComponent))
 class MELEECORE_API UInvisibleWeapon : public USceneComponent, public IMeleeWeapon
 {
 	GENERATED_BODY()
