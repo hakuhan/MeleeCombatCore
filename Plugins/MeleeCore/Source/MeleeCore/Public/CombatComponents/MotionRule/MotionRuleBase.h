@@ -9,8 +9,8 @@ UENUM(BlueprintType, Meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true
 enum class EMotionType : uint8
 {
     NONE = 0 UMETA(Hidden),
-    MOTION_TOP_PRIOR = 1 << 0 UMETA(DisplayName="Top is prior"),
-    MOTION_DOWN_PRIOR = 1 << 1 UMETA(DisplayName="Down is prior"),
+    MOTION_TOP_PRIOR = 1 << 0 UMETA(DisplayName = "Top is prior"),
+    MOTION_DOWN_PRIOR = 1 << 1 UMETA(DisplayName = "Down is prior"),
 };
 
 USTRUCT(BlueprintType)
@@ -22,6 +22,12 @@ struct FMotionRuleItem
     int Level;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MotionRule)
     FString Key;
+
+    FMotionRuleItem() {}
+
+    FMotionRuleItem(int level, const FString &key) : Level(level), Key(Key)
+    {
+    }
 };
 
 USTRUCT(BlueprintType)
@@ -31,7 +37,7 @@ struct FMotionRuleTable : public FTableRowBase
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MotionRule)
     EMotionType Type;
-    
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MotionRule)
     TArray<FMotionRuleItem> Rules;
 
@@ -52,6 +58,9 @@ public:
     void BeginPlay() override;
 
     UFUNCTION(BlueprintCallable)
+    void UpdateRuleWithName(const FName &name);
+
+    UFUNCTION(BlueprintCallable)
     void UpdateType(EMotionType type);
 
     UFUNCTION(BlueprintCallable)
@@ -69,13 +78,16 @@ public:
 #pragma region OverriderInterface
     virtual bool IsRuleActive_Implementation() override;
     virtual void SetRuleActive_Implementation(bool bActive) override;
-    virtual bool IsSwitchable_Implementation(int type) override;
+    virtual bool IsSwitchable_Implementation(int level) override;
     virtual bool SwitchMotion_Implementation(int level) override;
 #pragma endregion
 
 public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
-    FMotionRuleTable m_Table;
+    bool m_bRuleActive;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    FDataTableRowHandle m_Table;
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     EMotionType m_Type;
@@ -85,4 +97,6 @@ public:
 
     UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
     int m_CurrentLevel;
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+    FName m_CurrentRuleName;
 };
