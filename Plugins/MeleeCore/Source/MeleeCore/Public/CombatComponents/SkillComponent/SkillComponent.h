@@ -9,6 +9,8 @@
 
 class ASkillDynamicData;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSkillEndDelegate, FString, skilllineName);
+
 UENUM(BlueprintType)
 enum class ESkillState : uint8
 {
@@ -60,6 +62,8 @@ public:
     FDataTableRowHandle m_InfoTable;
     UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
     FSkillTable m_Info;
+    UPROPERTY(BlueprintReadWrite, BlueprintAssignable)
+    FSkillEndDelegate OnSkillEnd;
 protected:
     UPROPERTY()
     USkillLine* m_LineControl;
@@ -80,6 +84,9 @@ public:
     bool IsExecuting();
 
     UFUNCTION(BlueprintCallable)
+    bool IsSkillLineSwitchable(const FString& skillLineName);
+
+    UFUNCTION(BlueprintCallable)
     void StopSkill(bool terminate, const FAlphaBlend& InBlendOut);
 
     UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "skillName"))
@@ -96,7 +103,14 @@ public:
         return m_Data.DynamicData;
     }
 
-
+    inline void EndSkill()
+    {
+        if (m_Data.DynamicData)
+        {
+            m_Data.DynamicData->IsSkillLineEnd = true;
+        }
+        OnSkillEnd.Broadcast(m_LineControl->m_Info.Name);
+    }
 
 protected:
     void OnSkillUpdate(ESkillLineState lineState);

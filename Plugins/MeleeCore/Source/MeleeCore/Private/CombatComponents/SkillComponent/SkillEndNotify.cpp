@@ -10,11 +10,6 @@ void USkillEndNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase
     auto skillComponent = dynamic_cast<USkillComponent*>(MeshComp->GetOwner()->GetComponentByClass(USkillComponent::StaticClass()));
     if (skillComponent)
     {
-        auto skillDynamicData = skillComponent->GetDynamicData();
-        
-        if (skillDynamicData)
-        {
-            skillDynamicData->IsSkillLineEnd = true;
-        }
+        skillComponent->EndSkill();
     }
 }

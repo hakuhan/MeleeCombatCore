@@ -256,7 +256,7 @@ void UDetectMelee::ResetData()
 {
 	for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
 	{
-		if (!m_MeleeWeapons[i]->GetData(m_WeaponDataTemp))
+		if (m_MeleeWeapons[i] == nullptr || !m_MeleeWeapons[i]->GetData(m_WeaponDataTemp))
 		{
 			continue;
 		}

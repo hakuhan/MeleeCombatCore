@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "MeleeDetection/MeleeWeaponInfo.h"
+#include "MotionRule/MotionRule.h"
 #include "MeleeUtils.generated.h"
 
 class UDetectMelee;
@@ -19,14 +20,20 @@ public:
 
     // Control weapon state of detect melee
     UFUNCTION(BlueprintCallable)
-	static bool EnableWeaponByType(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType, bool enable = true, bool refreshWeapons = true);
+    static bool EnableWeaponByType(UDetectMelee *target, UPARAM(meta = (Bitmask, UseEnumValuesAsMaskValuesInEditor = "true", BitmaskEnum = EAttackWeapon)) uint8 WeaponType, bool enable = true, bool refreshWeapons = true);
 
     // Attach exist weapon to actor
     UFUNCTION(BlueprintCallable)
-    static bool AttachWeapon(USceneComponent* target, UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon, const FString& socket);
+    static bool AttachWeapon(USceneComponent *target, UPARAM(meta = (AllowAbstract = "UMeleeWeapon")) USceneComponent *weapon, const FString &socket);
 
     UFUNCTION(BlueprintCallable)
-    static bool DetachWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEnumValuesAsMaskValuesInEditor="true", BitmaskEnum=EAttackWeapon)) uint8 WeaponType, USceneComponent* weaponPtr = nullptr);
+    static bool DetachWeapon(UDetectMelee *target, UPARAM(meta = (Bitmask, UseEnumValuesAsMaskValuesInEditor = "true", BitmaskEnum = EAttackWeapon)) uint8 WeaponType, USceneComponent *weaponPtr = nullptr);
+    
+    UFUNCTION(BlueprintCallable)
+    static bool ExecuteRuleCheck(const FMotionRuleDelegate& event)
+    {
+        return event.Execute();
+    }
     // UFUNCTION(BlueprintCallable)
     // static void TestWeapon(UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon)
     // {
