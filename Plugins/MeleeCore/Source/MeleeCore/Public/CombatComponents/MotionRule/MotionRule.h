@@ -39,19 +39,16 @@ class MELEECORE_API IMotionRule
     GENERATED_BODY()
 
 public:
-    UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     bool IsSwitchable(int id);
 
-    UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     bool SwitchMotion(int id);
 
-    UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-    void ResetRule();
-
-    UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void AddCheckEvent(int id, const FMotionRuleDelegate& event);
 
-    UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void RemoveCheckEvent(int id);
 
 };
