@@ -20,14 +20,6 @@ struct FMotionRuleEvent
     FMotionRuleDelegate Callback;
 };
 
-UENUM(BlueprintType)
-enum class EMotionRuleTraverse : uint8
-{
-    NONE = 0 UMETA(Hidden),
-    TOP_FIRST UMETA(DisplayName="Top first"),
-    DOWN_FIRST UMETA(DisplayName="Down first"),
-};
-
 UINTERFACE()
 class MELEECORE_API UMotionRule : public UInterface
 {

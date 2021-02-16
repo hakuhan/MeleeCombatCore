@@ -13,7 +13,7 @@ enum class EMotionType : uint8
     MOTION_DOWN_PRIOR = 1 << 1 UMETA(DisplayName = "Down is prior"),
 };
 
-UCLASS(ClassGroup = (MeleeCore), meta = (BlueprintSpawnableComponent))
+UCLASS(BlueprintType, ClassGroup = (MeleeCore))
 class MELEECORE_API UMotionRuleBase : public UObject, public IMotionRule
 {
     GENERATED_BODY()
