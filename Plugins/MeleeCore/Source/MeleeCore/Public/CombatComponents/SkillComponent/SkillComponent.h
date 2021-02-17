@@ -53,7 +53,7 @@ struct FSkillComponentData
     }
 };
 
-UCLASS(ClassGroup=(MeleeCore), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, ClassGroup=(MeleeCore), meta=(BlueprintSpawnableComponent))
 class MELEECORE_API USkillComponent : public UActorComponent
 {
     GENERATED_BODY()
@@ -72,7 +72,9 @@ protected:
 
 public:
     void BeginPlay() override;
-	void BeginDestroy() override;
+
+    UFUNCTION(BlueprintNativeEvent)
+    void InitInfo();
 
     UFUNCTION(BlueprintCallable)
     bool ExecuteSkill();

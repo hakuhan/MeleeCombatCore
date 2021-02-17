@@ -3,7 +3,9 @@
 void USkillComponent::BeginPlay()
 {
     Super::BeginPlay();
-    m_Info = *(m_InfoTable.GetRow<FSkillTable>("Get Skill line"));
+    
+    InitInfo();
+
     m_Data = FSkillComponentData();
 
     m_LineControl = NewObject<USkillLine>();
@@ -15,9 +17,9 @@ void USkillComponent::BeginPlay()
     }
 }
 
-void USkillComponent::BeginDestroy()
+void USkillComponent::InitInfo_Implementation()
 {
-    Super::BeginDestroy();
+    m_Info = *(m_InfoTable.GetRow<FSkillTable>("Get Skill line"));
 }
 
 bool USkillComponent::SwitchSkillWithRule(const FString& lineName, const FString& skillName)
