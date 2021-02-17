@@ -61,17 +61,10 @@ public:
 		bool result = false;
 
 		FMeleeWeaponInfo _info; 
-		try
+		result = GetInfo(_info);
+		if (result)
 		{
-			result = GetInfo(_info);
-			if (result)
-			{
-				result = _info.WeaponType & WeaponMask;
-			}
-		}
-		catch(const std::exception& e)
-		{
-			UE_LOG(LogTemp, Error, TEXT("Melee Weapon info error!%s"), *e.what());
+			result = _info.WeaponType & WeaponMask;
 		}
 		
 		return result;

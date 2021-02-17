@@ -70,7 +70,7 @@ void UMotionRuleBase::RemoveCheckEvent_Implementation(int id)
 
 bool UMotionRuleBase::IsSwitchable_Implementation(int id)
 {
-    bool result = true;
+    bool result = false;
 
     if (m_Rules.Contains(id))
     {
@@ -112,19 +112,9 @@ bool UMotionRuleBase::IsSwitchable_Implementation(int id)
 
 bool UMotionRuleBase::SwitchMotion_Implementation(int id)
 {
-    bool result = true;
+    m_CurrentId = id;
 
-    if (m_Rules.Contains(id))
-    {
-        m_CurrentId = id;
-        result = true;
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Rule:%d doesn't exists!"), id);
-    }
-
-    return result;
+    return true;
 }
 
 void UMotionRuleBase::AddCheckEvent_Implementation(int id, const FMotionRuleDelegate &event)

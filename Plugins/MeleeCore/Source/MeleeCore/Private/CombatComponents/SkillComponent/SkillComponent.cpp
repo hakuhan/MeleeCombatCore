@@ -97,11 +97,8 @@ bool USkillComponent::IsExecuting()
 bool USkillComponent::IsSkillLineSwitchable(const FString& skillLineName)
 {
     bool result = false;
-    int index = m_Info.SkillLines.IndexOfByPredicate([&](const FSkillLineInfo& _line){
-        return _line.Name == skillLineName;
-    });
 
-    if (m_Data.LineIndex == index)
+    if (IsCurrentSkillLine(skillLineName))
     {
         result = !m_LineControl->IsExecuting() || m_LineControl->CanSwitch();
     }
