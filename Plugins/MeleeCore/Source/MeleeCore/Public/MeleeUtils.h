@@ -1,7 +1,6 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "MeleeDetection/MeleeWeaponInfo.h"
-#include "MotionRule/MotionRule.h"
 #include "MeleeUtils.generated.h"
 
 class UDetectMelee;
@@ -28,12 +27,6 @@ public:
 
     UFUNCTION(BlueprintCallable)
     static bool DetachWeapon(UDetectMelee *target, UPARAM(meta = (Bitmask, UseEnumValuesAsMaskValuesInEditor = "true", BitmaskEnum = EAttackWeapon)) uint8 WeaponType, USceneComponent *weaponPtr = nullptr);
-    
-    UFUNCTION(BlueprintCallable)
-    static bool ExecuteRuleCheck(const FMotionRuleDelegate& event)
-    {
-        return event.Execute();
-    }
     // UFUNCTION(BlueprintCallable)
     // static void TestWeapon(UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon)
     // {
