@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CoreMinimal.h"
 #include "MeleeWeaponInfo.generated.h"
 
 UENUM(BlueprintType, Meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
@@ -11,8 +12,6 @@ enum class EAttackWeapon : uint8
 	Melee_LeftFoot = 1 << 2 UMETA(DisplayName="Left Foot"),
 	Melee_RightFoot = 1 << 3 UMETA(DisplayName="Righ Foot"),
 };
-ENUM_CLASS_FLAGS(EAttackWeapon);
-
 
 USTRUCT(BlueprintType)
 struct MELEECORE_API FMeleeWeaponInfo

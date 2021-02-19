@@ -30,16 +30,19 @@ class MELEECORE_API UMotionSwitchRuleBase : public UObject, public IMotionSwitch
 public:
 #pragma region manage rule
     UFUNCTION(BlueprintCallable)
-    void UpdateMotions(const TArray<int> & rules);
+    void UpdateAllMotions(const TArray<int>& motions);
 
     UFUNCTION(BlueprintCallable)
     bool AddMotion(int Id);
 
     UFUNCTION(BlueprintCallable)
-    bool RemoveMotion(int Id);
+    void RemoveMotion(int Id);
 
     UFUNCTION(BlueprintCallable)
-    void AddRule(int id, const FMotionRuleDelegate& event);
+    void UpdateAllRules(const TMap<int, FMotionRuleEvent>& rules);
+
+    UFUNCTION(BlueprintCallable)
+    void UpdateRule(int id, const FMotionRuleDelegate& event);
     
     UFUNCTION(BlueprintCallable)
     void RemoveRule(int id);
@@ -48,6 +51,12 @@ public:
 
 #pragma region OverriderInterface
     virtual bool IsSwitchable_Implementation(int id) override;
+    
+    UFUNCTION(BlueprintCallable)
+    bool CheckMotion(int id);
+
+    UFUNCTION(BlueprintCallable)
+    bool CheckRule(int id);
 #pragma endregion
 
 
