@@ -39,13 +39,13 @@ public:
     void RemoveMotion(int Id);
 
     UFUNCTION(BlueprintCallable)
-    void UpdateAllRules(const TMap<int, FMotionRuleEvent>& rules);
+    void UpdateAlternativeRules(const TMap<int, FMotionRuleEvent>& rules);
 
     UFUNCTION(BlueprintCallable)
-    void UpdateRule(int id, const FMotionRuleDelegate& event);
+    void UpdateBasicRule(int id, const FMotionRuleDelegate& event);
     
     UFUNCTION(BlueprintCallable)
-    void RemoveRule(int id);
+    void RemoveBasicRule(int id);
 #pragma endregion
 
 
@@ -65,5 +65,8 @@ public:
     TArray<int> m_SwitchList;
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
-    TMap<int, FMotionRuleDelegate> m_Rules;
+    TMap<int, FMotionRuleDelegate> m_BasicRules;
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    TMap<int, FMotionRuleDelegate> m_AlternativeRules;
+
 };

@@ -27,33 +27,33 @@ void UMotionSwitchRuleBase::RemoveMotion(int id)
     }
 }
 
-void UMotionSwitchRuleBase::UpdateAllRules(const TMap<int, FMotionRuleEvent>& rules)
+void UMotionSwitchRuleBase::UpdateAlternativeRules(const TMap<int, FMotionRuleEvent>& rules)
 {
-    m_Rules.Empty();
+    m_AlternativeRules.Empty();
 
     for (auto _rule : rules)
     {
-        m_Rules.Add(_rule.Key, _rule.Value.Callback);
+        m_AlternativeRules.Add(_rule.Key, _rule.Value.Callback);
     }
 }
 
-void UMotionSwitchRuleBase::UpdateRule(int id, const FMotionRuleDelegate& event)
+void UMotionSwitchRuleBase::UpdateBasicRule(int id, const FMotionRuleDelegate& event)
 {
-    if (m_Rules.Contains(id))
+    if (m_BasicRules.Contains(id))
     {
-        m_Rules[id] = event;
+        m_BasicRules[id] = event;
     }
     else
     {
-        m_Rules.Add(id, event);
+        m_BasicRules.Add(id, event);
     }
 }
 
-void UMotionSwitchRuleBase::RemoveRule(int id)
+void UMotionSwitchRuleBase::RemoveBasicRule(int id)
 {
-    if (m_Rules.Contains(id))
+    if (m_BasicRules.Contains(id))
     {
-        m_Rules.Remove(id);
+        m_BasicRules.Remove(id);
     }
 }
 
@@ -79,9 +79,16 @@ bool UMotionSwitchRuleBase::CheckRule(int id)
     // If rule is not fonded, return true
     bool result = true;
 
-    if (m_Rules.Contains(id))
+    if (m_BasicRules.Contains(id))
     {
-        result = m_Rules[id].Execute();
+        if (m_AlternativeRules.Contains(id))
+            result = m_AlternativeRules[id].Execute();    
+        else
+            result = m_BasicRules[id].Execute();
+    }
+    else if (m_AlternativeRules.Contains(id))
+    {
+        result = m_AlternativeRules[id].Execute();
     }
 
     return result;
