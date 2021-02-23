@@ -17,11 +17,6 @@ void USkillComponent::BeginPlay()
     }
 }
 
-void USkillComponent::InitInfo_Implementation()
-{
-    m_Info = *(m_InfoTable.GetRow<FSkillTable>("Get Skill line"));
-}
-
 bool USkillComponent::SwitchSkillWithRule(const FString& lineName, const FString& skillName)
 {
     bool result = false;

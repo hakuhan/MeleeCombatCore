@@ -53,14 +53,12 @@ struct FSkillComponentData
     }
 };
 
-UCLASS(Blueprintable, ClassGroup=(MeleeCore), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, ClassGroup=(MeleeCore))
 class MELEECORE_API USkillComponent : public UActorComponent
 {
     GENERATED_BODY()
 public:
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
-    FDataTableRowHandle m_InfoTable;
-    UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+    UPROPERTY(BlueprintReadWrite)
     FSkillTable m_Info;
     UPROPERTY(BlueprintReadWrite, BlueprintAssignable)
     FSkillEndDelegate OnSkillEnd;
@@ -73,7 +71,7 @@ protected:
 public:
     void BeginPlay() override;
 
-    UFUNCTION(BlueprintNativeEvent)
+    UFUNCTION(BlueprintImplementableEvent)
     void InitInfo();
 
     UFUNCTION(BlueprintCallable)
