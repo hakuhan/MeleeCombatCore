@@ -18,12 +18,15 @@ class MELEECORE_API ASkillDynamicData : public AInfo
 {
     GENERATED_BODY()
 public:
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UPROPERTY(BlueprintReadWrite)
     bool IsSwitchable = false;
     
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UPROPERTY(BlueprintReadWrite)
     ESkillBreakLevel SkillBreakLevel;
 
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UPROPERTY(BlueprintReadWrite)
     bool IsSkillLineEnd = false;
+        
+    UPROPERTY()
+    bool bDebug = false;
 };

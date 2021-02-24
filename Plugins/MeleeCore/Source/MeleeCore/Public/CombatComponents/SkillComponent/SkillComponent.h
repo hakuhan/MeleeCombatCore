@@ -49,6 +49,12 @@ struct FSkillComponentData
     {
         DynamicData = NewObject<ASkillDynamicData>();
     }
+
+    FSkillComponentData(bool bDebug) 
+    {
+        DynamicData = NewObject<ASkillDynamicData>();
+        DynamicData->bDebug = bDebug;
+    }
 };
 
 UCLASS(Blueprintable, ClassGroup=(MeleeCore))
@@ -56,12 +62,14 @@ class MELEECORE_API USkillComponent : public UActorComponent
 {
     GENERATED_BODY()
 public:
+    UPROPERTY(EditAnywhere)
+    bool m_debug = false;
     UPROPERTY(BlueprintReadWrite)
     FSkillTable m_Info;
 protected:
     UPROPERTY()
     USkillLine* m_LineControl;
-    UPROPERTY(BlueprintReadWrite)
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
     FSkillComponentData m_Data;
 
 public:
@@ -70,6 +78,7 @@ public:
     UFUNCTION(BlueprintImplementableEvent)
     void InitInfo();
 
+    // Execute current line skill
     UFUNCTION(BlueprintCallable)
     bool ExecuteSkill();
 

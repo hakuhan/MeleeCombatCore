@@ -6,7 +6,7 @@ void USkillComponent::BeginPlay()
     
     InitInfo();
 
-    m_Data = FSkillComponentData();
+    m_Data = FSkillComponentData(m_debug);
 
     m_LineControl = NewObject<USkillLine>();
     m_LineControl->OnChangeState.BindUObject(this, &USkillComponent::OnSkillUpdate);
@@ -71,7 +71,6 @@ bool USkillComponent::ExecuteSkill()
         case ESkillState::SKILL_UNSTART:
         case ESkillState::SKILL_TERMINAl:
             m_LineControl->StartLine(FString());
-            UE_LOG(LogTemp, Warning, TEXT("Start Skill"));
             result = true;
             break;
         
@@ -134,11 +133,13 @@ void USkillComponent::OnSkillUpdate(ESkillLineState lineState)
     {
     case ESkillLineState::SKILL_LINE_PLAYING:
         m_Data.State = ESkillState::SKILL_EXECUTING;
-        UE_LOG(LogTemp, Warning, TEXT("Executing Skill"));
+        if (m_Data.DynamicData->bDebug)
+            UE_LOG(LogTemp, Warning, TEXT("Executing Skill"));
         break;
 
     case ESkillLineState::SKILL_LINE_FINISHED:
-        UE_LOG(LogTemp, Warning, TEXT("Skill End"));
+        if (m_Data.DynamicData->bDebug)
+            UE_LOG(LogTemp, Warning, TEXT("Skill End"));
         m_Data.State = ESkillState::SKILL_TERMINAl;
         break;
     

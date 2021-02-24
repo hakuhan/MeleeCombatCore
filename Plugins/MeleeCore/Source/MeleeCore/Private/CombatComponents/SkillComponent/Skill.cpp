@@ -13,7 +13,6 @@ void USkill::Tick(float DeltaTime)
     {
         m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_END;
         m_Data.IsEnable = false;
-        // UE_LOG(LogTemp, Warning, TEXT("End Skill:%s"), *(m_Info.Name));
     }
     else if (montageInst->IsPlaying())
     {
@@ -77,7 +76,8 @@ void USkill::Terminate()
     if (montageInst)
     {
         montageInst->Terminate();
-        UE_LOG(LogTemp, Warning, TEXT("Terminate Skill: %s"), *(m_Info.Name));
+        if (m_DynamicData->bDebug)
+            UE_LOG(LogTemp, Warning, TEXT("Terminate Skill: %s"), *(m_Info.Name));
     }
 }
 
@@ -92,6 +92,7 @@ void USkill::Stop(const FAlphaBlend& InBlendOut)
     if (montageInst)
     {
         montageInst->Stop(InBlendOut);
-        UE_LOG(LogTemp, Warning, TEXT("Stop Skill: %s"), *(m_Info.Name));
+        if (m_DynamicData->bDebug)
+            UE_LOG(LogTemp, Warning, TEXT("Stop Skill: %s"), *(m_Info.Name));
     }
 }

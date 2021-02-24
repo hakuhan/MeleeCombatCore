@@ -36,7 +36,8 @@ bool USkillLine::StartLine(const FString& skillName)
     if (skillName.IsEmpty())
     {
         result = SwitchSkillByIndex(0);
-        UE_LOG(LogTemp, Warning, TEXT("Begin Skill line: %s"), *(m_Info.Name));
+        if (m_DynamicData->bDebug)
+            UE_LOG(LogTemp, Warning, TEXT("Begin Skill line: %s"), *(m_Info.Name));
     }
     else
     {
@@ -59,7 +60,8 @@ bool USkillLine::SwitchWithRule()
     if (CanSwitch())
     {
         result = NextSkill();
-        UE_LOG(LogTemp, Warning, TEXT("Switch Skill : %s, %d"), *(m_Info.Name), result);
+        if (m_DynamicData->bDebug)
+            UE_LOG(LogTemp, Warning, TEXT("Switch Skill : %s, %d"), *(m_Info.Name), result);
     }
 
     return result;
