@@ -9,8 +9,6 @@
 
 class ASkillDynamicData;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSkillEndDelegate, FString, skilllineName);
-
 UENUM(BlueprintType)
 enum class ESkillState : uint8
 {
@@ -60,8 +58,6 @@ class MELEECORE_API USkillComponent : public UActorComponent
 public:
     UPROPERTY(BlueprintReadWrite)
     FSkillTable m_Info;
-    UPROPERTY(BlueprintReadWrite, BlueprintAssignable)
-    FSkillEndDelegate OnSkillEnd;
 protected:
     UPROPERTY()
     USkillLine* m_LineControl;
@@ -89,6 +85,9 @@ public:
     UFUNCTION(BlueprintCallable)
     void StopSkill(bool terminate, const FAlphaBlend& InBlendOut);
 
+    UFUNCTION(BlueprintImplementableEvent)
+    void OnEndSkill(const FString& SkillLineName);
+
     UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "skillName"))
     bool SwitchSkillWithRule(const FString& lineName, const FString& skillName);
 
@@ -109,7 +108,7 @@ public:
         {
             m_Data.DynamicData->IsSkillLineEnd = true;
         }
-        OnSkillEnd.Broadcast(m_LineControl->m_Info.Name);
+        OnEndSkill(m_LineControl->m_Info.Name);
     }
 
 protected:
