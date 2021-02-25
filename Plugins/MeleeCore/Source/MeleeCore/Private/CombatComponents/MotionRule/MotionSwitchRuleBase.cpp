@@ -1,9 +1,11 @@
 #include "MotionRule/MotionSwitchRuleBase.h"
 
-void UMotionSwitchRuleBase::UpdateAllMotions(const TArray<int>& motions)
+void UMotionSwitchRuleBase::UpdateAllMotions(const TArray<int>& switchMotions, const TArray<int>& forbiddenMotions)
 {
     m_SwitchList.Empty();
-    m_SwitchList.Append(motions);
+    m_SwitchList.Append(switchMotions);
+    m_ForbiddenList.Empty();
+    m_ForbiddenList.Append(forbiddenMotions);
 }
 
 bool UMotionSwitchRuleBase::AddMotion(int id)
@@ -71,6 +73,10 @@ bool UMotionSwitchRuleBase::IsSwitchable_Implementation(int id)
 
 bool UMotionSwitchRuleBase::CheckMotion(int id)
 {
+    if (m_ForbiddenList.Contains(id))
+    {
+        return false;
+    }
     return m_SwitchList.Contains(id);
 }
 

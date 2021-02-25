@@ -30,7 +30,7 @@ class MELEECORE_API UMotionSwitchRuleBase : public UObject, public IMotionSwitch
 public:
 #pragma region manage rule
     UFUNCTION(BlueprintCallable)
-    void UpdateAllMotions(const TArray<int>& motions);
+    void UpdateAllMotions(const TArray<int>& switchMotions, const TArray<int>& forbiddenMotions);
 
     UFUNCTION(BlueprintCallable)
     bool AddMotion(int Id);
@@ -63,6 +63,8 @@ public:
 public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     TArray<int> m_SwitchList;
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    TArray<int> m_ForbiddenList;
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     TMap<int, FMotionRuleDelegate> m_BasicRules;
