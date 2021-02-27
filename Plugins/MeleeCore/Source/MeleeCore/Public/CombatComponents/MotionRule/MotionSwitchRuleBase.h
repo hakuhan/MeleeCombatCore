@@ -22,8 +22,8 @@ struct FMotionRuleEvent
     FMotionRuleDelegate Callback;
 };
 
-UCLASS(BlueprintType, ClassGroup = (MeleeCore))
-class MELEECORE_API UMotionSwitchRuleBase : public UObject, public IMotionSwitchRule
+UCLASS(Blueprintable, ClassGroup = (MeleeCore))
+class MELEECORE_API UMotionSwitchRuleBase : public UActorComponent, public IMotionSwitchRule
 {
     GENERATED_BODY()
 
