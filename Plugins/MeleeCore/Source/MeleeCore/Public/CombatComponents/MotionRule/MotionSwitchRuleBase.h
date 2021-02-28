@@ -22,13 +22,37 @@ struct FMotionRuleEvent
     FMotionRuleDelegate Callback;
 };
 
+USTRUCT(BlueprintType)
+struct FMotionInfo
+{
+    GENERATED_USTRUCT_BODY()
+
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+    int Id;
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+    TArray<int> SwitchableMotionIds;
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+    TArray<int> ForbiddenMotionIds;
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+    bool SwitchSelf;
+};
+
 UCLASS(Blueprintable, ClassGroup = (MeleeCore))
 class MELEECORE_API UMotionSwitchRuleBase : public UActorComponent, public IMotionSwitchRule
 {
     GENERATED_BODY()
 
 public:
-#pragma region manage rule
+#pragma region manage motion and rule data
+    UFUNCTION(BlueprintCallable)
+    void InitMotionInfo(const TMap<int, FMotionInfo>& info, int allId, int noneId)
+    {
+        m_Info = info;
+        m_All = allId;
+        m_None = noneId;
+        Execute_SwitchMotion(this, m_All);
+    }
+
     UFUNCTION(BlueprintCallable)
     void UpdateAllMotions(const TArray<int>& switchMotions, const TArray<int>& forbiddenMotions);
 
@@ -49,9 +73,13 @@ public:
 #pragma endregion
 
 
-#pragma region OverriderInterface
+#pragma region logic
     virtual bool IsSwitchable_Implementation(int id) override;
-    
+
+    virtual void SwitchMotion_Implementation(int id) override;
+
+    virtual void EndMotion_Implementation(int id) override;
+
     UFUNCTION(BlueprintCallable)
     bool CheckMotion(int id);
 
@@ -61,14 +89,22 @@ public:
 
 
 public:
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Rule info")
+    TMap<int, FMotionInfo> m_Info;
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Rule info")
     TArray<int> m_SwitchList;
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Rule info")
     TArray<int> m_ForbiddenList;
 
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Rule info")
     TMap<int, FMotionRuleDelegate> m_BasicRules;
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Rule info")
     TMap<int, FMotionRuleDelegate> m_AlternativeRules;
+
+private:
+    int m_All = -1;
+    int m_None = -1;
+    int m_CurrentMotion = -1;
+    bool m_SwitchSelf = false;
 
 };

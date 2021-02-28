@@ -22,4 +22,10 @@ class MELEECORE_API IMotionSwitchRule
 public:
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     bool IsSwitchable(int id);
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void SwitchMotion(int id);
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void EndMotion(int id);
 };

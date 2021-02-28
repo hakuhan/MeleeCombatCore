@@ -61,14 +61,51 @@ void UMotionSwitchRuleBase::RemoveBasicRule(int id)
 
 bool UMotionSwitchRuleBase::IsSwitchable_Implementation(int id)
 {
-    bool result = CheckMotion(id);
+    bool result = false;
+
+    if (m_CurrentMotion == m_None)
+    {
+        result = false;
+    }
+    else if (m_CurrentMotion == m_All)
+    {
+        result = true;
+    }
+    else if (m_SwitchSelf && m_CurrentMotion == id)
+    {
+        result = true;
+    }
+    else
+    {
+        result = CheckMotion(id);
+    }
 
     if (result)
     {
-        result = CheckRule(id);
+        result = CheckRule(m_CurrentMotion);
     }
 
     return result;
+}
+
+void UMotionSwitchRuleBase::SwitchMotion_Implementation(int id)
+{
+    if (m_Info.Contains(id))
+    {
+        m_SwitchList = m_Info[id].SwitchableMotionIds;
+        m_ForbiddenList = m_Info[id].ForbiddenMotionIds;
+        m_SwitchSelf = m_Info[id].SwitchSelf;
+    }
+
+    m_CurrentMotion = id;
+}
+
+void UMotionSwitchRuleBase::EndMotion_Implementation(int id)
+{
+    if (id == m_CurrentMotion || id == m_None)
+    {
+        m_CurrentMotion = m_All;
+    }
 }
 
 bool UMotionSwitchRuleBase::CheckMotion(int id)
@@ -80,9 +117,9 @@ bool UMotionSwitchRuleBase::CheckMotion(int id)
     return m_SwitchList.Contains(id);
 }
 
+// If rule is not fonded, return true
 bool UMotionSwitchRuleBase::CheckRule(int id)
 {
-    // If rule is not fonded, return true
     bool result = true;
 
     if (m_BasicRules.Contains(id))
