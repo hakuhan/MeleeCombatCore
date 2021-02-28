@@ -47,6 +47,8 @@ void USkill::ExecuteSkill(AActor* target)
         UAnimInstance *animInst = mesh->GetAnimInstance();
         if (animInst && m_Info.Montage != nullptr)
         {
+            if (m_DynamicData->bDebug)
+                UE_LOG(LogTemp, Warning, TEXT("Execute Skill: %s"), *(m_Info.Name));
             animInst->Montage_Play(m_Info.Montage);
             m_TargetAnim = animInst;
             m_Data.IsEnable = true;

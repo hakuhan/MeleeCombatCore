@@ -60,8 +60,8 @@ bool USkillLine::SwitchWithRule()
     if (CanSwitch())
     {
         result = NextSkill();
-        if (m_DynamicData->bDebug)
-            UE_LOG(LogTemp, Warning, TEXT("Switch Skill : %s, %d"), *(m_Info.Name), result);
+        if (m_DynamicData->bDebug && result)
+            UE_LOG(LogTemp, Warning, TEXT("Switch Skill line : %s"), *(m_Info.Name));
     }
 
     return result;

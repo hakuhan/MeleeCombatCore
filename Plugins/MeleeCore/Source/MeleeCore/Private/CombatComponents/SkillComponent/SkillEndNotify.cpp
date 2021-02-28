@@ -10,6 +10,6 @@ void USkillEndNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase
     auto skillComponent = dynamic_cast<USkillComponent*>(MeshComp->GetOwner()->GetComponentByClass(USkillComponent::StaticClass()));
     if (skillComponent)
     {
-        skillComponent->EndSkill();
+        skillComponent->SkillEnded();
     }
 }

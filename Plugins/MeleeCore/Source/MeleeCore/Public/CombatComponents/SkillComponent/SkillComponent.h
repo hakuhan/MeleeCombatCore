@@ -5,9 +5,10 @@
 #include "SkillComponent/SkillLineInfo.h"
 #include "SkillComponent/Skill.h"
 #include "SkillComponent/SkillLine.h"
+#include "SkillComponent/SkillDynamicData.h"
 #include "SkillComponent.generated.h"
 
-class ASkillDynamicData;
+DECLARE_MULTICAST_DELEGATE_OneParam(OnSkillEndDelegate, FString)
 
 UENUM(BlueprintType)
 enum class ESkillState : uint8
@@ -24,13 +25,6 @@ struct FSkillTable : public FTableRowBase
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Skill)
     TArray<FSkillLineInfo> SkillLines;
-
-    FSkillTable() {}
-
-    FSkillTable(const FSkillTable& other)
-    {
-        SkillLines = other.SkillLines;
-    }
 };
 
 USTRUCT(BlueprintType)
@@ -78,47 +72,47 @@ public:
     UFUNCTION(BlueprintImplementableEvent)
     void InitInfo();
 
+#pragma region Execute
     // Execute current line skill
     UFUNCTION(BlueprintCallable)
     bool ExecuteSkill();
+#pragma endregion
 
-    UFUNCTION(BlueprintCallable)
-    bool ExecuteSkillLine(const FString& skillLineName);
+#pragma region Switch
+    UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "skillName"))
+    bool SwitchSkill(const FString& lineName, const FString& skillName, bool bForce = false);
+#pragma endregion
 
+#pragma region switch conditions
     UFUNCTION(BlueprintCallable)
     bool IsExecuting();
 
     UFUNCTION(BlueprintCallable)
-    bool IsSkillLineSwitchable(const FString& skillLineName);
-
-    UFUNCTION(BlueprintCallable)
-    void StopSkill(bool terminate, const FAlphaBlend& InBlendOut);
-
-    UFUNCTION(BlueprintImplementableEvent)
-    void OnEndSkill(const FString& SkillLineName);
-
-    UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "skillName"))
-    bool SwitchSkillWithRule(const FString& lineName, const FString& skillName);
-
-    UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "skillName"))
-    bool SwitchSkill(const FString& lineName, const FString& skillName);
+    bool IsSwitchable(const FString& lineName);
 
     UFUNCTION(BlueprintCallable)
     bool IsCurrentSkillLine(const FString& lineName);
 
+    // It's used in the hold line of skillComponent, skillLine and skill at run time
     ASkillDynamicData* GetDynamicData()
     {
         return m_Data.DynamicData;
     }
+#pragma endregion
 
-    inline void EndSkill()
-    {
-        if (m_Data.DynamicData)
-        {
-            m_Data.DynamicData->IsSkillLineEnd = true;
-        }
-        OnEndSkill(m_LineControl->m_Info.Name);
-    }
+#pragma region End skill
+    UFUNCTION(BlueprintCallable)
+    void StopSkill(bool bRule, const FAlphaBlend& InBlendOut);
+    
+    OnSkillEndDelegate OnSkllEndEvent;
+
+    // For notify
+    UFUNCTION(BlueprintImplementableEvent)
+    void OnSkillEnded(const FString& SkillLineName);
+
+    // Be noticed by end notify
+    void SkillEnded();
+#pragma endregion
 
 protected:
     void OnSkillUpdate(ESkillLineState lineState);
