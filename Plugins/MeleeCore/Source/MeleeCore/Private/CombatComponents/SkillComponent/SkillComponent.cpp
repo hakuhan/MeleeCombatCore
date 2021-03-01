@@ -72,18 +72,19 @@ bool USkillComponent::IsExecuting()
     return m_LineControl->IsExecuting();
 }
 
-bool USkillComponent::IsSwitchable(const FString& lineName)
+bool USkillComponent::CanSwitchFrom(const TArray<FString>& limitedList, bool fromAnySkill)
 {
     bool result = false;
 
-    if (IsCurrentSkillLine(lineName))
+    auto currentLineName = m_Info.SkillLines[m_Data.LineIndex].Name;
+
+    if (limitedList.Contains(currentLineName) || fromAnySkill)
     {
         result = !m_LineControl->IsExecuting() || m_LineControl->CanSwitch();
     }
 
     return result;
 }
-
 
 void USkillComponent::StopSkill(bool bRule, const FAlphaBlend& InBlendOut)
 {
