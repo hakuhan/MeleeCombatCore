@@ -25,9 +25,9 @@ class MINDCORE_API IAction
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
-    void PrepareAction(FActionBasis& basis);
+    void PrepareAction(UActionBasis* basis);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
-    void RunningAction(FActionBasis& basis);
+    void RunningAction(UActionBasis* basis);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
-    void FinishAction(FActionBasis& basis);
+    void FinishAction(UActionBasis* basis);
 };

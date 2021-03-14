@@ -26,36 +26,36 @@ enum class EMemoryState : uint8
     Memory_Sad UMETA(DisplayName="Sad"),
 };
 
-USTRUCT(BlueprintType)
-struct MINDCORE_API FMemoryFragment : public FThing
+UCLASS(Blueprintable)
+class MINDCORE_API UMemoryFragment : public UThing
 {
-    GENERATED_USTRUCT_BODY()
+    GENERATED_BODY()
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
     EMemoryState memoryState;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
-    FWishThing wishData;
+    UWishThing* wishData;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
-    FConnection planData;
+    UConnection* planData;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
-    FWay surperintendData;
+    UWay* surperintendData;
 };
 
-USTRUCT(BlueprintType)
-struct MINDCORE_API FMindMemory : public FThing
+UCLASS(Blueprintable)
+class MINDCORE_API UMindMemory : public UThing
 {
-    GENERATED_USTRUCT_BODY()
+    GENERATED_BODY()
 
 public:
-    TArray<FMemoryFragment> fragments;
+    TArray<UMemoryFragment*> fragments;
 
     void Clean()
     {
         fragments.Empty();
     }
 
-    ~FMindMemory()
+    ~UMindMemory()
     {
         fragments.Empty();
     }

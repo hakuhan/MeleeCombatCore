@@ -18,10 +18,10 @@ enum class EActionState : uint8
     Action_Failure UMETA(DisplayName = "Failure"),
 };
 
-USTRUCT(BlueprintType)
-struct FActionBasis : public FThing
+UCLASS(Blueprintable)
+class UActionBasis : public UThing
 {
-    GENERATED_USTRUCT_BODY()
+    GENERATED_BODY()
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActionBasis")

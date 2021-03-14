@@ -16,22 +16,25 @@ enum class ELinkState : uint8
     Link_Break UMETA(DisplayName = "Break"),
 };
 
-USTRUCT(BlueprintType)
-struct FLinkInfo : public FThing
+UCLASS(Blueprintable)
+class ULinkInfo : public UThing
 {
-    GENERATED_USTRUCT_BODY()
+    GENERATED_BODY()
 
 public:
+    UPROPERTY(EditAnywhere, BlueprintReadwrite)
     int priority;
+
+    UPROPERTY(EditAnywhere, BlueprintReadwrite)
     ELinkState state;
 };
 
-USTRUCT(BlueprintType)
-struct FLinkThing : public FThing
+UCLASS(Blueprintable)
+class ULinkThing : public UThing
 {
-    GENERATED_USTRUCT_BODY()
+    GENERATED_BODY()
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LinkThing")
-    TArray<FLinkInfo> links;
+    TArray<ULinkInfo*> links;
 };

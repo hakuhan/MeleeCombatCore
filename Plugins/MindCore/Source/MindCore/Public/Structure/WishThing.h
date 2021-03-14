@@ -3,10 +3,10 @@
 #include "Structure/Thing.h"
 #include "WishThing.generated.h"
 
-USTRUCT(BlueprintType)
-struct MINDCORE_API FWishThing : public FThing
+UCLASS(Blueprintable)
+class MINDCORE_API UWishThing : public UThing
 {
-    GENERATED_USTRUCT_BODY()
+    GENERATED_BODY()
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="WishThing")

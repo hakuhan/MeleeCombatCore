@@ -4,14 +4,14 @@
 #include "Structure/LinkThing.h"
 #include "Connection.generated.h"
 
-USTRUCT(BlueprintType)
-struct MINDCORE_API FConnection : public FThing
+UCLASS(Blueprintable)
+class MINDCORE_API UConnection : public UThing
 {
-    GENERATED_USTRUCT_BODY()
+    GENERATED_BODY()
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Connection")
-    TArray<FLinkThing> things;
+    TArray<ULinkThing*> things;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Connection")
     FString firstThing;

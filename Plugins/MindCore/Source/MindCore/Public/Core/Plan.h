@@ -26,9 +26,9 @@ class MINDCORE_API IPlan
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Plan")
-    void CreatePlan(const FWishThing& wish, FConnection& outPlan);
+    void CreatePlan(const UWishThing* wish, UConnection* outPlan);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Plan")
-    void UpdatePlan(FConnection& plan);
+    void UpdatePlan(UConnection* plan);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Plan")
     void RebuildPlan(int connectionID);
 };

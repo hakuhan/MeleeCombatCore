@@ -132,6 +132,13 @@
 				"Mac",
 				"Win64"
 			]
+		},
+		{
+			"Name": "WinDualShock",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
 		}
 	]
 }

@@ -48,7 +48,7 @@ void UBasicMind::DoImagine_Implementation()
 
 void UBasicMind::DoRemember_Implementation()
 {
-    FMemoryFragment fragment;
+    
 }
 
 #pragma endregion

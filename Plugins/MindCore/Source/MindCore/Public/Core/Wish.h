@@ -25,7 +25,7 @@ class MINDCORE_API IWish
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void CreateWish(TArray<FWishThing>& outWishes);
+    void CreateWish(TArray<UWishThing*>& outWishes);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void UpdateWish(TArray<FWishThing>& currentWishes);
+    void UpdateWish(TArray<UWishThing*>& currentWishes);
 };

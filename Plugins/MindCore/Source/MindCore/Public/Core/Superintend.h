@@ -29,11 +29,11 @@ class MINDCORE_API ISuperintend
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Superintend")
-    void CreateActions(const FConnection& plan, FWay& outWay);
+    void CreateActions(const UConnection* plan, UWay* outWay);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Superintend")
-    void UpdateAction(const FConnection& plan, FWay& outWay);
+    void UpdateAction(const UConnection* plan, UWay* outWay);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Superintend")
-    void UpdatePlanState(FConnection& plan);
+    void UpdatePlanState(UConnection* plan);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Superintend")
-    void UpdateWishState(FWishThing& wish);
+    void UpdateWishState(UWishThing* wish);
 };

@@ -10,17 +10,17 @@
 #include "Structure/ActionBasis.h"
 #include "Way.generated.h"
 
-USTRUCT(BlueprintType)
-struct FWay : public FThing
+UCLASS(Blueprintable)
+class UWay : public UThing
 {
-    GENERATED_USTRUCT_BODY()
+    GENERATED_BODY()
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Way")
     FString Connection;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Way")
-    TArray<FActionBasis> usingActions;
+    TArray<UActionBasis*> usingActions;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Way")
     int currentIndex;

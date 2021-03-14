@@ -23,29 +23,29 @@ class MINDCORE_API IRemember
 public:
 #pragma region Access data
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void GetAllWishes(TArray<FWishThing> &outWishes);
+    void GetAllWishes(TArray<UWishThing*> &outWishes);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void CurrentMemory(FMemoryFragment &outMemory);
+    void CurrentMemory(UMemoryFragment *outMemory);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void CreateMemory(FMemoryFragment &outMemory);
+    void CreateMemory(UMemoryFragment *outMemory);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     bool Contains(const FString &memoryID);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void GetMemory(const FString &memoryID, FMemoryFragment &outMemory);
+    void GetMemory(const FString &memoryID, UMemoryFragment *outMemory);
 #pragma endregion
 
 #pragma region load and save
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     void LoadMemory();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void Store(const FMemoryFragment &fragment);
+    void Store(const UMemoryFragment *fragment);
 #pragma endregion
 
 #pragma region share and accept
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     bool Share(const FString &memoryID, const TScriptInterface<IRemember> &target);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void Accept(const FString &memoryID, FMemoryFragment &inMemory);
+    void Accept(const FString &memoryID, const UMemoryFragment *inMemory);
 #pragma endregion
 
 #pragma region Clean and delete
