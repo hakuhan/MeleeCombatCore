@@ -16,6 +16,8 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
     FString thingType;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
+    TSubclassOf<UObject> targetType;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
     FString name;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
     FString Description;

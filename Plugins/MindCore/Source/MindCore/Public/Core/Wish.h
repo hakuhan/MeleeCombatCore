@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "Structure/WishThing.h"
 #include "Core/Imagine.h"
 #include "Core/Remember.h"
 #include "Wish.generated.h"
@@ -25,7 +24,7 @@ class MINDCORE_API IWish
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void CreateWish(TArray<UWishThing*>& outWishes);
+    void CreateWish(UThing* outWishes);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void UpdateWish(TArray<UWishThing*>& currentWishes);
+    void UpdateWish();
 };

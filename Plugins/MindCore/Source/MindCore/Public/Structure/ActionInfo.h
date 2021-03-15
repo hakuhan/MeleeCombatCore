@@ -6,7 +6,7 @@
 #pragma once
 
 #include "Structure/Thing.h"
-#include "ActionBasis.generated.h"
+#include "ActionInfo.generated.h"
 
 UENUM(BlueprintType)
 enum class EActionState : uint8
@@ -19,17 +19,13 @@ enum class EActionState : uint8
 };
 
 UCLASS(Blueprintable)
-class UActionBasis : public UThing
+class UActionInfo : public UThing
 {
     GENERATED_BODY()
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActionBasis")
-    int priority;
+    TArray<UThing*> cost;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActionBasis")
-    EActionState state;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActionBasis")
-    FString preThing;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActionBasis")
-    FString targetThing;
+    TArray<UThing*> reward;
 };

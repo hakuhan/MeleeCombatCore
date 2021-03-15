@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "Structure/ActionBasis.h"
+#include "Structure/ActionInfo.h"
 #include "Core/Imagine.h"
 #include "Core/Remember.h"
 #include "Action.generated.h"
@@ -25,9 +25,9 @@ class MINDCORE_API IAction
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
-    void PrepareAction(UActionBasis* basis);
+    void PrepareAction(UActionInfo* basis);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
-    void RunningAction(UActionBasis* basis);
+    void RunningAction(UActionInfo* basis);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
-    void FinishAction(UActionBasis* basis);
+    void FinishAction(UActionInfo* basis);
 };

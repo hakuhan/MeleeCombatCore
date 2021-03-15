@@ -6,7 +6,7 @@ void UBasicMind::BeginPlay()
 
     if (IsMemberValid(m_remember))
     {
-        IRemember::Execute_LoadMemory(m_remember.GetObject());
+        m_remember->UpdateRemember();
     }
 }
 
@@ -31,14 +31,6 @@ void UBasicMind::DoWish_Implementation()
 }
 
 void UBasicMind::DoPlan_Implementation()
-{
-}
-
-void UBasicMind::DoSuperintend_Implementation()
-{
-}
-
-void UBasicMind::DoAction_Implementation()
 {
 }
 

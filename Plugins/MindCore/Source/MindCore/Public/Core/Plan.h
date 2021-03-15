@@ -5,8 +5,6 @@
 
 #pragma once
 
-#include "Structure/Connection.h"
-#include "Structure/WishThing.h"
 #include "Core/Imagine.h"
 #include "Core/Remember.h"
 #include "plan.generated.h"
@@ -26,9 +24,7 @@ class MINDCORE_API IPlan
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Plan")
-    void CreatePlan(const UWishThing* wish, UConnection* outPlan);
+    void CreatePlan(const UThing* wish);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Plan")
-    void UpdatePlan(UConnection* plan);
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Plan")
-    void RebuildPlan(int connectionID);
+    void UpdatePlan();
 };

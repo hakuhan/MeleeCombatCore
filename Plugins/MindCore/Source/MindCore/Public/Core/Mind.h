@@ -21,8 +21,6 @@ public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
     void DoPlan();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
-    void DoSuperintend();
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
     void DoAction();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
     void DoImagine();

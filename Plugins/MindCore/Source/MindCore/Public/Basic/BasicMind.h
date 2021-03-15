@@ -10,8 +10,6 @@
 #include "Core/Mind.h"
 #include "Core/Wish.h"
 #include "Core/Plan.h"
-#include "Core/Superintend.h"
-#include "Core/Action.h"
 #include "Core/Imagine.h"
 #include "Core/Remember.h"
 
@@ -30,10 +28,6 @@ protected:
     UPROPERTY()
     TScriptInterface<IPlan> m_plan;
     UPROPERTY()
-    TScriptInterface<ISuperintend> m_superintend;
-    UPROPERTY()
-    TArray<TScriptInterface<IAction>> m_actions;
-    UPROPERTY()
     TScriptInterface<IImagine> m_imagine;
 
 public:
@@ -45,10 +39,6 @@ public:
     virtual void DoWish_Implementation() override;
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     virtual void DoPlan_Implementation() override;
-    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
-    virtual void DoSuperintend_Implementation() override;
-    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
-    virtual void DoAction_Implementation() override;
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     virtual void DoImagine_Implementation() override;
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")

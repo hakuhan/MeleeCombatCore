@@ -8,11 +8,8 @@
 #include "CoreMinimal.h"
 
 #include "Structure/Thing.h"
-#include "Structure/WishThing.h"
-#include "Structure/Connection.h"
-#include "Structure/Way.h"
 
-#include "Memory.generated.h"
+#include "MemoryFragment.generated.h"
 
 UENUM(BlueprintType)
 enum class EMemoryState : uint8
@@ -35,28 +32,5 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
     EMemoryState memoryState;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
-    UWishThing* wishData;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
-    UConnection* planData;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
-    UWay* surperintendData;
-};
-
-UCLASS(Blueprintable)
-class MINDCORE_API UMindMemory : public UThing
-{
-    GENERATED_BODY()
-
-public:
-    TArray<UMemoryFragment*> fragments;
-
-    void Clean()
-    {
-        fragments.Empty();
-    }
-
-    ~UMindMemory()
-    {
-        fragments.Empty();
-    }
+    TArray<UThing*> things;
 };

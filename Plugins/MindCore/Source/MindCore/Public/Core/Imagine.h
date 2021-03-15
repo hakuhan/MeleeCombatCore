@@ -18,12 +18,13 @@ class MINDCORE_API IImagine
     GENERATED_BODY()
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
-    void JoinWish(const TScriptInterface<IWish>& wish);
+    void Imaging();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
-    void JoinPlan(const TScriptInterface<IPlan>& plan);
+    void JoinWish(TScriptInterface<IWish>& wish);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
-    void JoinSuperintend(const TScriptInterface<ISuperintend>& superintend);
+    void JoinPlan(TScriptInterface<IPlan>& plan);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
-    void JoinAction(const TScriptInterface<IAction>& acton);
-    
+    void JoinAction(TScriptInterface<IAction>& acton);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
+    void JoinMemory(TScriptInterface<IAction>& acton);
 };
