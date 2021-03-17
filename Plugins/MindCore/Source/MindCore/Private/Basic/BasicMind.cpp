@@ -26,12 +26,16 @@ void UBasicMind::DoWish_Implementation()
 {
     if (IsMemberValid(m_wish))
     {
-        // IWish::Execute_CreateWish(m_wish.GetObject(), );
+        m_wish->UpdateWish();
     }
 }
 
 void UBasicMind::DoPlan_Implementation()
 {
+    if (IsMemberValid(m_plan))
+    {
+        m_plan->UpdatePlan();
+    }
 }
 
 void UBasicMind::DoImagine_Implementation()
