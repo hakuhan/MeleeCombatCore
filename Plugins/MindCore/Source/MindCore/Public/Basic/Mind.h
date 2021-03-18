@@ -7,28 +7,28 @@
 
 #include "Components/ActorComponent.h"
 
-#include "Core/Mind.h"
-#include "Core/Wish.h"
-#include "Core/Plan.h"
-#include "Core/Imagine.h"
-#include "Core/Remember.h"
+#include "Core/MindInterface.h"
+#include "Core/WishInterface.h"
+#include "Core/PlanInterface.h"
+#include "Core/ImagineInterface.h"
+#include "Core/RememberInterface.h"
 
-#include "BasicMind.generated.h"
+#include "Mind.generated.h"
 
 UCLASS(ClassGroup = (Mind), meta = (BlueprintSpawnableComponent))
-class MINDCORE_API UBasicMind : public UActorComponent, public IMind
+class MINDCORE_API UMind : public UActorComponent, public IMindInterface
 {
     GENERATED_BODY()
 
-protected:
-    UPROPERTY()
-    TScriptInterface<IRemember> m_remember;
-    UPROPERTY()
-    TScriptInterface<IWish> m_wish;
-    UPROPERTY()
-    TScriptInterface<IPlan> m_plan;
-    UPROPERTY()
-    TScriptInterface<IImagine> m_imagine;
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TScriptInterface<IRememberInterface> m_remember;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TScriptInterface<IWishInterface> m_wish;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TScriptInterface<IPlanInterface> m_plan;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TScriptInterface<IImagineInterface> m_imagine;
 
 public:
     void BeginPlay() override;

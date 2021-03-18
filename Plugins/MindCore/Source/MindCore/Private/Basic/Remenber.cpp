@@ -1,31 +1,19 @@
-#include "Basic/BasicRemenber.h"
+#include "Basic/Remenber.h"
 
-UBasicRemenber::UBasicRemenber()
+URemenber::URemenber()
 {
     m_CurrentIndex = -1;
 }
 
-UBasicRemenber::~UBasicRemenber()
+URemenber::~URemenber()
 {
 }
 
-void UBasicRemenber::UpdateRemember_Implementation()
-{
-
-}
-
-void UBasicRemenber::CreateMemory_Implementation(UMemoryFragment *outMemory)
-{
-    UMemoryFragment* fragment = NewObject<UMemoryFragment>();
-    m_Memories.Add(fragment);
-    outMemory = outMemory;
-}
-
-void UBasicRemenber::Remember_Implementation(const FString& memoryID, UMemoryFragment *outfragment)
+void URemenber::Remember_Implementation(const FString& thingID, UMemoryFragment *outfragment)
 {
     for (auto fragment : m_Memories)
     {
-        if (fragment->thingType == memoryID)
+        if (fragment->thingType == thingID)
         {
             outfragment = fragment;
             break;
@@ -33,7 +21,7 @@ void UBasicRemenber::Remember_Implementation(const FString& memoryID, UMemoryFra
     }
 }
 
-bool UBasicRemenber::Forget_Implementation(const FString& memoryID)
+bool URemenber::Forget_Implementation(const FString& thingID)
 {
     bool result = false;
     // if (Contains_Implementation(memoryID))
@@ -45,13 +33,13 @@ bool UBasicRemenber::Forget_Implementation(const FString& memoryID)
     return result;
 }
 
-bool UBasicRemenber::Save_Implementation(const UMemoryFragment *fragment)
+bool URemenber::Save_Implementation(const FString& thingID)
 {
     // TODO save game
     return false;
 }
 
-bool UBasicRemenber::Share_Implementation(const FString& memoryID, const TScriptInterface<IRemember> &target)
+bool URemenber::Share_Implementation(const FString &thingID, const TScriptInterface<IRememberInterface> &target)
 {
     bool result = false;
     // if (Contains_Implementation(memoryID) && target.GetObject() != nullptr)
@@ -68,13 +56,13 @@ bool UBasicRemenber::Share_Implementation(const FString& memoryID, const TScript
     return result;
 }
 
-void UBasicRemenber::Accept_Implementation(const FString& memoryID, const UMemoryFragment* inMemory)
+void URemenber::Accept_Implementation(const FString &thingID, const UMemoryFragment *inMemory)
 {
     UMemoryFragment* memory = const_cast<UMemoryFragment*>(inMemory);
     m_Memories.Add(memory);
 }
 
-void UBasicRemenber::Clean()
+void URemenber::Clean()
 {
     m_Memories.Empty();
 }

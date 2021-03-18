@@ -5,24 +5,21 @@
 
 #pragma once
 
-#include "Core/Imagine.h"
-#include "Core/Remember.h"
-#include "Wish.generated.h"
+#include "WishInterface.generated.h"
 
 UINTERFACE(Blueprintable)
-class MINDCORE_API UWish : public UInterface
+class MINDCORE_API UWishInterface : public UInterface
 {
     GENERATED_BODY()
 };
 
-class MINDCORE_API IWish
+class MINDCORE_API IWishInterface
 {
     GENERATED_BODY()
 
-    friend class IImagine;
-    friend class IRemember;
-
 public:
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
+    void DoWish();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
     void CreateWish(UThing* outWishes);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")

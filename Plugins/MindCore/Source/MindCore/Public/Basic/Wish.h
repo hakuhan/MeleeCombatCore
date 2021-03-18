@@ -2,14 +2,15 @@
 
 #include "CoreMinimal.h"
 
-#include "Core/Wish.h"
-#include "BasicWish.generated.h"
+#include "Core/WishInterface.h"
+#include "Wish.generated.h"
 
 UCLASS(Blueprintable)
-class MINDCORE_API UBasicWish : public UObject, public IWish
+class MINDCORE_API UWish : public UObject, public IWishInterface
 {
     GENERATED_BODY()
 public:
+    virtual void DoWish_implementaion();
     virtual void CreateWish_Implementation(UThing* outWishes);
     virtual void UpdateWish_implementaion();
 };

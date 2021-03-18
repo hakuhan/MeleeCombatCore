@@ -5,26 +5,26 @@
 
 #pragma once
 
-#include "Imagine.generated.h"
+#include "ImagineInterface.generated.h"
 
 UINTERFACE()
-class MINDCORE_API UImagine : public UInterface
+class MINDCORE_API UImagineInterface : public UInterface
 {
     GENERATED_BODY()
 };
 
-class MINDCORE_API IImagine
+class MINDCORE_API IImagineInterface
 {
     GENERATED_BODY()
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
     void Imaging();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
-    void JoinWish(TScriptInterface<IWish>& wish);
+    void JoinWish(TScriptInterface<IWishInterface>& wish);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
-    void JoinPlan(TScriptInterface<IPlan>& plan);
+    void JoinPlan(TScriptInterface<IPlanInterface>& plan);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
-    void JoinAction(TScriptInterface<IAction>& acton);
+    void JoinAction(TScriptInterface<IActionInterface>& acton);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
-    void JoinMemory(TScriptInterface<IAction>& acton);
+    void JoinMemory(TScriptInterface<IActionInterface>& acton);
 };

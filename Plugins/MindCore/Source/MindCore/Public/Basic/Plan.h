@@ -7,20 +7,21 @@
 
 #include "CoreMinimal.h"
 
-#include "Core/Plan.h"
-#include "Core/Action.h"
-#include "BasicPlan.generated.h"
+#include "Core/PlanInterface.h"
+#include "Core/ActionInterface.h"
+#include "Plan.generated.h"
 
 UCLASS()
-class MINDCORE_API UBasicPlan : public UObject, public IPlan
+class MINDCORE_API UPlan : public UObject, public IPlanInterface
 {
     GENERATED_BODY()
 
 public:
     UPROPERTY(BlueprintReadWrite)
-    TArray<TScriptInterface<IAction>> m_actions;
+    TArray<TScriptInterface<IActionInterface>> m_actions;
 
 public:
+    virtual void DoPlan_Implementation();
     virtual void CreatePlan_Implementation(const UThing* wish) override;
     virtual void UpdatePlan_Implementation() override;
 };

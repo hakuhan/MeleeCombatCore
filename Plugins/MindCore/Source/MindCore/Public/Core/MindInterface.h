@@ -4,15 +4,15 @@
 */
 
 #pragma once
-#include "Mind.generated.h"
+#include "MindInterface.generated.h"
 
 UINTERFACE(Blueprintable)
-class MINDCORE_API UMind : public UInterface
+class MINDCORE_API UMindInterface : public UInterface
 {
     GENERATED_BODY()
 };
 
-class MINDCORE_API IMind
+class MINDCORE_API IMindInterface
 {
     GENERATED_BODY()
 public:

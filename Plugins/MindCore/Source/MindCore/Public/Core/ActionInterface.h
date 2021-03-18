@@ -5,15 +5,15 @@
 
 #pragma once
 
-#include "Action.generated.h"
+#include "ActionInterface.generated.h"
 
 UINTERFACE()
-class MINDCORE_API UAction : public UInterface
+class MINDCORE_API UActionInterface : public UInterface
 {
     GENERATED_BODY()
 };
 
-class MINDCORE_API IAction
+class MINDCORE_API IActionInterface
 {
     GENERATED_BODY()
 

@@ -1,18 +1,18 @@
 /*
     Author: baihan 
     Date: "2021-03-16" 
-    Class discription: Base action implements IAction 
+    Class discription: Base action implements IActionInterface 
 */
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/Action.h"
+#include "Core/ActionInterface.h"
 #include "Structure/ActionInfo.h"
 #include "BasicAction.generated.h"
 
 UCLASS()
-class MINDCORE_API UBasicAction : public UObject, public IAction
+class MINDCORE_API UBasicAction : public UObject, public IActionInterface
 {
     GENERATED_BODY()
 public:
