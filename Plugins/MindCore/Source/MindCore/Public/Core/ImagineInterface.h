@@ -4,7 +4,10 @@
 */
 
 #pragma once
-
+#include "Core/BehaviorInterface.h"
+#include "Core/WishInterface.h"
+#include "Core/ActionInterface.h"
+#include "Core/RememberInterface.h"
 #include "ImagineInterface.generated.h"
 
 UINTERFACE()
@@ -22,9 +25,9 @@ public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
     void JoinWish(TScriptInterface<IWishInterface>& wish);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
-    void JoinPlan(TScriptInterface<IPlanInterface>& plan);
+    void JoinBehavior(TScriptInterface<IBehaviorInterface>& plan);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
     void JoinAction(TScriptInterface<IActionInterface>& acton);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Imagine")
-    void JoinMemory(TScriptInterface<IActionInterface>& acton);
+    void JoinMemory(TScriptInterface<IRememberInterface>& remember);
 };

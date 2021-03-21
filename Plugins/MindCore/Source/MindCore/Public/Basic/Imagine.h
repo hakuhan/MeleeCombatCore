@@ -12,9 +12,9 @@ public:
 
     void JoinWish_Implementation(TScriptInterface<IWishInterface>& wish);
 
-    void JoinPlan_Implementation(TScriptInterface<IPlanInterface>& plan);
+    void JoinBehavior_Implementation(TScriptInterface<IBehaviorInterface>& plan);
 
     void JoinAction_Implementation(TScriptInterface<IActionInterface>& acton);
 
-    void JoinMemory_Implementation(TScriptInterface<IActionInterface>& acton);
+    void JoinMemory_Implementation(TScriptInterface<IRememberInterface>& remember);
 };

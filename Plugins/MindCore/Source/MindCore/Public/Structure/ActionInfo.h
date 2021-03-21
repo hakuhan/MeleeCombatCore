@@ -24,8 +24,6 @@ class UActionInfo : public UThing
     GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActionBasis")
-    TArray<UThing*> cost;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActionBasis")
-    TArray<UThing*> reward;
+    UPROPERTY(EditAnywhere, BlueprintReadwrite)
+    EActionState m_State;
 };

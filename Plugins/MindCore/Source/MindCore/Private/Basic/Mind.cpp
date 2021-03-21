@@ -19,27 +19,23 @@ void UMind::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 
 void UMind::DoWish_Implementation()
 {
-    if (IsMemberValid(m_wish))
+    if (IsMemberValid(m_Wish))
     {
-        m_wish->DoWish();
+        m_Wish->DoWish();
     }
 }
 
 void UMind::DoPlan_Implementation()
 {
-    if (IsMemberValid(m_plan))
+    if (IsMemberValid(m_Behavior))
     {
-        m_plan->DoPlan();
+        m_Behavior->Behave();
     }
 }
 
 void UMind::DoImagine_Implementation()
 {
-}
-
-void UMind::DoRemember_Implementation()
-{
-    
+    m_Imagine->Imaging();
 }
 
 #pragma endregion

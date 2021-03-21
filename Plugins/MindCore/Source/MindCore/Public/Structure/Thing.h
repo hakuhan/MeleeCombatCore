@@ -14,13 +14,13 @@ class MINDCORE_API UThing : public UObject
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
-    FString thingType;
+    FString Type;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
-    FString name;
+    FString ID;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
-    int priority;
+    int Priority;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
-    TSubclassOf<UObject> targetType;
+    TSubclassOf<UObject> TargetType;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
     FString Description;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")

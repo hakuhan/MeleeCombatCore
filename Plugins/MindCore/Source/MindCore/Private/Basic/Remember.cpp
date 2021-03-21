@@ -1,34 +1,29 @@
-#include "Basic/Remenber.h"
+#include "Basic/Remember.h"
 
 URemenber::URemenber()
 {
     m_CurrentIndex = -1;
 }
 
-URemenber::~URemenber()
-{
-}
-
 void URemenber::Remember_Implementation(const FString& thingID, UMemoryFragment *outfragment)
 {
-    for (auto fragment : m_Memories)
-    {
-        if (fragment->thingType == thingID)
-        {
-            outfragment = fragment;
-            break;
-        }
-    }
+    outfragment = *m_Memories.FindByPredicate([&](UMemoryFragment* memory){
+        return memory->ID == thingID;
+    });
 }
 
 bool URemenber::Forget_Implementation(const FString& thingID)
 {
     bool result = false;
-    // if (Contains_Implementation(memoryID))
-    // {
-    //     m_Memories->fragments.RemoveAll([=](const UMemoryFragment *memory) { return memoryID == memory->thingType; });
-    //     result = true;
-    // }
+    int targetIndex = m_Memories.IndexOfByPredicate([&](UMemoryFragment* memory){
+        return memory->ID == thingID;
+    });
+
+    if (targetIndex >= 0)
+    {
+        m_Memories.RemoveAt(targetIndex);
+        result = true;
+    }
 
     return result;
 }

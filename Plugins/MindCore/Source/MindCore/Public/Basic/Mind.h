@@ -9,7 +9,7 @@
 
 #include "Core/MindInterface.h"
 #include "Core/WishInterface.h"
-#include "Core/PlanInterface.h"
+#include "Core/BehaviorInterface.h"
 #include "Core/ImagineInterface.h"
 #include "Core/RememberInterface.h"
 
@@ -22,13 +22,13 @@ class MINDCORE_API UMind : public UActorComponent, public IMindInterface
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TScriptInterface<IRememberInterface> m_remember;
+    TScriptInterface<IRememberInterface> m_Remember;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TScriptInterface<IWishInterface> m_wish;
+    TScriptInterface<IWishInterface> m_Wish;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TScriptInterface<IPlanInterface> m_plan;
+    TScriptInterface<IBehaviorInterface> m_Behavior;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TScriptInterface<IImagineInterface> m_imagine;
+    TScriptInterface<IImagineInterface> m_Imagine;
 
 public:
     void BeginPlay() override;
@@ -41,8 +41,12 @@ public:
     virtual void DoPlan_Implementation() override;
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     virtual void DoImagine_Implementation() override;
+
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")
-    virtual void DoRemember_Implementation() override;
+    void GetRemember_Implementation(TScriptInterface<IRememberInterface>& outRemember)
+    {
+        outRemember = m_Remember;
+    }
 
     template <typename T>
     bool IsMemberValid(TScriptInterface<T> interface)

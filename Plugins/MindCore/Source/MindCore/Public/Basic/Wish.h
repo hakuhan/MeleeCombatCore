@@ -1,3 +1,9 @@
+/*
+    Author: baihan 
+    Date: "2021-03-21" 
+    Class discription: Base class creating goal for AI 
+*/
+
 #pragma once
 
 #include "CoreMinimal.h"

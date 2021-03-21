@@ -10,7 +10,7 @@
 
 #include "Structure/MemoryFragment.h"
 
-#include "Remenber.generated.h"
+#include "Remember.generated.h"
 
 UCLASS(Blueprintable)
 class MINDCORE_API URemenber : public UObject, public IRememberInterface
@@ -24,7 +24,6 @@ public:
 
 public:
     URemenber();
-    ~URemenber();
 
     virtual void Remember_Implementation(const FString& thingID, UMemoryFragment *outfragment) override;
 

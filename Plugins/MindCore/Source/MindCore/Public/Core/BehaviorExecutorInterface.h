@@ -1,27 +1,29 @@
 /*
     Author: baihan 
-    class purpose: Main Mind interface 
+    Date: "2021-03-21" 
+    Class discription: Define how to make wishes come true 
 */
 
 #pragma once
-#include "MindInterface.generated.h"
+
+#include "BehaviorExecutorInterface.generated.h"
 
 UINTERFACE(Blueprintable)
-class MINDCORE_API UMindInterface : public UInterface
+class MINDCORE_API UBehaviorExecutorInterface : public UInterface
 {
     GENERATED_BODY()
 };
 
-class MINDCORE_API IMindInterface
+class MINDCORE_API IBehaviorExecutorInterface
 {
     GENERATED_BODY()
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
-    void DoWish();
+    void CreateBehavior();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
-    void DoPlan();
+    void UpdateBehavior();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
-    void DoImagine();
+    void ExecuteBehavior();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
-    void GetRemember(TScriptInterface<IRememberInterface>& outRemember);
+    void GetExecuteState();
 };

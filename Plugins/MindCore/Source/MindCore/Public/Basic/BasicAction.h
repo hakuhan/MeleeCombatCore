@@ -16,6 +16,7 @@ class MINDCORE_API UBasicAction : public UObject, public IActionInterface
 {
     GENERATED_BODY()
 public:
+    UPROPERTY(EditAnywhere, BlueprintReadwrite)
     UActionInfo* m_Info;
 
     virtual void PrepareAction_Implementation();

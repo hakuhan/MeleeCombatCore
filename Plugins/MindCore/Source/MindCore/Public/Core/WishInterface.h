@@ -1,6 +1,6 @@
 /*
     Author: baihan 
-    class purpose: Create will for AI 
+    class purpose: Create target for AI 
 */
 
 #pragma once
