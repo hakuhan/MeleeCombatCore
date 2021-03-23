@@ -5,19 +5,34 @@ URemenber::URemenber()
     m_CurrentIndex = -1;
 }
 
-void URemenber::Remember_Implementation(const FString& thingID, UMemoryFragment *outfragment)
+bool URemenber::Remember_Implementation(const UMemoryFragment* target)
 {
-    outfragment = *m_Memories.FindByPredicate([&](UMemoryFragment* memory){
-        return memory->ID == thingID;
-    });
+    if (!m_Memories.Contains(target))
+    {
+        m_Memories.Add(const_cast<UMemoryFragment*>(target));
+        return true;
+    }
+    return false;
+}
+
+bool URemenber::Remind_Implementation(const FString& thingID, UMemoryFragment *outfragment)
+{
+    bool result = false;
+    int targetIndex = FindIndex(thingID);
+
+    if (targetIndex > -1)
+    {
+        result = true;
+        outfragment = m_Memories[targetIndex];
+    }
+
+    return result;
 }
 
 bool URemenber::Forget_Implementation(const FString& thingID)
 {
     bool result = false;
-    int targetIndex = m_Memories.IndexOfByPredicate([&](UMemoryFragment* memory){
-        return memory->ID == thingID;
-    });
+    int targetIndex = FindIndex(thingID);
 
     if (targetIndex >= 0)
     {
@@ -28,25 +43,20 @@ bool URemenber::Forget_Implementation(const FString& thingID)
     return result;
 }
 
-bool URemenber::Save_Implementation(const FString& thingID)
-{
-    // TODO save game
-    return false;
-}
-
-bool URemenber::Share_Implementation(const FString &thingID, const TScriptInterface<IRememberInterface> &target)
+bool URemenber::Share_Implementation(const FString &memoryName, const TScriptInterface<IRememberInterface> &target)
 {
     bool result = false;
-    // if (Contains_Implementation(memoryID) && target.GetObject() != nullptr)
-    // {
-    //     // Get memory
-    //     UMemoryFragment *memoryFragment = NewObject<UMemoryFragment>();
-    //     GetMemory(memoryID, memoryFragment);
+    int targetIndex = FindIndex(memoryName);
+    
+    if (targetIndex >= 0 && target.GetObject() != nullptr)
+    {
+        // Get memory
+        UMemoryFragment *memoryFragment = m_Memories[targetIndex];
 
-    //     // Send
-    //     target->Accept(memoryID, memoryFragment);
-    //     result = true;
-    // }
+        // Send
+        target->Accept(memoryName, memoryFragment);
+        result = true;
+    }
 
     return result;
 }
@@ -60,4 +70,11 @@ void URemenber::Accept_Implementation(const FString &thingID, const UMemoryFragm
 void URemenber::Clean()
 {
     m_Memories.Empty();
+}
+
+int URemenber::FindIndex(const FString& memoryName)
+{
+    return m_Memories.IndexOfByPredicate([&](UMemoryFragment* memory){
+        return memory->Name == memoryName;
+    });
 }

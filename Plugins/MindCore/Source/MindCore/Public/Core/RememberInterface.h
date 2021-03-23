@@ -23,13 +23,13 @@ class MINDCORE_API IRememberInterface
 public:
 #pragma region memory loop
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    void Remember(const FString& thingID, UMemoryFragment *outfragment);
+    bool Remember(const UMemoryFragment* target);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
+    bool Remind(const FString& thingID, UMemoryFragment *outfragment);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     bool Forget(const FString &thingID);
 #pragma endregion
 
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
-    bool Save(const FString &thingID);
 
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Remember")
     bool Share(const FString &thingID, const TScriptInterface<IRememberInterface> &target);

@@ -25,15 +25,18 @@ public:
 public:
     URemenber();
 
-    virtual void Remember_Implementation(const FString& thingID, UMemoryFragment *outfragment) override;
+    virtual bool Remember_Implementation(const UMemoryFragment *target) override;
+
+    virtual bool Remind_Implementation(const FString& thingID, UMemoryFragment *outfragment) override;
 
     virtual bool Forget_Implementation(const FString &thingID) override;
-
-    virtual bool Save_Implementation(const FString &thingID) override;
 
     virtual bool Share_Implementation(const FString &thingID, const TScriptInterface<IRememberInterface> &target) override;
 
     virtual void Accept_Implementation(const FString &thingID, const UMemoryFragment *inMemory) override;
 
     void Clean();
+
+    UFUNCTION(BlueprintCallable)
+    int FindIndex(const FString& memoryID);
 };

@@ -18,10 +18,11 @@ class MINDCORE_API IWishInterface
     GENERATED_BODY()
 
 public:
+    // Be called by mind every loop
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
     void DoWish();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void CreateWish(UThing* outWishes);
+    void CreateWish(UThing* wish);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void UpdateWish();
+    void UpdateWish(const FString& originName, UThing* newWish);
 };
