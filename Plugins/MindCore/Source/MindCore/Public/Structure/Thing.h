@@ -18,6 +18,8 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
     FString Type;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
+    int Number;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
     bool NeverEnding;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
     FString Description;

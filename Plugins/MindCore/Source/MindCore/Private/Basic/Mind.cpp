@@ -21,7 +21,7 @@ void UMind::DoWish_Implementation()
 {
     if (IsMemberValid(m_Wish))
     {
-        m_Wish->DoWish();
+        m_Wish->UpdateWish();
     }
 }
 

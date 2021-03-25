@@ -21,6 +21,17 @@ public:
     TArray<UThing*> Wishes;
 };
 
+USTRUCT(BlueprintType)
+struct FWishData
+{
+    GENERATED_USTRUCT_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=MindCore)
+    TArray<UThing*> OwnedThings;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=MindCore)
+    TArray<UThing*> SeekingWishes;
+};
+
 UCLASS(Blueprintable)
 class MINDCORE_API UWish : public UObject, public IWishInterface
 {
@@ -28,9 +39,15 @@ class MINDCORE_API UWish : public UObject, public IWishInterface
 public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     UWishInfo* m_Info;
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    FWishData m_Data;
 
-    virtual void DoWish_Implementation() override;
-    virtual void CreateWish_Implementation(UThing* wish) override;
-    virtual void UpdateWish_Implementation(const FString& originName, UThing* newWish) override;
+    UFUNCTION(BlueprintCallable)
+    void Init(UWishInfo* Info);
+    virtual bool CreateWish_Implementation(UThing* wish) override;
+    virtual void UpdateWish_Implementation() override;
+    virtual bool LoseWish_Implementation(const FString& wishName) override;
+    virtual bool ObtainThing_Implementation(UThing* thing) override;
+    virtual bool LoseThing_Implementation(const FString& thingName) override;
+    virtual void Reset_Implementation() override;
 };
-

@@ -20,9 +20,15 @@ class MINDCORE_API IWishInterface
 public:
     // Be called by mind every loop
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void DoWish();
+    bool CreateWish(UThing* wish);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void CreateWish(UThing* wish);
+    void UpdateWish();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void UpdateWish(const FString& originName, UThing* newWish);
+    bool LoseWish(const FString& wishName);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
+    bool ObtainThing(UThing* thing);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
+    bool LoseThing(const FString& thingName);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
+    void Reset();
 };
