@@ -52,7 +52,7 @@ public:
     void Init(FHurt data)
     {
         UpdateHurts(data);
-        this->Execute_InitData(Cast<UObject>(this));
+        this->Execute_InitData(dynamic_cast<UObject*>(this));
     }
 
     virtual void UpdateHurts(FHurt data)

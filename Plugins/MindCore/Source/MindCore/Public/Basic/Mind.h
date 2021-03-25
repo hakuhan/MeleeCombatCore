@@ -15,19 +15,30 @@
 
 #include "Mind.generated.h"
 
-UCLASS(ClassGroup = (Mind), meta = (BlueprintSpawnableComponent))
+UCLASS(Blueprintable, ClassGroup = (Mind), meta = (BlueprintSpawnableComponent))
 class MINDCORE_API UMind : public UActorComponent, public IMindInterface
 {
     GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(EditAnywhere, meta = (MustImplement = "RememberInterface"))
+    TSubclassOf<UObject> RememberClass;
+    UPROPERTY(BlueprintReadWrite)
     TScriptInterface<IRememberInterface> m_Remember;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+
+    UPROPERTY(EditAnywhere, meta = (MustImplement = "WishInterface"))
+    TSubclassOf<UObject> WishClass;
+    UPROPERTY(BlueprintReadWrite)
     TScriptInterface<IWishInterface> m_Wish;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    
+    UPROPERTY(EditAnywhere, meta = (MustImplement = "BehaviorInterface"))
+    TSubclassOf<UObject> BehaviorClass;
+    UPROPERTY(BlueprintReadWrite)
     TScriptInterface<IBehaviorInterface> m_Behavior;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    
+    UPROPERTY(EditAnywhere, meta = (MustImplement = "ImagineInterface"))
+    TSubclassOf<UObject> ImagineClass;
+    UPROPERTY(BlueprintReadWrite)
     TScriptInterface<IImagineInterface> m_Imagine;
 
 public:

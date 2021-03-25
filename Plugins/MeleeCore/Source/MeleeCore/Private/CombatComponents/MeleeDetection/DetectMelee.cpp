@@ -32,7 +32,7 @@ void UDetectMelee::BeginPlay()
 		if (detectObj)
 		{
 			m_DetectSolution.SetObject(detectObj);
-			m_DetectSolution.SetInterface(Cast<IDetectSolution>(detectObj));
+			m_DetectSolution.SetInterface(dynamic_cast<IDetectSolution*>(detectObj));
 			m_DetectSolution->Init(detectSolution->DetectInfo);
 		}
 
@@ -50,7 +50,7 @@ void UDetectMelee::BeginPlay()
 		if (hurtObj && hurtInfo)
 		{
 			m_HurtSolution.SetObject(hurtObj);
-			m_HurtSolution.SetInterface(Cast<ICombatSolution>(hurtObj));
+			m_HurtSolution.SetInterface(dynamic_cast<ICombatSolution*>(hurtObj));
 			m_HurtSolution->Init(*hurtInfo);
 
 			// set defaul data
@@ -59,7 +59,7 @@ void UDetectMelee::BeginPlay()
 		}
 	}
 
-	m_EffectComponent = Cast<UMeleeEffect>(GetOwner()->GetComponentByClass(UMeleeEffect::StaticClass()));
+	m_EffectComponent = dynamic_cast<UMeleeEffect*>(GetOwner()->GetComponentByClass(UMeleeEffect::StaticClass()));
 }
 
 void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, EHurtType newSolution)
@@ -81,7 +81,7 @@ void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, EHurtType newSolution)
 				auto solutionObj = NewObject<UObject>(this, sRow->solutionClass);
 				m_HurtSolution.SetObject(nullptr);
 				m_HurtSolution.SetObject(solutionObj);
-				m_HurtSolution.SetInterface(Cast<ICombatSolution>(solutionObj));
+				m_HurtSolution.SetInterface(dynamic_cast<ICombatSolution*>(solutionObj));
 				m_HurtSolutionType = newSolution;
 				break;
 			}
@@ -123,7 +123,7 @@ void UDetectMelee::UpdateDetect(EDetectType type)
 				auto solutionObj = NewObject<UObject>(this, sRow->Class);
 				m_DetectSolution.SetObject(nullptr);
 				m_DetectSolution.SetObject(solutionObj);
-				m_DetectSolution.SetInterface(Cast<IDetectSolution>(solutionObj));
+				m_DetectSolution.SetInterface(dynamic_cast<IDetectSolution*>(solutionObj));
 				m_DetectSolution->Init(sRow->DetectInfo);
 				m_DetectType = type;
 				break;
@@ -293,7 +293,7 @@ void UDetectMelee::UpdateWeapon()
 	{
 		TScriptInterface<IMeleeWeapon> _weapon;
 		_weapon.SetObject(_obj);
-		_weapon.SetInterface(Cast<IMeleeWeapon>(_obj));;
+		_weapon.SetInterface(dynamic_cast<IMeleeWeapon*>(_obj));;
 		m_MeleeWeapons.Add(_weapon);
 	}
 }
