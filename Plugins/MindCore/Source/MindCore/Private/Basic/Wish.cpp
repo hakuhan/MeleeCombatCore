@@ -99,8 +99,15 @@ bool UWish::GetWishes_Implementation(TArray<FThing>& wishes)
 	return m_Data.SeekingWishes.Num() > 0;
 }
 
-void UWish::Reset_Implementation()
+void UWish::Reset()
 {
 	m_Data.SeekingWishes = m_Info.Wishes;
 	m_Data.OwnedThings.Empty();
+}
+
+void UWish::OnInit_Implementation(UMind *mind)
+{
+	Mind = mind;
+
+	Reset();
 }

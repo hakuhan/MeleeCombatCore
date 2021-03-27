@@ -24,22 +24,22 @@ public:
     UPROPERTY(EditAnywhere, meta = (MustImplement = "RememberInterface"))
     TSubclassOf<UObject> RememberClass;
     UPROPERTY(BlueprintReadWrite)
-    TScriptInterface<IRememberInterface> m_Remember;
+    TScriptInterface<IRememberInterface> Remember;
 
     UPROPERTY(EditAnywhere, meta = (MustImplement = "WishInterface"))
     TSubclassOf<UObject> WishClass;
     UPROPERTY(BlueprintReadWrite)
-    TScriptInterface<IWishInterface> m_Wish;
+    TScriptInterface<IWishInterface> Wish;
     
     UPROPERTY(EditAnywhere, meta = (MustImplement = "BehaviorInterface"))
     TSubclassOf<UObject> BehaviorClass;
     UPROPERTY(BlueprintReadWrite)
-    TScriptInterface<IBehaviorInterface> m_Behavior;
+    TScriptInterface<IBehaviorInterface> Behavior;
     
     UPROPERTY(EditAnywhere, meta = (MustImplement = "ImagineInterface"))
     TSubclassOf<UObject> ImagineClass;
     UPROPERTY(BlueprintReadWrite)
-    TScriptInterface<IImagineInterface> m_Imagine;
+    TScriptInterface<IImagineInterface> Imagine;
 
 public:
     void BeginPlay() override;
@@ -56,7 +56,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     void GetRemember_Implementation(TScriptInterface<IRememberInterface>& outRemember)
     {
-        outRemember = m_Remember;
+        outRemember = Remember;
     }
 
     template <typename T>

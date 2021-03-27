@@ -1,8 +1,8 @@
 #include "Basic/Remember.h"
 
-URemenber::URemenber()
+void URemenber::OnInit_Implementation(UMind *mind)
 {
-    m_CurrentIndex = -1;
+    Mind = mind;
 }
 
 bool URemenber::Remember_Implementation(const FMemoryFragment& target)
@@ -63,7 +63,6 @@ bool URemenber::Share_Implementation(const FString &memoryName, const TScriptInt
 
 void URemenber::Accept_Implementation(const FString &thingID, const FMemoryFragment &inMemory)
 {
-    // FMemoryFragment memory = const_cast<FMemoryFragment*>(inMemory);
     m_Memories.Add(inMemory);
 }
 

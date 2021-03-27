@@ -32,6 +32,4 @@ public:
     bool LoseThing(const FString& thingName);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
     bool GetWishes(TArray<FThing>& wishes);
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    void Reset();
 };
