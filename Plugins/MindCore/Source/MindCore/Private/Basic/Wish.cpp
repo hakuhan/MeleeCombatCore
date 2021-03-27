@@ -67,6 +67,10 @@ bool UWish::ObtainThing_Implementation(const FThing &thing)
 	{
 		m_Data.OwnedThings.Add(thing);
 	}
+	else if (thing.NeverEnding)
+	{
+		m_Data.OwnedThings[index] = thing;
+	}
 	else
 	{
 		m_Data.OwnedThings[index].Number += thing.Number;
@@ -83,6 +87,16 @@ bool UWish::LoseWish_Implementation(const FString &wishName)
 bool UWish::LoseThing_Implementation(const FString &thingName)
 {
 	return m_Data.OwnedThings.RemoveAll([&](const FThing &target) { return target.Name == thingName; }) > 0;
+}
+
+bool UWish::GetWishes_Implementation(TArray<FThing>& wishes)
+{
+	for (int i = 0; i < m_Data.SeekingWishes.Num(); ++i)
+	{
+		wishes.Add(m_Data.SeekingWishes[i]);
+	}
+
+	return m_Data.SeekingWishes.Num() > 0;
 }
 
 void UWish::Reset_Implementation()

@@ -49,5 +49,6 @@ public:
     virtual bool LoseWish_Implementation(const FString& wishName) override;
     virtual bool ObtainThing_Implementation(const FThing& thing) override;
     virtual bool LoseThing_Implementation(const FString& thingName) override;
+    virtual bool GetWishes_Implementation(TArray<FThing>& wishes);
     virtual void Reset_Implementation() override;
 };

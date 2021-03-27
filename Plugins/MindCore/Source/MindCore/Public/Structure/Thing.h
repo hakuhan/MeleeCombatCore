@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "Thing.generated.h"
 
-USTRUCT(Blueprintable)
+USTRUCT(BlueprintType)
 struct MINDCORE_API FThing
 {
     GENERATED_USTRUCT_BODY()
