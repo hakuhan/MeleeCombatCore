@@ -13,20 +13,20 @@ class MINDCORE_API UThing : public UObject
     GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     FString Name;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     FString Type;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     int Number;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     bool NeverEnding;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     FString Description;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     int Priority;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     TSubclassOf<UObject> TargetType;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Thing")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     bool Disappearance;
 };

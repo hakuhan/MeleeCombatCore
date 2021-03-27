@@ -10,23 +10,32 @@ void UMind::BeginPlay()
         m_Remember.SetObject(rememberObj);
         m_Remember.SetInterface(dynamic_cast<IRememberInterface*>(rememberObj));
     }
+
     auto wishObj = NewObject<UObject>(this, WishClass);
     if (wishObj != nullptr)
     {
-        m_Remember.SetObject(wishObj);
-        m_Remember.SetInterface(dynamic_cast<IWishInterface*>(wishObj));
+        m_Wish.SetObject(wishObj);
+        m_Wish.SetInterface(dynamic_cast<IWishInterface*>(wishObj));
+        m_Wish->Reset();
     }
+
     auto behaviorObj = NewObject<UObject>(this, BehaviorClass);
     if (behaviorObj != nullptr)
     {
-        m_Remember.SetObject(behaviorObj);
-        m_Remember.SetInterface(dynamic_cast<IBehaviorInterface*>(behaviorObj));
+        m_Behavior.SetObject(behaviorObj);
+        m_Behavior.SetInterface(dynamic_cast<IBehaviorInterface*>(behaviorObj));
     }
+
     auto imagineObj = NewObject<UObject>(this, ImagineClass);
     if (imagineObj != nullptr)
     {
-        m_Remember.SetObject(imagineObj);
-        m_Remember.SetInterface(dynamic_cast<IImagineInterface*>(imagineObj));
+        m_Imagine.SetObject(imagineObj);
+        m_Imagine.SetInterface(dynamic_cast<IImagineInterface*>(imagineObj));
+    }
+
+    if (m_Remember == nullptr || m_Wish == nullptr || m_Behavior == nullptr || m_Imagine == nullptr)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Mind should be initialized!"));
     }
 }
 

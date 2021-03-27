@@ -17,12 +17,32 @@ void UWish::UpdateWish_Implementation()
 	
 	m_Data.SeekingWishes.RemoveAll([](UThing *target) { return nullptr == target; });
 	m_Data.OwnedThings.RemoveAll([](UThing *target) { return nullptr == target; });
-	for (int i = m_Data.SeekingWishes.Num() - 1; i <= 0; --i)
+	for (int i = m_Data.SeekingWishes.Num() - 1; i >= 0; --i)
 	{
+		bool wishOver = false;
 		int index = m_Data.OwnedThings.IndexOfByPredicate([&](UThing *target) { return target->Name == m_Data.SeekingWishes[i]->Name; });
-		if (index >= 0 && m_Data.OwnedThings[index]->Number >= m_Data.SeekingWishes[i]->Number)
+		if (index >= 0)
 		{
-			m_Data.OwnedThings.Add(m_Data.SeekingWishes[i]);
+			if (!m_Data.OwnedThings[index]->NeverEnding && m_Data.OwnedThings[index]->Number >= m_Data.SeekingWishes[i]->Number)
+			{
+				wishOver = true;
+			}
+			else if (m_Data.OwnedThings[index]->NeverEnding && m_Data.OwnedThings[index]->Disappearance)
+			{
+				wishOver = true;
+			}
+		}
+		else if (m_Data.SeekingWishes[i]->Disappearance)
+		{
+			wishOver = true;
+		}
+
+		if (wishOver)
+		{
+			if (index < 0)
+			{
+				m_Data.OwnedThings.Add(m_Data.SeekingWishes[i]);
+			}
 			m_Data.SeekingWishes.RemoveAt(i);
 		}
 	}
@@ -85,5 +105,6 @@ void UWish::Reset_Implementation()
 	if (m_Info != nullptr)
 	{
 		m_Data.SeekingWishes = m_Info->Wishes;
+		m_Data.OwnedThings.Empty();
 	}
 }
