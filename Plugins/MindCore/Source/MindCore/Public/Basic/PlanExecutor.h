@@ -18,9 +18,9 @@ class MINDCORE_API UplanItem : public UExecutorItem
     GENERATED_BODY()
 public:
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    TArray<UThing*> Preconditions;
+    TArray<FThing> Preconditions;
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    TArray<UThing*> Targets;
+    TArray<FThing> Targets;
 };
 
 UCLASS(Blueprintable)

@@ -5,17 +5,17 @@ URemenber::URemenber()
     m_CurrentIndex = -1;
 }
 
-bool URemenber::Remember_Implementation(const UMemoryFragment* target)
+bool URemenber::Remember_Implementation(const FMemoryFragment& target)
 {
-    if (!m_Memories.Contains(target))
+    if (FindIndex(target.Name) < 0)
     {
-        m_Memories.Add(const_cast<UMemoryFragment*>(target));
+        m_Memories.Add(target);
         return true;
     }
     return false;
 }
 
-bool URemenber::Remind_Implementation(const FString& thingID, UMemoryFragment *outfragment)
+bool URemenber::Remind_Implementation(const FString& thingID, FMemoryFragment &outfragment)
 {
     bool result = false;
     int targetIndex = FindIndex(thingID);
@@ -51,7 +51,7 @@ bool URemenber::Share_Implementation(const FString &memoryName, const TScriptInt
     if (targetIndex >= 0 && target.GetObject() != nullptr)
     {
         // Get memory
-        UMemoryFragment *memoryFragment = m_Memories[targetIndex];
+        FMemoryFragment memoryFragment = m_Memories[targetIndex];
 
         // Send
         target->Accept(memoryName, memoryFragment);
@@ -61,10 +61,10 @@ bool URemenber::Share_Implementation(const FString &memoryName, const TScriptInt
     return result;
 }
 
-void URemenber::Accept_Implementation(const FString &thingID, const UMemoryFragment *inMemory)
+void URemenber::Accept_Implementation(const FString &thingID, const FMemoryFragment &inMemory)
 {
-    UMemoryFragment* memory = const_cast<UMemoryFragment*>(inMemory);
-    m_Memories.Add(memory);
+    // FMemoryFragment memory = const_cast<FMemoryFragment*>(inMemory);
+    m_Memories.Add(inMemory);
 }
 
 void URemenber::Clean()
@@ -74,7 +74,7 @@ void URemenber::Clean()
 
 int URemenber::FindIndex(const FString& memoryName)
 {
-    return m_Memories.IndexOfByPredicate([&](UMemoryFragment* memory){
-        return memory->Name == memoryName;
+    return m_Memories.IndexOfByPredicate([&](const FMemoryFragment& memory){
+        return memory.Name == memoryName;
     });
 }

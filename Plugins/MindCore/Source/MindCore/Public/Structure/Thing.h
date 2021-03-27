@@ -7,12 +7,11 @@
 #include "CoreMinimal.h"
 #include "Thing.generated.h"
 
-UCLASS(Blueprintable)
-class MINDCORE_API UThing : public UObject
+USTRUCT(Blueprintable)
+struct MINDCORE_API FThing
 {
-    GENERATED_BODY()
+    GENERATED_USTRUCT_BODY()
 
-public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     FString Name;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")

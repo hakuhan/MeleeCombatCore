@@ -20,24 +20,13 @@ enum class EBehaviorState : uint8
 };
 
 UCLASS(BlueprintType)
-class MINDCORE_API UMindBehaviorInfo : public UThing
-{
-    GENERATED_BODY()
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UThing* m_Wish;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    EBehaviorState m_State;
-};
-
-UCLASS(BlueprintType)
 class MINDCORE_API UBehavior : public UObject, public IBehaviorInterface
 {
     GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    UMindBehaviorInfo* m_Info;
+    UPROPERTY(VisibleAnywhere, BlueprintReadwrite)
+    EBehaviorState m_State;
 
 public:
     virtual void Behave_Implementation() override;

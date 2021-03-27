@@ -19,21 +19,21 @@ class MINDCORE_API URemenber : public UObject, public IRememberInterface
 
 public:
     UPROPERTY(BlueprintReadWrite)
-    TArray<UMemoryFragment*> m_Memories;
+    TArray<FMemoryFragment> m_Memories;
     int m_CurrentIndex;
 
 public:
     URemenber();
 
-    virtual bool Remember_Implementation(const UMemoryFragment *target) override;
+    virtual bool Remember_Implementation(const FMemoryFragment &target) override;
 
-    virtual bool Remind_Implementation(const FString& thingID, UMemoryFragment *outfragment) override;
+    virtual bool Remind_Implementation(const FString& thingID, FMemoryFragment &outfragment) override;
 
     virtual bool Forget_Implementation(const FString &thingID) override;
 
     virtual bool Share_Implementation(const FString &thingID, const TScriptInterface<IRememberInterface> &target) override;
 
-    virtual void Accept_Implementation(const FString &thingID, const UMemoryFragment *inMemory) override;
+    virtual void Accept_Implementation(const FString &thingID, const FMemoryFragment &inMemory) override;
 
     void Clean();
 

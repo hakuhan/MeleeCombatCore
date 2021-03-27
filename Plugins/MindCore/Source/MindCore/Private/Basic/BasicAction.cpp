@@ -15,7 +15,7 @@ void UBasicAction::FinishAction_Implementation()
 
 }
 
-void UBasicAction::Init(UActionInfo* info)
+void UBasicAction::Init(const FActionInfo& info)
 {
     m_Info = info;
 }

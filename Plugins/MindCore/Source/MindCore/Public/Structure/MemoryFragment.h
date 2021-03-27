@@ -6,9 +6,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 #include "Structure/Thing.h"
-
 #include "MemoryFragment.generated.h"
 
 UENUM(BlueprintType)
@@ -23,14 +21,15 @@ enum class EMemoryState : uint8
     Memory_Sad UMETA(DisplayName="Sad"),
 };
 
-UCLASS(Blueprintable)
-class MINDCORE_API UMemoryFragment : public UThing
+USTRUCT(BlueprintType)
+struct FMemoryFragment
 {
-    GENERATED_BODY()
+    GENERATED_USTRUCT_BODY()
 
-public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
+    FString Name;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
     EMemoryState memoryState;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
-    TArray<UThing*> things;
+    TArray<FThing> things;
 };

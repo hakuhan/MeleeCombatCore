@@ -11,10 +11,10 @@ class MINDCORE_API UExecutor : public UObject, public IBehaviorExecutorInterface
     GENERATED_BODY()
 public:
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    UExecutorInfo* m_Info;
+    FExecutorInfo m_Info;
 
     UFUNCTION(BlueprintCallable)
-    void Init(UExecutorInfo* info)
+    void Init(const FExecutorInfo& info)
     {
         m_Info = info;
     }

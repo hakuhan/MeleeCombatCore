@@ -23,9 +23,10 @@ enum class EExecuteState : uint8
 };
 
 UCLASS(Blueprintable)
-class MINDCORE_API UExecutorItem : public UThing
+class MINDCORE_API UExecutorItem : public UObject
 {
     GENERATED_BODY()
+
 public:
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
     EExecuteType ExecuteType;
@@ -37,13 +38,13 @@ public:
     EExecuteState State;
 };
 
-UCLASS(Blueprintable)
-class MINDCORE_API UExecutorInfo : public UThing
+USTRUCT(BlueprintType)
+struct MINDCORE_API FExecutorInfo
 {
-    GENERATED_BODY()
-public:
+    GENERATED_USTRUCT_BODY()
+
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    UThing* Target;
+    FThing Target;
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
     TArray<UExecutorItem*> ExecuteList;
 };
