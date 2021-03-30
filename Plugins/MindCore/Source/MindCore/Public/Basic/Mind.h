@@ -12,6 +12,7 @@
 #include "Core/BehaviorInterface.h"
 #include "Core/ImagineInterface.h"
 #include "Core/RememberInterface.h"
+#include "Core/MindComponentInterface.h"
 
 #include "Mind.generated.h"
 
@@ -49,7 +50,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     virtual void DoWish_Implementation() override;
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")
-    virtual void DoPlan_Implementation() override;
+    virtual void DoBehavior_Implementation() override;
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     virtual void DoImagine_Implementation() override;
 
@@ -67,7 +68,7 @@ public:
         if (interface == nullptr || interface.GetObject() == nullptr)
         {
             result = false;
-            UE_LOG(LogTemp, Warning, TEXT("Mind Interface mission: %s"), typeid(T).name());
+            UE_LOG(LogTemp, Warning, TEXT("Mind component mission: %s"), typeid(T).name());
         }
 
         return result;

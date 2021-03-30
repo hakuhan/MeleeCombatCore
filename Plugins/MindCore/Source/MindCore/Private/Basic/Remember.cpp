@@ -25,6 +25,12 @@ bool URemenber::Remind_Implementation(const FString& thingID, FMemoryFragment &o
         result = true;
         outfragment = m_Memories[targetIndex];
     }
+    else
+    {
+        outfragment = FMemoryFragment();
+        outfragment.Name = thingID;
+        outfragment.Type = EMemoryType::Memory_Empty;
+    }
 
     return result;
 }

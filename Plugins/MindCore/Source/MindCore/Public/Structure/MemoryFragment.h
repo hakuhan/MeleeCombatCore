@@ -10,7 +10,7 @@
 #include "MemoryFragment.generated.h"
 
 UENUM(BlueprintType)
-enum class EMemoryState : uint8
+enum class EMemoryType : uint8
 {
     Memory_Empty UMETA(DisplayName="Empty"),
     Memory_Creating UMETA(DisplayName="Creating"),
@@ -29,7 +29,7 @@ struct FMemoryFragment
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
     FString Name;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
-    EMemoryState memoryState;
+    EMemoryType Type;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory")
-    TArray<FThing> things;
+    FThing Target;
 };

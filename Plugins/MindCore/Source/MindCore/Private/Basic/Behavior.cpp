@@ -1,21 +1,145 @@
 #include "Basic/Behavior.h"
 
+// TODO implement
 void UBehavior::Behave_Implementation()
 {
-    // Check current state
-    if (m_State != EBehaviorState::BEHAVIOR_EXECUTING)
-    {
-        // Get wishes
+    CreateBehavior();
 
-        // Find Executor to execute
+    UpdateBehavior();
 
-    }
+    ExecuteBehavior();
+}
 
-
-    // Update state
+EBehaviorState UBehavior::GetState_Implementation()
+{
+    return EBehaviorState::BEHAVIOR_READY;
 }
 
 void UBehavior::OnStop_Implementation()
 {
+    for (int i = 0; i < Behaviors.Num(); ++i)
+    {
+        UExecutor *executor = dynamic_cast<UExecutor *>(Behaviors[i].Executor.GetObject());
+        if (executor)
+        {
+            executor->Stop();
+        }
+    }
+}
 
+void UBehavior::CreateBehavior()
+{
+    // Get wishes
+    TArray<FThing> Wishes;
+    Mind->Wish->GetWishes(Wishes);
+
+    // Find Executor to execute
+    for (int i = 0; i < Wishes.Num(); ++i)
+    {
+        int behaviorIndex = Behaviors.IndexOfByPredicate([&](const FBehaviorItem &Item) { return Item.Target.Name == Wishes[i].Name; });
+        if (behaviorIndex < 0)
+        {
+            // Create executor and run
+            UExecutor *executor = NewObject<UExecutor>(this, ExecutorClass);
+            if (executor == nullptr)
+            {
+                UE_LOG(LogTemp, Error, TEXT("Exector cannot be instanced!"))
+            }
+            else
+            {
+                executor->Init(Wishes[i]);
+                executor->OnObtainThings.BindUObject(this, &UBehavior::ObtainThing);
+
+                IBehaviorExecutorInterface::Execute_CreateBehavior(executor);
+                FBehaviorItem item;
+                item.Target = Wishes[i];
+                item.Executor.SetInterface(dynamic_cast<IBehaviorExecutorInterface *>(executor));
+                item.Executor.SetObject(executor);
+                item.State = EBehaviorState::BEHAVIOR_READY;
+                Behaviors.Add(item);
+            }
+        }
+        else
+        {
+            // Update executor
+            Behaviors[behaviorIndex].Executor->UpdateBehavior();
+        }
+    }
+}
+
+void UBehavior::UpdateBehavior()
+{
+    for (int j = 0; j < Behaviors.Num(); ++j)
+    {
+        auto state = Behaviors[j].Executor->GetExecuteState();
+
+        bool needRemember = false;
+        EMemoryType rememberType;
+        switch (state)
+        {
+        case EExecutorState::EXECUTOR_SUCCESS:
+        {
+            // Remember
+            needRemember = true;
+            rememberType = EMemoryType::Memory_Satisfy;
+
+            // Update wish
+            Mind->Wish->ObtainThing(Behaviors[j].Target);
+        }
+        break;
+
+        case EExecutorState::EXECUTOR_FAILED:
+        {
+            // Remember
+            needRemember = true;
+            rememberType = EMemoryType::Memory_Sad;
+        }
+        break;
+        }
+
+        if (needRemember)
+        {
+            TScriptInterface<IRememberInterface> remember;
+            Mind->GetRemember(remember);
+            FMemoryFragment memory;
+            remember->Remind(Behaviors[j].Target.Name, memory);
+            memory.Target = Behaviors[j].Target;
+
+            memory.Type = rememberType;
+            // TODO remember executor chain
+
+            remember->Remember(memory);
+        }
+    }
+}
+
+void UBehavior::ExecuteBehavior()
+{
+    if (Behaviors.Num() <= 0)
+    {
+        return;
+    }
+
+    // Find Target Behavior
+    int priority = 0;
+    int targetIndex = 0;
+    for (int i = 0; i < Behaviors.Num(); ++i)
+    {
+        if (priority < Behaviors[i].Target.Priority)
+        {
+            targetIndex = i;
+            priority = Behaviors[i].Target.Priority;
+        }
+    }
+
+    // Execute
+    Behaviors[targetIndex].Executor->ExecuteBehavior();
+}
+
+void UBehavior::ObtainThing(const TArray<FThing> &things)
+{
+    for (auto thing : things)
+    {
+        Mind->Wish->ObtainThing(thing);
+    }
 }

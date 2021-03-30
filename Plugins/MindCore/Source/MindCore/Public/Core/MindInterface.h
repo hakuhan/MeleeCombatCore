@@ -19,7 +19,7 @@ public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
     void DoWish();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
-    void DoPlan();
+    void DoBehavior();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
     void DoImagine();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")

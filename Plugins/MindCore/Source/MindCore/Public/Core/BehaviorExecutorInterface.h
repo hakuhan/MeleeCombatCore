@@ -6,7 +6,17 @@
 
 #pragma once
 
+#include "Structure/Thing.h"
 #include "BehaviorExecutorInterface.generated.h"
+
+UENUM(BlueprintType)
+enum class EExecutorState : uint8
+{
+    EXECUTOR_READY UMETA(DisplayName="Ready"),
+    EXECUTOR_EXECUTING UMETA(DisplayName="Executing"),
+    EXECUTOR_FAILED UMETA(DisplayName="Failed"),
+    EXECUTOR_SUCCESS UMETA(DisplayName="Success"),
+};
 
 UINTERFACE(Blueprintable)
 class MINDCORE_API UBehaviorExecutorInterface : public UInterface
@@ -25,5 +35,5 @@ public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
     void ExecuteBehavior();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
-    void GetExecuteState();
+    EExecutorState GetExecuteState();
 };
