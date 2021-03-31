@@ -8,6 +8,18 @@ void UMind::BeginPlay()
     auto wishObj = NewObject<UObject>(this, WishClass);
     auto behaviorObj = NewObject<UObject>(this, BehaviorClass);
     auto imagineObj = NewObject<UObject>(this, ImagineClass);
+    for (int i = 0; i < ActionClasses.Num(); ++i)
+    {
+        auto actionObj = NewObject<UObject>(this, ActionClasses[i]);
+        TScriptInterface<IActionInterface> action;
+        if (actionObj)
+        {
+            action.SetObject(actionObj);
+            action.SetInterface(dynamic_cast<IActionInterface *>(actionObj));
+            action->Init(GetOwner());
+            Actions.Add(action);
+        }
+    }
 
     if (Remember == nullptr || Wish == nullptr || Behavior == nullptr || Imagine == nullptr)
     {
@@ -50,6 +62,7 @@ void UMind::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+    UpdateActions();
     DoWish();
     DoBehavior();
     DoImagine();
@@ -74,4 +87,28 @@ void UMind::DoBehavior_Implementation()
 void UMind::DoImagine_Implementation()
 {
     Imagine->Imaging();
+}
+
+void UMind::UpdateActions()
+{
+    // Check components
+    auto comp = GetOwner()->GetComponentsByInterface(UActionInterface::StaticClass());
+    for (int i = 0; i < comp.Num(); ++i)
+    {
+        Actions.AddUnique(comp[i]);
+    }
+
+    // Check self
+    if (GetOwner()->GetClass()->ImplementsInterface(UActionInterface::StaticClass()))
+    {
+        Actions.AddUnique(this);
+    }
+
+    for (int i = Actions.Num() - 1; i >= 0; ++i)
+    {
+        if (Actions[i] == nullptr)
+        {
+            Actions.RemoveAt(i);
+        }
+    }
 }

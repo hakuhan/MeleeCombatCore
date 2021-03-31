@@ -47,7 +47,7 @@ class MINDCORE_API UExecutor : public UObject, public IBehaviorExecutorInterface
 public:
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
     FThing Target;
-    UPROPERTY(EditAnywhere, BlueprintReadwrite)
+    UPROPERTY(EditAnywhere, BlueprintReadwrite) 
     FExecutorData m_Data;
 
     FObtainThingDelegate OnObtainThings;
