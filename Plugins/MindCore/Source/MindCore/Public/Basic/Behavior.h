@@ -58,5 +58,5 @@ public:
     virtual void CreateBehavior();
     virtual void UpdateBehavior();
     virtual void ExecuteBehavior();
-    virtual void ObtainThing(const TArray<FThing>& things);
+    virtual void ObtainThing(const FThing& thing);
 };

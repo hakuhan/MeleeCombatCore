@@ -29,10 +29,8 @@ struct MINDCORE_API FThing
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     bool Disappearance;
 
-    static FThing Empty;
-
     FThing()
-        : Name("Empty")
+        : Name("Nothing")
     {
     }
 
@@ -44,5 +42,10 @@ struct MINDCORE_API FThing
     friend bool operator==(const FThing& Lhs, const FThing& Rhs)
     {
         return Lhs.Name == Rhs.Name && Lhs.Type == Rhs.Type;
+    }
+
+    friend bool operator!=(const FThing& Lhs, const FThing& Rhs)
+    {
+        return !(Lhs == Rhs);
     }
 };

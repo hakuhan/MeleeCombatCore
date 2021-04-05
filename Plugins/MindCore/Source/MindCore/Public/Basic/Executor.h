@@ -5,10 +5,98 @@
 #include "Core/ActionInterface.h"
 #include "Basic/Mind.h"
 #include "Structure/BehaviorEvent.h"
+#include "Structure/Thing.h"
 #include "Executor.generated.h"
 
 class UMind;
-DECLARE_DELEGATE_OneParam(FObtainThingDelegate, const TArray<FThing> &)
+DECLARE_DELEGATE_OneParam(FObtainThingDelegate, const FThing &)
+
+USTRUCT(BlueprintType)
+struct FWay
+{
+    GENERATED_USTRUCT_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<FBehaviorEvent> Behaviors;
+
+    FWay()
+    { }
+
+    FWay(TArray<FBehaviorEvent> hehavior)
+        : Behaviors(hehavior)
+    { }
+
+    void Empty()
+    {
+        Behaviors.Empty();
+    }
+
+    bool GetLastCondition(FThing& outCondition)
+    {
+        if (Behaviors.Num() > 0)
+        {
+            outCondition = Behaviors[Behaviors.Num() - 1].Condition;
+        }
+        return Behaviors.Num() > 0;
+    }
+
+    bool GetBehavior(int index, FBehaviorEvent& outBehavior)
+    {
+        if (index < Behaviors.Num() && index >= 0)
+        {
+            outBehavior = Behaviors[index];
+            return true;
+        }
+
+        return false;
+    }
+
+    bool IsLastBehavior(int index)
+    {
+        return index == Behaviors.Num() - 1;
+    }
+
+    bool IsLastAction(int behaviorIndex, int actionIndex)
+    {
+        if (behaviorIndex >= Behaviors.Num())
+        {
+            UE_LOG(LogTemp, Error, TEXT("Behavior index out of range when tring to find action of target behavior"))
+            return true;
+        }
+        return Behaviors[behaviorIndex].ActionSequenceClasses.Num() == actionIndex;
+    }
+
+    bool GetActionClass(int behaviorIndex, int actionIndex, TSubclassOf<UObject>& outClass)
+    {
+        if (behaviorIndex >=0 && behaviorIndex < Behaviors.Num())
+        {
+            if (actionIndex >= 0 && actionIndex < Behaviors[behaviorIndex].ActionSequenceClasses.Num())
+            {
+                outClass = Behaviors[behaviorIndex].ActionSequenceClasses[actionIndex];
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    int GetCost()
+    {
+        int cost = 0;
+
+        for (int i = 0; i < Behaviors.Num(); ++i)
+        {
+            cost += (int)Behaviors[i].Cost;
+        }
+
+        return cost;
+    }
+
+    friend bool operator==(const FWay& l, const FWay& r)
+    {
+        return l.Behaviors == r.Behaviors;
+    }
+};
 
 USTRUCT(BlueprintType) 
 struct FExecutorData
@@ -18,13 +106,15 @@ struct FExecutorData
     UPROPERTY(VisibleAnywhere, BlueprintReadwrite)
     FThing Target;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-    TArray<FBehaviorEvent> Ways;
+    FWay Way;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     EExecutorState State;
     UPROPERTY(BlueprintReadwrite)
-    TArray<TScriptInterface<IActionInterface>> Actions;
-    UPROPERTY(BlueprintReadwrite)
-    bool bNeedRefreshActions;
+    TArray<TScriptInterface<IActionInterface>> Behaviors;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    int BehaviorIndex;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    int ActionIndex;
 };
 
 UCLASS(Blueprintable)
@@ -53,15 +143,28 @@ public:
     virtual void Stop();
 
     UFUNCTION(BlueprintCallable)
-    void OnOwnThing(const TArray<FThing> &things)
+    void OnOwnThing(const FThing &things)
     {
         OnObtainThings.ExecuteIfBound(things);
     }
 
-    // Find a way to reach target
+    // Find best way to reach target
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    bool FindWay(FThing target, TArray<FBehaviorEvent>& ways);
-    // virtual bool FindWay(FThing target, TArray<FBehaviorEvent>& ways);
+    bool FindWay(FThing target, FWay& ways);
+    virtual bool FindWay_Implementation(FThing target, FWay& way);
+    // Get all ways of target
+    UFUNCTION(BlueprintCallable)
+    bool GetAllWays(FThing target, TArray<FWay>& ways);
+    // Get all situation of one target directly
+    UFUNCTION(BlueprintCallable)
+    bool GetAllSituation(FThing target, TArray<FBehaviorEvent>& situation, const FBehaviorEvent& excludeBehavior);
+    void AddSituation(TArray<FWay>& Total, TArray<FBehaviorEvent> situations, FWay preCondition = FWay());
+    
+    #pragma region action
+    UFUNCTION(BlueprintCallable)
+    bool CreateAction(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass, int placeActionIndex = -1);
+
+    #pragma endregion
 
 #pragma region IExecutor implement
     virtual void CreateBehavior_Implementation() override;

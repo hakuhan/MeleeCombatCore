@@ -121,10 +121,7 @@ void UBehavior::ExecuteBehavior()
     Behaviors[targetIndex].Executor->ExecuteBehavior();
 }
 
-void UBehavior::ObtainThing(const TArray<FThing> &things)
+void UBehavior::ObtainThing(const FThing &thing)
 {
-    for (auto thing : things)
-    {
-        Mind->Wish->ObtainThing(thing);
-    }
+    Mind->Wish->ObtainThing(thing);
 }
