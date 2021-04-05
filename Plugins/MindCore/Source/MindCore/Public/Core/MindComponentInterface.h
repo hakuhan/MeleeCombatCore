@@ -1,6 +1,7 @@
 #pragma once
-#include "Basic/Mind.h"
 #include "MindComponentInterface.generated.h"
+
+class UMind;
 
 UINTERFACE(Blueprintable)
 class MINDCORE_API UMindComponentInterface : public UInterface
@@ -13,8 +14,8 @@ class MINDCORE_API IMindComponentInterface
     GENERATED_BODY()
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
-    void OnInit(UMind* mind);
-  
+    void OnInit(UMind *mind);
+
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
     void OnStop();
 };

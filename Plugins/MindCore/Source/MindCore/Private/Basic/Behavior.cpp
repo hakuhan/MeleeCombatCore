@@ -47,7 +47,7 @@ void UBehavior::CreateBehavior()
             }
             else
             {
-                executor->Init(Wishes[i]);
+                executor->Init(Wishes[i], Mind);
                 executor->OnObtainThings.BindUObject(this, &UBehavior::ObtainThing);
 
                 IBehaviorExecutorInterface::Execute_CreateBehavior(executor);
@@ -73,42 +73,23 @@ void UBehavior::UpdateBehavior()
     {
         auto state = Behaviors[j].Executor->GetExecuteState();
 
-        bool needRemember = false;
-        EMemoryType rememberType;
-        switch (state)
-        {
-        case EExecutorState::EXECUTOR_SUCCESS:
+        if (state == EExecutorState::EXECUTOR_FINISH)
         {
             // Remember
-            needRemember = true;
-            rememberType = EMemoryType::Memory_Satisfy;
-
-            // Update wish
-            Mind->Wish->ObtainThing(Behaviors[j].Target);
-        }
-        break;
-
-        case EExecutorState::EXECUTOR_FAILED:
-        {
-            // Remember
-            needRemember = true;
-            rememberType = EMemoryType::Memory_Sad;
-        }
-        break;
-        }
-
-        if (needRemember)
-        {
             TScriptInterface<IRememberInterface> remember;
             Mind->GetRemember(remember);
             FMemoryFragment memory;
             remember->Remind(Behaviors[j].Target.Name, memory);
             memory.Target = Behaviors[j].Target;
 
-            memory.Type = rememberType;
+            memory.Type = EMemoryType::Memory_Insensible;
             // TODO remember executor chain
 
             remember->Remember(memory);
+
+            // Update wish
+            Mind->Wish->ObtainThing(Behaviors[j].Target);
+
         }
     }
 }
@@ -127,8 +108,12 @@ void UBehavior::ExecuteBehavior()
     {
         if (priority < Behaviors[i].Target.Priority)
         {
-            targetIndex = i;
-            priority = Behaviors[i].Target.Priority;
+            auto state = Behaviors[i].Executor->GetExecuteState();
+            if (state == EExecutorState::EXECUTOR_READY || state == EExecutorState::EXECUTOR_EXECUTING)
+            {
+                targetIndex = i;
+                priority = Behaviors[i].Target.Priority;
+            }
         }
     }
 

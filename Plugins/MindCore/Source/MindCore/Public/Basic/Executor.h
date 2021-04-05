@@ -3,41 +3,28 @@
 #include "CoreMinimal.h"
 #include "Core/BehaviorExecutorInterface.h"
 #include "Core/ActionInterface.h"
+#include "Basic/Mind.h"
+#include "Structure/BehaviorEvent.h"
 #include "Executor.generated.h"
 
-DECLARE_DELEGATE_OneParam(FObtainThingDelegate, const TArray<FThing>&)
+class UMind;
+DECLARE_DELEGATE_OneParam(FObtainThingDelegate, const TArray<FThing> &)
 
-UENUM(BlueprintType)
-enum class EExecuteType : uint8
-{
-    EXECUTE_ACTION UMETA(DisplayName="Action"),
-    EXECUTE_EXECUTOR UMETA(DisplayName="Executor"),
-};
-
-USTRUCT(BlueprintType)
-struct MINDCORE_API FBehaviorEvent
-{
-    GENERATED_USTRUCT_BODY()
-
-    UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    TArray<FThing> Conditions;
-    UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    TArray<FThing> Rewards;
-    UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    EExecuteType ExecuteType;
-    UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    TArray<TScriptInterface<IActionInterface>> ActionSequence;
-    UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    TScriptInterface<IBehaviorExecutorInterface> Executor;
-};
-
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType) 
 struct FExecutorData
 {
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Executor)
-    TArray<FBehaviorEvent> BehaviorList;
+    UPROPERTY(VisibleAnywhere, BlueprintReadwrite)
+    FThing Target;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    TArray<FBehaviorEvent> Ways;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    EExecutorState State;
+    UPROPERTY(BlueprintReadwrite)
+    TArray<TScriptInterface<IActionInterface>> Actions;
+    UPROPERTY(BlueprintReadwrite)
+    bool bNeedRefreshActions;
 };
 
 UCLASS(Blueprintable)
@@ -45,28 +32,41 @@ class MINDCORE_API UExecutor : public UObject, public IBehaviorExecutorInterface
 {
     GENERATED_BODY()
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    FThing Target;
-    UPROPERTY(EditAnywhere, BlueprintReadwrite) 
+    UPROPERTY()
+    UMind* m_Mind;
+    UPROPERTY(VisibleAnywhere, BlueprintReadwrite)
     FExecutorData m_Data;
+    UPROPERTY(BlueprintReadWrite)
+    TArray<FBehaviorEvent> Behaviors;
 
     FObtainThingDelegate OnObtainThings;
 
-    virtual void Init(const FThing& thing)
+    UFUNCTION(BlueprintNativeEvent)
+    void Init(const FThing &thing, UMind* mind);
+    virtual void Init_Implementation(const FThing &thing, UMind* mind)
     {
-        Target = thing;
+        m_Data.Target = thing;
+        m_Data.State = EExecutorState::EXECUTOR_WAITING;
+        m_Mind = mind;
     }
 
     virtual void Stop();
 
     UFUNCTION(BlueprintCallable)
-    void OnOwnThing(const TArray<FThing>& things)
+    void OnOwnThing(const TArray<FThing> &things)
     {
         OnObtainThings.ExecuteIfBound(things);
     }
 
+    // Find a way to reach target
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    bool FindWay(FThing target, TArray<FBehaviorEvent>& ways);
+    // virtual bool FindWay(FThing target, TArray<FBehaviorEvent>& ways);
+
+#pragma region IExecutor implement
     virtual void CreateBehavior_Implementation() override;
     virtual void UpdateBehavior_Implementation() override;
     virtual void ExecuteBehavior_Implementation() override;
     virtual EExecutorState GetExecuteState_Implementation() override;
+#pragma endregion
 };

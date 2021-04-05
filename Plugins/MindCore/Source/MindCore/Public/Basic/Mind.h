@@ -14,7 +14,7 @@
 #include "Core/RememberInterface.h"
 #include "Core/ActionInterface.h"
 #include "Core/MindComponentInterface.h"
-
+#include "Structure/BehaviorEvent.h"
 #include "Mind.generated.h"
 
 UCLASS(Blueprintable, ClassGroup = (Mind), meta = (BlueprintSpawnableComponent))
@@ -42,11 +42,6 @@ public:
     TSubclassOf<UObject> ImagineClass;
     UPROPERTY(BlueprintReadWrite)
     TScriptInterface<IImagineInterface> Imagine;
-
-    UPROPERTY(EditAnywhere, meta = (MustImplement = "ActionInterface"))
-    TArray<TSubclassOf<UObject>> ActionClasses; 
-    UPROPERTY(BlueprintReadWrite)
-    TArray<TScriptInterface<IActionInterface>> Actions;
 
 public:
     void BeginPlay() override;
@@ -79,7 +74,4 @@ public:
 
         return result;
     }
-
-    UFUNCTION(BlueprintCallable)
-    void UpdateActions();
 };

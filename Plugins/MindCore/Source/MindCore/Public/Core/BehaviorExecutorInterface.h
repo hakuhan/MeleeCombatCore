@@ -14,8 +14,8 @@ enum class EExecutorState : uint8
 {
     EXECUTOR_READY UMETA(DisplayName="Ready"),
     EXECUTOR_EXECUTING UMETA(DisplayName="Executing"),
-    EXECUTOR_FAILED UMETA(DisplayName="Failed"),
-    EXECUTOR_SUCCESS UMETA(DisplayName="Success"),
+    EXECUTOR_WAITING UMETA(DisplayName="Waiting"),
+    EXECUTOR_FINISH UMETA(DisplayName="Finish"),
 };
 
 UINTERFACE(Blueprintable)

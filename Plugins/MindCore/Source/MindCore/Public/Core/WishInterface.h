@@ -25,11 +25,13 @@ public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
     void UpdateWish();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    bool LoseWish(const FString& wishName);
+    bool LoseWish(const FThing& wish);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
     bool ObtainThing(const FThing& thing);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
-    bool LoseThing(const FString& thingName);
+    bool LoseThing(const FThing& thing);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
     bool GetWishes(TArray<FThing>& wishes);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
+    bool CheckThingOwned(const FThing& wishName);
 };

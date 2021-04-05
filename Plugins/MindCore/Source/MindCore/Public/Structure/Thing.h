@@ -28,4 +28,21 @@ struct MINDCORE_API FThing
     TSubclassOf<UObject> TargetType;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     bool Disappearance;
+
+    static FThing Empty;
+
+    FThing()
+        : Name("Empty")
+    {
+    }
+
+    static const FThing EmptyThing()
+    {
+        return FThing();
+    }
+
+    friend bool operator==(const FThing& Lhs, const FThing& Rhs)
+    {
+        return Lhs.Name == Rhs.Name && Lhs.Type == Rhs.Type;
+    }
 };

@@ -79,14 +79,14 @@ bool UWish::ObtainThing_Implementation(const FThing &thing)
 	return true;
 }
 
-bool UWish::LoseWish_Implementation(const FString &wishName)
+bool UWish::LoseWish_Implementation(const FThing &wish)
 {
-	return m_Data.SeekingWishes.RemoveAll([&](const FThing &target) { return target.Name == wishName; }) > 0;
+	return m_Data.SeekingWishes.RemoveAll([&](const FThing &target) { return target == wish; }) > 0;
 }
 
-bool UWish::LoseThing_Implementation(const FString &thingName)
+bool UWish::LoseThing_Implementation(const FThing &thing)
 {
-	return m_Data.OwnedThings.RemoveAll([&](const FThing &target) { return target.Name == thingName; }) > 0;
+	return m_Data.OwnedThings.RemoveAll([&](const FThing &target) { return target == thing; }) > 0;
 }
 
 bool UWish::GetWishes_Implementation(TArray<FThing>& wishes)
@@ -97,6 +97,11 @@ bool UWish::GetWishes_Implementation(TArray<FThing>& wishes)
 	}
 
 	return m_Data.SeekingWishes.Num() > 0;
+}
+
+bool UWish::CheckThingOwned_Implementation(const FThing& thing)
+{
+	return m_Data.OwnedThings.Contains(thing);
 }
 
 void UWish::Reset()

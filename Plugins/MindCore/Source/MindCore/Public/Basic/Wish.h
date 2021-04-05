@@ -27,9 +27,9 @@ struct FWishData
 {
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MindCore)
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MindCore)
     TArray<FThing> OwnedThings;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MindCore)
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MindCore)
     TArray<FThing> SeekingWishes;
 };
 
@@ -40,7 +40,7 @@ class MINDCORE_API UWish : public UObject, public IWishInterface, public IMindCo
 public:
     UPROPERTY(BlueprintReadOnly)
     UMind *Mind;
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UPROPERTY(BlueprintReadWrite)
     FWishInfo m_Info;
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     FWishData m_Data;
@@ -52,10 +52,11 @@ public:
 #pragma region wish interface
     virtual bool CreateWish_Implementation(const FThing &wish) override;
     virtual void UpdateWish_Implementation() override;
-    virtual bool LoseWish_Implementation(const FString &wishName) override;
+    virtual bool LoseWish_Implementation(const FThing &wish) override;
     virtual bool ObtainThing_Implementation(const FThing &thing) override;
-    virtual bool LoseThing_Implementation(const FString &thingName) override;
+    virtual bool LoseThing_Implementation(const FThing &thing) override;
     virtual bool GetWishes_Implementation(TArray<FThing> &wishes) override;
+    virtual bool CheckThingOwned_Implementation(const FThing& thing) override;
 #pragma endregion
 
 #pragma region mind component
