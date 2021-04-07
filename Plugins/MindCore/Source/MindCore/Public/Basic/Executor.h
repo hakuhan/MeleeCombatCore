@@ -10,6 +10,7 @@
 
 class UMind;
 DECLARE_DELEGATE_OneParam(FObtainThingDelegate, const FThing &)
+DECLARE_DELEGATE_OneParam(FUseThingDelegate, const FThing &)
 
 USTRUCT(BlueprintType)
 struct FWay
@@ -98,6 +99,43 @@ struct FWay
     }
 };
 
+USTRUCT(BlueprintType)
+struct FActionData
+{
+    GENERATED_USTRUCT_BODY()
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    TArray<TScriptInterface<IActionInterface>> Actions;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    int ActionIndex;
+
+    void Reset()
+    {
+        ActionIndex = 0;
+    }
+
+    void SwitchAction()
+    {
+        ActionIndex++;
+    }
+
+    void AddAction(TScriptInterface<IActionInterface> action)
+    {
+        Actions.Add(action);
+    }
+
+    bool GetCurrentAction(TScriptInterface<IActionInterface>& action)
+    {
+        if (ActionIndex >= 0 && ActionIndex < Actions.Num())
+        {
+            action = Actions[ActionIndex];
+            return true;
+        }
+
+        return false;
+    }
+};
+
 USTRUCT(BlueprintType) 
 struct FExecutorData
 {
@@ -110,11 +148,69 @@ struct FExecutorData
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     EExecutorState State;
     UPROPERTY(BlueprintReadwrite)
-    TArray<TScriptInterface<IActionInterface>> Behaviors;
+    TArray<FActionData> Behaviors;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     int BehaviorIndex;
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-    int ActionIndex;
+
+    bool GetCurrentBehavior(FActionData& outBehavior)
+    {
+        if (BehaviorIndex >= 0 && BehaviorIndex < Behaviors.Num())
+        {
+            outBehavior = Behaviors[BehaviorIndex];
+            return true;
+        }
+
+        return false;
+    }
+
+    bool GetBehaviorInfo(FBehaviorEvent& outInfo)
+    {
+        return Way.GetBehavior(BehaviorIndex, outInfo);
+    }
+
+    bool SwitchBehavior()
+    {
+        if (!IsLastBehavior())
+        {
+            BehaviorIndex++;
+
+            // Create behavior if needed
+            if (BehaviorIndex >= Behaviors.Num())
+            {
+                Behaviors.Add(FActionData());
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    bool IsLastBehavior()
+    {
+        return Way.IsLastBehavior(BehaviorIndex);
+    }
+
+    bool IsLastAction()
+    {
+        FActionData behavior;
+        if (GetCurrentBehavior(behavior))
+        {
+            return Way.IsLastAction(BehaviorIndex, behavior.ActionIndex);
+        }
+
+        return false;
+    }
+
+    bool GetCurrentReward(FThing& outReward)
+    {
+        FBehaviorEvent info;
+        if (GetBehaviorInfo(info))
+        {
+            outReward = info.Reward;
+        }
+
+        return false;
+    }
 };
 
 UCLASS(Blueprintable)
@@ -127,9 +223,10 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadwrite)
     FExecutorData m_Data;
     UPROPERTY(BlueprintReadWrite)
-    TArray<FBehaviorEvent> Behaviors;
+    TArray<FBehaviorEvent> TotalBehaviors;
 
-    FObtainThingDelegate OnObtainThings;
+    FObtainThingDelegate OnObtainThing;
+    FUseThingDelegate OnUseThing;
 
     UFUNCTION(BlueprintNativeEvent)
     void Init(const FThing &thing, UMind* mind);
@@ -143,9 +240,15 @@ public:
     virtual void Stop();
 
     UFUNCTION(BlueprintCallable)
-    void OnOwnThing(const FThing &things)
+    void OwnThing(const FThing &thing)
     {
-        OnObtainThings.ExecuteIfBound(things);
+        OnObtainThing.ExecuteIfBound(thing);
+    }
+
+    UFUNCTION(BlueprintCallable)
+    void UseThing(const FThing &thing)
+    {
+        OnUseThing.ExecuteIfBound(thing);
     }
 
     // Find best way to reach target
@@ -162,7 +265,7 @@ public:
     
     #pragma region action
     UFUNCTION(BlueprintCallable)
-    bool CreateAction(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass, int placeActionIndex = -1);
+    bool CreateAction(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass);
 
     #pragma endregion
 

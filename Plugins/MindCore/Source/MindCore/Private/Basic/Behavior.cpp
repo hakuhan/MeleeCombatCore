@@ -48,7 +48,8 @@ void UBehavior::CreateBehavior()
             else
             {
                 executor->Init(Wishes[i], Mind);
-                executor->OnObtainThings.BindUObject(this, &UBehavior::ObtainThing);
+                executor->OnObtainThing.BindUObject(this, &UBehavior::ObtainThing);
+                executor->OnUseThing.BindUObject(this, &UBehavior::UseThing);
 
                 IBehaviorExecutorInterface::Execute_CreateBehavior(executor);
                 FBehaviorItem item;
@@ -124,4 +125,9 @@ void UBehavior::ExecuteBehavior()
 void UBehavior::ObtainThing(const FThing &thing)
 {
     Mind->Wish->ObtainThing(thing);
+}
+
+void UBehavior::UseThing(const FThing &thing)
+{
+    Mind->Wish->LoseThing(thing);
 }

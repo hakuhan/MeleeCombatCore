@@ -59,4 +59,5 @@ public:
     virtual void UpdateBehavior();
     virtual void ExecuteBehavior();
     virtual void ObtainThing(const FThing& thing);
+    virtual void UseThing(const FThing &thing);    
 };

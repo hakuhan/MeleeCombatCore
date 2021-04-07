@@ -30,6 +30,9 @@ class MINDCORE_API IActionInterface
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
     void Init(AActor* owner);
+    // does this action cost conditions 
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
+    bool IsCost();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
     void PrepareAction();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
@@ -38,4 +41,10 @@ public:
     void FinishAction();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
     EActionState GetState();
+
+    // Efficay check
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
+    bool CanEfficacyLose();
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
+    bool CheckLose();
 };
