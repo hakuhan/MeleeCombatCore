@@ -62,7 +62,7 @@ bool UWish::CreateWish_Implementation(const FThing &wish)
 
 bool UWish::ObtainThing_Implementation(const FThing &thing)
 {
-	int index = m_Data.OwnedThings.IndexOfByPredicate([&](const FThing &target) { return target.Name == thing.Name; });
+	int index = m_Data.OwnedThings.IndexOfByPredicate([&](const FThing &target) { return target == thing; });
 	if (index < 0)
 	{
 		m_Data.OwnedThings.Add(thing);
@@ -86,7 +86,22 @@ bool UWish::LoseWish_Implementation(const FThing &wish)
 
 bool UWish::LoseThing_Implementation(const FThing &thing)
 {
-	return m_Data.OwnedThings.RemoveAll([&](const FThing &target) { return target == thing; }) > 0;
+	int index = m_Data.OwnedThings.IndexOfByPredicate([&](const FThing &target) { return target == thing; });
+	if (index >= 0)
+	{
+		if (thing.Number < m_Data.OwnedThings[index].Number)
+		{
+			m_Data.OwnedThings[index].Number -= thing.Number;
+		}
+		else
+		{
+			m_Data.OwnedThings.RemoveAt(index);
+		}
+
+		return true;
+	}
+
+	return false;
 }
 
 bool UWish::GetWishes_Implementation(TArray<FThing>& wishes)
@@ -101,6 +116,7 @@ bool UWish::GetWishes_Implementation(TArray<FThing>& wishes)
 
 bool UWish::CheckThingOwned_Implementation(const FThing& thing)
 {
+	// TODO Check number
 	return m_Data.OwnedThings.Contains(thing);
 }
 

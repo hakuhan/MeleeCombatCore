@@ -18,62 +18,62 @@ struct FWay
     GENERATED_USTRUCT_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FBehaviorEvent> Behaviors;
+    TArray<FBehaviorEvent> ActionInfos;
 
     FWay()
     { }
 
     FWay(TArray<FBehaviorEvent> hehavior)
-        : Behaviors(hehavior)
+        : ActionInfos(hehavior)
     { }
 
     void Empty()
     {
-        Behaviors.Empty();
+        ActionInfos.Empty();
     }
 
     bool GetLastCondition(FThing& outCondition)
     {
-        if (Behaviors.Num() > 0)
+        if (ActionInfos.Num() > 0)
         {
-            outCondition = Behaviors[Behaviors.Num() - 1].Condition;
+            outCondition = ActionInfos[ActionInfos.Num() - 1].Condition;
         }
-        return Behaviors.Num() > 0;
+        return ActionInfos.Num() > 0;
     }
 
-    bool GetBehavior(int index, FBehaviorEvent& outBehavior)
+    bool GetActionInfo(int index, FBehaviorEvent& outAction)
     {
-        if (index < Behaviors.Num() && index >= 0)
+        if (index < ActionInfos.Num() && index >= 0)
         {
-            outBehavior = Behaviors[index];
+            outAction = ActionInfos[index];
             return true;
         }
 
         return false;
     }
 
-    bool IsLastBehavior(int index)
+    bool IsLastAction(int index)
     {
-        return index == Behaviors.Num() - 1;
+        return index == ActionInfos.Num() - 1;
     }
 
-    bool IsLastAction(int behaviorIndex, int actionIndex)
+    bool IsLastActionItem(int actionIndex, int actionItemIndex)
     {
-        if (behaviorIndex >= Behaviors.Num())
+        if (actionIndex >= ActionInfos.Num())
         {
             UE_LOG(LogTemp, Error, TEXT("Behavior index out of range when tring to find action of target behavior"))
             return true;
         }
-        return Behaviors[behaviorIndex].ActionSequenceClasses.Num() == actionIndex;
+        return ActionInfos[actionIndex].ActionSequenceClasses.Num() == actionItemIndex;
     }
 
-    bool GetActionClass(int behaviorIndex, int actionIndex, TSubclassOf<UObject>& outClass)
+    bool GetActionClass(int actionIndex, int actionItemIndex, TSubclassOf<UObject>& outClass)
     {
-        if (behaviorIndex >=0 && behaviorIndex < Behaviors.Num())
+        if (actionIndex >=0 && actionIndex < ActionInfos.Num())
         {
-            if (actionIndex >= 0 && actionIndex < Behaviors[behaviorIndex].ActionSequenceClasses.Num())
+            if (actionItemIndex >= 0 && actionItemIndex < ActionInfos[actionIndex].ActionSequenceClasses.Num())
             {
-                outClass = Behaviors[behaviorIndex].ActionSequenceClasses[actionIndex];
+                outClass = ActionInfos[actionIndex].ActionSequenceClasses[actionItemIndex];
                 return true;
             }
         }
@@ -85,9 +85,9 @@ struct FWay
     {
         int cost = 0;
 
-        for (int i = 0; i < Behaviors.Num(); ++i)
+        for (int i = 0; i < ActionInfos.Num(); ++i)
         {
-            cost += (int)Behaviors[i].Cost;
+            cost += (int)ActionInfos[i].Cost;
         }
 
         return cost;
@@ -95,7 +95,7 @@ struct FWay
 
     friend bool operator==(const FWay& l, const FWay& r)
     {
-        return l.Behaviors == r.Behaviors;
+        return l.ActionInfos == r.ActionInfos;
     }
 };
 
@@ -105,30 +105,30 @@ struct FActionData
     GENERATED_USTRUCT_BODY()
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-    TArray<TScriptInterface<IActionInterface>> Actions;
+    TArray<TScriptInterface<IActionInterface>> Items;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-    int ActionIndex;
+    int ActionItemIndex;
 
     void Reset()
     {
-        ActionIndex = 0;
+        ActionItemIndex = 0;
     }
 
-    void SwitchAction()
+    void SwitchActionItemIndex()
     {
-        ActionIndex++;
+        ActionItemIndex++;
     }
 
-    void AddAction(TScriptInterface<IActionInterface> action)
+    void AddActionItem(TScriptInterface<IActionInterface> item)
     {
-        Actions.Add(action);
+        Items.Add(item);
     }
 
-    bool GetCurrentAction(TScriptInterface<IActionInterface>& action)
+    bool GetCurrentActionItem(TScriptInterface<IActionInterface>& item)
     {
-        if (ActionIndex >= 0 && ActionIndex < Actions.Num())
+        if (ActionItemIndex >= 0 && ActionItemIndex < Items.Num())
         {
-            action = Actions[ActionIndex];
+            item = Items[ActionItemIndex];
             return true;
         }
 
@@ -148,36 +148,36 @@ struct FExecutorData
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     EExecutorState State;
     UPROPERTY(BlueprintReadwrite)
-    TArray<FActionData> Behaviors;
+    TArray<FActionData> Actions;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-    int BehaviorIndex;
+    int ActionIndex;
 
-    bool GetCurrentBehavior(FActionData& outBehavior)
+    bool GetCurrentAction(FActionData& outAction)
     {
-        if (BehaviorIndex >= 0 && BehaviorIndex < Behaviors.Num())
+        if (ActionIndex >= 0 && ActionIndex < Actions.Num())
         {
-            outBehavior = Behaviors[BehaviorIndex];
+            outAction = Actions[ActionIndex];
             return true;
         }
 
         return false;
     }
 
-    bool GetBehaviorInfo(FBehaviorEvent& outInfo)
+    bool GetActionInfo(FBehaviorEvent& outInfo)
     {
-        return Way.GetBehavior(BehaviorIndex, outInfo);
+        return Way.GetActionInfo(ActionIndex, outInfo);
     }
 
-    bool SwitchBehavior()
+    bool SwitchAction()
     {
-        if (!IsLastBehavior())
+        if (!IsLastAction())
         {
-            BehaviorIndex++;
+            ActionIndex++;
 
             // Create behavior if needed
-            if (BehaviorIndex >= Behaviors.Num())
+            if (ActionIndex >= Actions.Num())
             {
-                Behaviors.Add(FActionData());
+                Actions.Add(FActionData());
             }
             return true;
         }
@@ -185,17 +185,17 @@ struct FExecutorData
         return false;
     }
 
-    bool IsLastBehavior()
-    {
-        return Way.IsLastBehavior(BehaviorIndex);
-    }
-
     bool IsLastAction()
     {
+        return Way.IsLastAction(ActionIndex);
+    }
+
+    bool IsLastActionItem()
+    {
         FActionData behavior;
-        if (GetCurrentBehavior(behavior))
+        if (GetCurrentAction(behavior))
         {
-            return Way.IsLastAction(BehaviorIndex, behavior.ActionIndex);
+            return Way.IsLastActionItem(ActionIndex, behavior.ActionItemIndex);
         }
 
         return false;
@@ -204,7 +204,7 @@ struct FExecutorData
     bool GetCurrentReward(FThing& outReward)
     {
         FBehaviorEvent info;
-        if (GetBehaviorInfo(info))
+        if (GetActionInfo(info))
         {
             outReward = info.Reward;
         }
@@ -217,13 +217,14 @@ UCLASS(Blueprintable)
 class MINDCORE_API UExecutor : public UObject, public IBehaviorExecutorInterface
 {
     GENERATED_BODY()
+
 public:
     UPROPERTY()
     UMind* m_Mind;
     UPROPERTY(VisibleAnywhere, BlueprintReadwrite)
     FExecutorData m_Data;
     UPROPERTY(BlueprintReadWrite)
-    TArray<FBehaviorEvent> TotalBehaviors;
+    TArray<FBehaviorEvent> TotalActionInfos;
 
     FObtainThingDelegate OnObtainThing;
     FUseThingDelegate OnUseThing;
@@ -260,12 +261,12 @@ public:
     bool GetAllWays(FThing target, TArray<FWay>& ways);
     // Get all situation of one target directly
     UFUNCTION(BlueprintCallable)
-    bool GetAllSituation(FThing target, TArray<FBehaviorEvent>& situation, const FBehaviorEvent& excludeBehavior);
+    bool GetAllSituation(FThing target, TArray<FBehaviorEvent>& situation, const FBehaviorEvent& excludeAction);
     void AddSituation(TArray<FWay>& Total, TArray<FBehaviorEvent> situations, FWay preCondition = FWay());
     
     #pragma region action
     UFUNCTION(BlueprintCallable)
-    bool CreateAction(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass);
+    bool CreateActionItem(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass);
 
     #pragma endregion
 
