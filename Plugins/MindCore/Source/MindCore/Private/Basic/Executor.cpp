@@ -50,11 +50,11 @@ void UExecutor::UpdateBehavior_Implementation()
         // Check state
         FActionData action;
         TScriptInterface<IActionInterface> actionItem;
-        if (!m_Data.GetCurrentAction(action))
+        if (!m_Data.GetCurrentAction(action, false))
         {
             return;
         }
-        if (!action.GetCurrentActionItem(actionItem))
+        if (!action.GetCurrentActionItem(actionItem, false))
         {
             return;
         }
@@ -121,31 +121,30 @@ void UExecutor::UpdateBehavior_Implementation()
                         return;
                     }
                     FActionData nextAction;
-                    if (!m_Data.GetCurrentAction(nextAction))
+                    if (m_Data.GetCurrentAction(nextAction))
                     {
-                        m_Data.Actions.Add(nextAction);
-                    }
-                    TScriptInterface<IActionInterface> nextActionItem;
-                    TSubclassOf<UObject> actionClass;
-                    if (m_Data.Way.GetActionClass(m_Data.ActionIndex, nextAction.ActionItemIndex, actionClass))
-                    {
-                        if (CreateActionItem(nextActionItem, actionClass))
+                        TScriptInterface<IActionInterface> nextActionItem;
+                        TSubclassOf<UObject> actionClass;
+                        if (m_Data.Way.GetActionClass(m_Data.ActionIndex, nextAction.ActionItemIndex, actionClass))
                         {
-                            nextActionItem->PrepareAction();
-                            if (nextActionItem->IsCost())
+                            if (CreateActionItem(nextActionItem, actionClass))
                             {
-                                // decrease thing
-                                UseThing(NextActionInfo.Condition);
+                                nextActionItem->PrepareAction();
+                                if (nextActionItem->IsCost())
+                                {
+                                    // decrease thing
+                                    UseThing(NextActionInfo.Condition);
+                                }
+                            }
+                            else
+                            {
+                                UE_LOG(LogTemp, Error, TEXT("Switch next actionItem failed, Create actionItem by class failed!"))
                             }
                         }
                         else
                         {
-                            UE_LOG(LogTemp, Error, TEXT("Switch next actionItem failed, Create actionItem by class failed!"))
-                        }
-                    }
-                    else
-                    {
-                        UE_LOG(LogTemp, Error, TEXT("Switch next actionItem item failed, Action index out of range!"))
+                            UE_LOG(LogTemp, Error, TEXT("Switch next actionItem item failed, Action index out of range!"))
+                        }   
                     }
                 }
                 else
@@ -169,7 +168,7 @@ void UExecutor::ExecuteBehavior_Implementation()
         {
             TScriptInterface<IActionInterface> actionItem;
             FActionData action;
-            if (m_Data.GetCurrentAction(action))
+            if (m_Data.GetCurrentAction(action, false))
             {
                 action.GetCurrentActionItem(actionItem);
             }
@@ -197,9 +196,9 @@ void UExecutor::Stop()
     {
         TScriptInterface<IActionInterface> actionItem;
         FActionData action;
-        if (m_Data.GetCurrentAction(action))
+        if (m_Data.GetCurrentAction(action, false))
         {
-            if (action.GetCurrentActionItem(actionItem))
+            if (action.GetCurrentActionItem(actionItem, false))
             {
                 actionItem->FinishAction();
             }
@@ -316,12 +315,11 @@ bool UExecutor::CreateActionItem(TScriptInterface<IActionInterface> &actionItem,
         actionItem->Init(m_Mind->GetOwner());
 
         FActionData action;
-        if (!m_Data.GetCurrentAction(action))
+        if (m_Data.GetCurrentAction(action))
         {
-            m_Data.Actions.Add(action);
+            action.AddActionItem(actionItem);
+            result = true;
         }
-        action.AddActionItem(actionItem);
-        result = true;
     }
     else
     {
