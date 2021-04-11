@@ -18,12 +18,7 @@
 		{
 			"Name": "MeleeCore",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"WhitelistPlatforms" :
-            [
-                "Win64",
-                "Android"
-            ]
+			"LoadingPhase": "Default"
 		}
 	]
 }

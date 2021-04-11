@@ -61,6 +61,8 @@ public:
         outRemember = Remember;
     }
 
+    #define GET_TYPE_NAME(T) #T
+
     template <typename T>
     bool IsMemberValid(TScriptInterface<T> interface)
     {
@@ -69,7 +71,7 @@ public:
         if (interface == nullptr || interface.GetObject() == nullptr)
         {
             result = false;
-            UE_LOG(LogTemp, Warning, TEXT("Mind component mission: %s"), typeid(T).name());
+            UE_LOG(LogTemp, Warning, TEXT("Mind component mission: %s"), GET_TYPE_NAME(T));
         }
 
         return result;

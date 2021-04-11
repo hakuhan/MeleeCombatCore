@@ -116,8 +116,8 @@ bool UWish::GetWishes_Implementation(TArray<FThing>& wishes)
 
 bool UWish::CheckThingOwned_Implementation(const FThing& thing)
 {
-	// TODO Check number
-	return m_Data.OwnedThings.Contains(thing);
+	int thingIndex = m_Data.OwnedThings.Find(thing);
+	return thingIndex >= 0 && thing.Number <= m_Data.OwnedThings[thingIndex].Number;
 }
 
 void UWish::Reset()
