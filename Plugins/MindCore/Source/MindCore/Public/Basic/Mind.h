@@ -69,7 +69,7 @@ public:
         if (interface == nullptr || interface.GetObject() == nullptr)
         {
             result = false;
-            UE_LOG(LogTemp, Warning, TEXT("Mind component mission: %s"), typeid(T).name());
+            UE_LOG(LogTemp, Warning, TEXT("Mind component mission"));
         }
 
         return result;

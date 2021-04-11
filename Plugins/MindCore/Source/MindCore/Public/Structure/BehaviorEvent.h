@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Thing.h "
+#include "Structure/Thing.h"
 #include "Core/ActionInterface.h"
 #include "Core/BehaviorExecutorInterface.h"
 #include "BehaviorEvent.generated.h"
