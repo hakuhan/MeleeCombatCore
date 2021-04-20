@@ -38,7 +38,7 @@ public:
     UMind* Mind;
     UPROPERTY(EditAnywhere, BlueprintReadOnly)
     TSubclassOf<UExecutor> ExecutorClass;
-    UPROPERTY(VisibleAnywhere, BlueprintReadwrite)
+    UPROPERTY(BlueprintReadwrite)
     TArray<FBehaviorItem> Behaviors;
 
 public:

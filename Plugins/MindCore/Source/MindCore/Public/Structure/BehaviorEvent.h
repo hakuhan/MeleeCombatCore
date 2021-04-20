@@ -23,9 +23,9 @@ struct MINDCORE_API FBehaviorEvent
 
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
     FString Name;
-    UPROPERTY(EditAnywhere, BlueprintReadwrite)
+    UPROPERTY(BlueprintReadwrite)
     FThing Condition;
-    UPROPERTY(EditAnywhere, BlueprintReadwrite)
+    UPROPERTY(BlueprintReadwrite)
     FThing Reward;
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
     EBehaviorEventCost Cost;

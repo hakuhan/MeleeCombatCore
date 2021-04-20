@@ -12,9 +12,9 @@ struct MINDCORE_API FThing
 {
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
+    UPROPERTY(BlueprintReadWrite, Category = "Thing")
     FString Name;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
+    UPROPERTY(BlueprintReadWrite, Category = "Thing")
     FString Type;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     int Number;
