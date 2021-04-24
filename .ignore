@@ -1,10 +1,7 @@
 .git
-.kdev4
 .vscode
 Content
-DerivedDataCache
 Intermediate
-Saved
 Plugins/MeleeCore/Content
 Plugins/MeleeCore/Intermediate
 Plugins/MindCore/Content

@@ -14,7 +14,6 @@
 #include "Core/RememberInterface.h"
 #include "Core/ActionInterface.h"
 #include "Core/MindComponentInterface.h"
-#include "Structure/BehaviorEvent.h"
 #include "Mind.generated.h"
 
 UCLASS(Blueprintable, ClassGroup = (Mind), meta = (BlueprintSpawnableComponent))

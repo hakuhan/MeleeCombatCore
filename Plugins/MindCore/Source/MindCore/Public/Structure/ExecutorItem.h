@@ -4,10 +4,10 @@
 #include "Structure/Thing.h"
 #include "Core/ActionInterface.h"
 #include "Core/BehaviorExecutorInterface.h"
-#include "BehaviorEvent.generated.h"
+#include "ExecutorItem.generated.h"
 
 UENUM(BlueprintType)
-enum class EBehaviorEventCost : uint8
+enum class EActionCost : uint8
 {
     BEHAVIOR_NONE = 0 UMETA(DisplayName="None"),
     BEHAVIOR_EASY UMETA(DisplayName="Easy"),
@@ -17,41 +17,41 @@ enum class EBehaviorEventCost : uint8
 };
 
 USTRUCT(BlueprintType)
-struct MINDCORE_API FBehaviorEvent
+struct MINDCORE_API FExecutorItem
 {
     GENERATED_USTRUCT_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
     FString Name;
-    UPROPERTY(BlueprintReadwrite)
-    FThing Condition;
-    UPROPERTY(BlueprintReadwrite)
-    FThing Reward;
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    EBehaviorEventCost Cost;
+    FDataTableRowHandle Condition;
+    UPROPERTY(EditAnywhere, BlueprintReadwrite)
+    FDataTableRowHandle Reward;
+    UPROPERTY(EditAnywhere, BlueprintReadwrite)
+    EActionCost Cost;
     UPROPERTY(EditAnywhere, BlueprintReadwrite, meta = (MustImplement = "ActionInterface"))
     TArray<TSubclassOf<UObject>> ActionSequenceClasses;
 
-    friend bool operator==(const FBehaviorEvent& Lhs, const FBehaviorEvent& Rhs)
+    friend bool operator==(const FExecutorItem& Lhs, const FExecutorItem& Rhs)
     {
         return Lhs.Name == Rhs.Name && Lhs.Condition == Rhs.Condition && Lhs.Reward == Rhs.Reward;
     }
 
-    friend bool operator!=(const FBehaviorEvent& Lhs, const FBehaviorEvent& Rhs)
+    friend bool operator!=(const FExecutorItem& Lhs, const FExecutorItem& Rhs)
     {
         return !(Lhs == Rhs);
     }
 
-    FBehaviorEvent()
+    FExecutorItem()
         : Name("Empty")
-        , Condition(FThing::EmptyThing())
-        , Reward(FThing::EmptyThing())
-        , Cost(EBehaviorEventCost::BEHAVIOR_NONE)
+        , Condition()
+        , Reward()
+        , Cost(EActionCost::BEHAVIOR_NONE)
         , ActionSequenceClasses()
     { }
 
-    static FBehaviorEvent EmptyBehavior()
+    static FExecutorItem EmptyBehavior()
     {
-        return FBehaviorEvent();
+        return FExecutorItem();
     }
 };

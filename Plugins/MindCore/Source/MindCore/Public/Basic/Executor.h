@@ -4,7 +4,7 @@
 #include "Core/BehaviorExecutorInterface.h"
 #include "Core/ActionInterface.h"
 #include "Basic/Mind.h"
-#include "Structure/BehaviorEvent.h"
+#include "Structure/ExecutorItem.h"
 #include "Structure/Thing.h"
 #include "Executor.generated.h"
 
@@ -18,12 +18,12 @@ struct FWay
     GENERATED_USTRUCT_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FBehaviorEvent> ActionInfos;
+    TArray<FExecutorItem> ActionInfos;
 
     FWay()
     { }
 
-    FWay(TArray<FBehaviorEvent> hehavior)
+    FWay(TArray<FExecutorItem> hehavior)
         : ActionInfos(hehavior)
     { }
 
@@ -36,12 +36,12 @@ struct FWay
     {
         if (ActionInfos.Num() > 0)
         {
-            outCondition = ActionInfos[ActionInfos.Num() - 1].Condition;
+            outCondition = *ActionInfos[ActionInfos.Num() - 1].Condition.GetRow<FThing>("Get condition");
         }
         return ActionInfos.Num() > 0;
     }
 
-    bool GetActionInfo(int index, FBehaviorEvent& outAction)
+    bool GetActionInfo(int index, FExecutorItem& outAction)
     {
         if (index < ActionInfos.Num() && index >= 0)
         {
@@ -174,7 +174,7 @@ struct FExecutorData
         return false;
     }
 
-    bool GetActionInfo(FBehaviorEvent& outInfo)
+    bool GetActionInfo(FExecutorItem& outInfo)
     {
         return Way.GetActionInfo(ActionIndex, outInfo);
     }
@@ -214,10 +214,10 @@ struct FExecutorData
 
     bool GetCurrentReward(FThing& outReward)
     {
-        FBehaviorEvent info;
+        FExecutorItem info;
         if (GetActionInfo(info))
         {
-            outReward = info.Reward;
+            outReward = *info.Reward.GetRow<FThing>("Get reward");
         }
 
         return false;
@@ -232,10 +232,10 @@ class MINDCORE_API UExecutor : public UObject, public IBehaviorExecutorInterface
 public:
     UPROPERTY()
     UMind* m_Mind;
-    UPROPERTY(VisibleAnywhere, BlueprintReadwrite)
+    UPROPERTY(BlueprintReadwrite)
     FExecutorData m_Data;
-    UPROPERTY(BlueprintReadWrite)
-    TArray<FBehaviorEvent> TotalActionInfos;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<FExecutorItem> TotalActionInfos;
 
     FObtainThingDelegate OnObtainThing;
     FUseThingDelegate OnUseThing;
@@ -272,8 +272,8 @@ public:
     bool GetAllWays(FThing target, TArray<FWay>& ways);
     // Get all situation of one target directly
     UFUNCTION(BlueprintCallable)
-    bool GetAllSituation(FThing target, TArray<FBehaviorEvent>& situation, const FBehaviorEvent& excludeAction);
-    void AddSituation(TArray<FWay>& Total, TArray<FBehaviorEvent> situations, FWay preCondition = FWay());
+    bool GetAllSituation(FThing target, TArray<FExecutorItem>& situation, const FExecutorItem& excludeAction);
+    void AddSituation(TArray<FWay>& Total, TArray<FExecutorItem> situations, FWay preCondition = FWay());
     
     #pragma region action
     UFUNCTION(BlueprintCallable)

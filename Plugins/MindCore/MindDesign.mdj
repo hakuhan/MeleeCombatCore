@@ -7214,7 +7214,7 @@
 											"top": 957,
 											"width": 171.005859375,
 											"height": 13,
-											"text": "+BehaviorEvent[] behaviors",
+											"text": "+ExecutorItem[] behaviors",
 											"horizontalAlignment": 0
 										}
 									],
@@ -7467,7 +7467,7 @@
 											"top": 1055,
 											"width": 179.20068359375,
 											"height": 13,
-											"text": "BehaviorEvent"
+											"text": "ExecutorItem"
 										},
 										{
 											"_type": "LabelView",
@@ -17615,8 +17615,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF4TiMf5wZFoyo="
 							},
-							"name": "BehaviorEvent[] behaviors",
-							"type": ""
+							"name": "ExecutorItem[] behaviors"
 						}
 					],
 					"operations": [
@@ -17644,7 +17643,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "BehaviorEvent",
+					"name": "ExecutorItem",
 					"ownedElements": [
 						{
 							"_type": "UMLDependency",
@@ -17733,7 +17732,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF4Tiq0d2yUCGw="
 							},
-							"name": "FThing Condition"
+							"name": "FThing Condition",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -17741,7 +17741,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF4Tiq0d2yUCGw="
 							},
-							"name": "FThing Reward"
+							"name": "FThing Reward",
+							"type": ""
 						}
 					]
 				},
@@ -18600,7 +18601,7 @@
 									"font": "Arial;13;0",
 									"left": 282.5,
 									"top": 188.5,
-									"width": 87.02880859375,
+									"width": 86,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFvdT6D0Vsi5Zg="
@@ -19993,7 +19994,7 @@
 									"font": "Arial;13;0",
 									"left": 272.5,
 									"top": 532.5,
-									"width": 78.02783203125,
+									"width": 77,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFvdlGEYDBClHs="
@@ -20293,7 +20294,7 @@
 									"font": "Arial;13;0",
 									"left": 274.5,
 									"top": 420.5,
-									"width": 87.6953125,
+									"width": 87,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFvdnAMmzLzJyE="
@@ -20492,7 +20493,7 @@
 									"font": "Arial;13;0",
 									"left": 274,
 									"top": 468.5,
-									"width": 86.171875,
+									"width": 85,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFvdnA5qjMiOxg="

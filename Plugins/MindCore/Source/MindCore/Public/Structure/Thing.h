@@ -5,16 +5,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 #include "Thing.generated.h"
 
 USTRUCT(BlueprintType)
-struct MINDCORE_API FThing
+struct MINDCORE_API FThing : public FTableRowBase
 {
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(BlueprintReadWrite, Category = "Thing")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     FString Name;
-    UPROPERTY(BlueprintReadWrite, Category = "Thing")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     FString Type;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     int Number;

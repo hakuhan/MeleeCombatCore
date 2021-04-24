@@ -33,16 +33,16 @@ void UExecutor::UpdateBehavior_Implementation()
         // Check thing lose
         for (int i = 0; i < m_Data.Actions.Num(); ++i)
         {
-            auto reward = m_Data.Way.ActionInfos[i].Reward;
+            auto reward = m_Data.Way.ActionInfos[i].Reward.GetRow<FThing>("Get reward");
             for (int j = 0; j < m_Data.Actions[i].Items.Num(); ++j)
             {
                 auto actionItem = m_Data.Actions[i].Items[j];
                 if (actionItem->GetState() == EActionState::Action_Success
-                    && m_Mind->Wish->CheckThingOwned(reward)
+                    && m_Mind->Wish->CheckThingOwned(*reward)
                     && actionItem->CanEfficacyLose()
                     && actionItem->CheckLose())
                 {
-                    UseThing(reward);
+                    UseThing(*reward);
                 }
             }
         }
@@ -112,10 +112,10 @@ void UExecutor::UpdateBehavior_Implementation()
             // Switch to next actionItem
             if (switchAction)
             {
-                FBehaviorEvent NextActionInfo;
+                FExecutorItem NextActionInfo;
                 if (m_Data.GetActionInfo(NextActionInfo))
                 {
-                    if (!m_Mind->Wish->CheckThingOwned(NextActionInfo.Condition))
+                    if (!m_Mind->Wish->CheckThingOwned(*NextActionInfo.Condition.GetRow<FThing>("Get condition")))
                     {
                         m_Data.State = EExecutorState::EXECUTOR_WAITING;
                         return;
@@ -133,7 +133,7 @@ void UExecutor::UpdateBehavior_Implementation()
                                 if (nextActionItem->IsCost())
                                 {
                                     // decrease thing
-                                    UseThing(NextActionInfo.Condition);
+                                    UseThing(*NextActionInfo.Condition.GetRow<FThing>("Get condition"));
                                 }
                             }
                             else
@@ -163,7 +163,7 @@ void UExecutor::ExecuteBehavior_Implementation()
 {
     if (m_Data.State == EExecutorState::EXECUTOR_READY || m_Data.State == EExecutorState::EXECUTOR_EXECUTING)
     {
-        FBehaviorEvent behaviorInfo;
+        FExecutorItem behaviorInfo;
         if (m_Data.GetActionInfo(behaviorInfo))
         {
             TScriptInterface<IActionInterface> actionItem;
@@ -241,8 +241,8 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
     ways.Empty();
     bool gotAllWays = false;
     TArray<FWay> allSituations;
-    TArray<FBehaviorEvent> firstSituation;
-    if (GetAllSituation(target, firstSituation, FBehaviorEvent::EmptyBehavior()))
+    TArray<FExecutorItem> firstSituation;
+    if (GetAllSituation(target, firstSituation, FExecutorItem::EmptyBehavior()))
     {
         // Get all situation of main target
         AddSituation(allSituations, firstSituation);
@@ -259,7 +259,7 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
                 bool hasCondition = tempWay.GetLastCondition(condition);
                 if (hasCondition && condition != FThing::EmptyThing())
                 {
-                    TArray<FBehaviorEvent> tempSituations;
+                    TArray<FExecutorItem> tempSituations;
                     if (GetAllSituation(condition, tempSituations, tempWay.ActionInfos[tempWay.ActionInfos.Num() - 1]))
                     {
                         AddSituation(allSituations, tempSituations, tempWay);
@@ -280,12 +280,12 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
     return ways.Num() > 0;
 }
 
-bool UExecutor::GetAllSituation(FThing target, TArray<FBehaviorEvent> &situation, const FBehaviorEvent &excludeAction)
+bool UExecutor::GetAllSituation(FThing target, TArray<FExecutorItem> &situation, const FExecutorItem &excludeAction)
 {
     situation.Empty();
     for (int i = 0; i < TotalActionInfos.Num(); ++i)
     {
-        if (TotalActionInfos[i].Reward == target && TotalActionInfos[i] != excludeAction)
+        if (*TotalActionInfos[i].Reward.GetRow<FThing>("Get reward") == target && TotalActionInfos[i] != excludeAction)
         {
             situation.AddUnique(TotalActionInfos[i]);
         }
@@ -293,11 +293,11 @@ bool UExecutor::GetAllSituation(FThing target, TArray<FBehaviorEvent> &situation
     return situation.Num() >= 0;
 }
 
-void UExecutor::AddSituation(TArray<FWay> &Total, TArray<FBehaviorEvent> situations, FWay preCondition)
+void UExecutor::AddSituation(TArray<FWay> &Total, TArray<FExecutorItem> situations, FWay preCondition)
 {
     for (auto info : situations)
     {
-        TArray<FBehaviorEvent> infos;
+        TArray<FExecutorItem> infos;
         infos.Append(preCondition.ActionInfos);
         infos.Add(info);
         Total.Add(infos);
