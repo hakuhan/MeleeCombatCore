@@ -33,18 +33,18 @@ void UExecutor::UpdateBehavior_Implementation()
         // Check thing lose
         for (int i = 0; i < m_Data.Actions.Num(); ++i)
         {
-            auto reward = m_Data.Way.ActionInfos[i].Reward.GetRow<FThing>("Get reward");
-            for (int j = 0; j < m_Data.Actions[i].Items.Num(); ++j)
-            {
-                auto actionItem = m_Data.Actions[i].Items[j];
-                if (actionItem->GetState() == EActionState::Action_Success
-                    && m_Mind->Wish->CheckThingOwned(*reward)
-                    && actionItem->CanEfficacyLose()
-                    && actionItem->CheckLose())
-                {
-                    UseThing(*reward);
-                }
-            }
+            // auto reward = m_Data.Way.ActionInfos[i].Reward.GetRow<FThing>("Get reward");
+            // for (int j = 0; j < m_Data.Actions[i].Items.Num(); ++j)
+            // {
+            //     auto actionItem = m_Data.Actions[i].Items[j];
+            //     if (actionItem->GetState() == EActionState::Action_Success
+            //         && m_Mind->Wish->CheckThingOwned(*reward)
+            //         && actionItem->CanEfficacyLose()
+            //         && actionItem->CheckLose())
+            //     {
+            //         UseThing(*reward);
+            //     }
+            // }
         }
         
         // Check state
@@ -115,11 +115,11 @@ void UExecutor::UpdateBehavior_Implementation()
                 FExecutorItem NextActionInfo;
                 if (m_Data.GetActionInfo(NextActionInfo))
                 {
-                    if (!m_Mind->Wish->CheckThingOwned(*NextActionInfo.Condition.GetRow<FThing>("Get condition")))
-                    {
-                        m_Data.State = EExecutorState::EXECUTOR_WAITING;
-                        return;
-                    }
+                    // if (!m_Mind->Wish->CheckThingOwned(*NextActionInfo.precondition.GetRow<FThing>("Get condition")))
+                    // {
+                    //     m_Data.State = EExecutorState::EXECUTOR_WAITING;
+                    //     return;
+                    // }
                     FActionData nextAction;
                     if (m_Data.GetCurrentAction(nextAction))
                     {
@@ -133,7 +133,7 @@ void UExecutor::UpdateBehavior_Implementation()
                                 if (nextActionItem->IsCost())
                                 {
                                     // decrease thing
-                                    UseThing(*NextActionInfo.Condition.GetRow<FThing>("Get condition"));
+                                    // UseThing(*NextActionInfo.precondition.GetRow<FThing>("Get condition"));
                                 }
                             }
                             else
@@ -240,35 +240,34 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
 {
     ways.Empty();
     bool gotAllWays = false;
-    TArray<FWay> allSituations;
-    TArray<FExecutorItem> firstSituation;
-    if (GetAllSituation(target, firstSituation, FExecutorItem::EmptyBehavior()))
+    TArray<FWay> AllGoals;
+    TArray<FExecutorItem> solutions;
+    if (GetAllSolutionsByThing(target, solutions, FExecutorItem::EmptyBehavior()))
     {
-        // Get all situation of main target
-        AddSituation(allSituations, firstSituation);
+        // Get all solution of main target
+        GainGoal(AllGoals, solutions);
 
         // Find situations of children
         while (!gotAllWays)
         {
-            if (allSituations.Num() > 0)
+            if (AllGoals.Num() > 0)
             {
-                // Check and remove situation one by one
-                auto tempWay = allSituations.Pop();
+                // Check and remove solution one by one
+                auto tempWay = AllGoals.Pop();
 
-                FThing condition;
-                bool hasCondition = tempWay.GetLastCondition(condition);
-                if (hasCondition && condition != FThing::EmptyThing())
+                if (tempWay.HasPrecondition())
                 {
                     TArray<FExecutorItem> tempSituations;
-                    if (GetAllSituation(condition, tempSituations, tempWay.ActionInfos[tempWay.ActionInfos.Num() - 1]))
-                    {
-                        AddSituation(allSituations, tempSituations, tempWay);
-                    }
+                    // if (GetAllSolutions(tempWay.precondition, tempSituations, tempWay.ActionInfos[tempWay.ActionInfos.Num() - 1]))
+                    // {
+                    //     GainGoal(AllGoals, tempSituations, tempWay);
+                    // }
+                    // else
+                    // {
+                    //     ways.Add(tempWay);
+                    // }
                 }
-                else
-                {
-                    ways.Add(tempWay);
-                }
+
             }
             else
             {
@@ -280,25 +279,38 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
     return ways.Num() > 0;
 }
 
-bool UExecutor::GetAllSituation(FThing target, TArray<FExecutorItem> &situation, const FExecutorItem &excludeAction)
+bool UExecutor::GetAllSolutions(const FDataTableRows& goals, TArray<FExecutorItem> &solution, const FExecutorItem &excludeAction)
 {
-    situation.Empty();
+    solution.Empty();
     for (int i = 0; i < TotalActionInfos.Num(); ++i)
     {
-        if (*TotalActionInfos[i].Reward.GetRow<FThing>("Get reward") == target && TotalActionInfos[i] != excludeAction)
+        if (solution[i].IsNeedsMatched(goals) && TotalActionInfos[i] != excludeAction)
         {
-            situation.AddUnique(TotalActionInfos[i]);
+            solution.AddUnique(TotalActionInfos[i]);
         }
     }
-    return situation.Num() >= 0;
+    return solution.Num() >= 0;
 }
 
-void UExecutor::AddSituation(TArray<FWay> &Total, TArray<FExecutorItem> situations, FWay preCondition)
+bool UExecutor::GetAllSolutionsByThing(const FThing& goal, TArray<FExecutorItem>& solution, const FExecutorItem& excludeAction)
+{
+    solution.Empty();
+    for (int i = 0; i < TotalActionInfos.Num(); ++i)
+    {
+        if (solution[i].IsNeedsMatched(*goal.Name) && TotalActionInfos[i] != excludeAction)
+        {
+            solution.AddUnique(TotalActionInfos[i]);
+        }
+    }
+    return solution.Num() >= 0;
+}
+
+void UExecutor::GainGoal(TArray<FWay> &Total, TArray<FExecutorItem> situations, FWay originalGoals)
 {
     for (auto info : situations)
     {
         TArray<FExecutorItem> infos;
-        infos.Append(preCondition.ActionInfos);
+        infos.Append(originalGoals.ActionInfos);
         infos.Add(info);
         Total.Add(infos);
     }

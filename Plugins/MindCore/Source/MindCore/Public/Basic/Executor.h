@@ -32,13 +32,10 @@ struct FWay
         ActionInfos.Empty();
     }
 
-    bool GetLastCondition(FThing& outCondition)
+    bool HasPrecondition()
     {
-        if (ActionInfos.Num() > 0)
-        {
-            outCondition = *ActionInfos[ActionInfos.Num() - 1].Condition.GetRow<FThing>("Get condition");
-        }
-        return ActionInfos.Num() > 0;
+        return ActionInfos.Num() > 0
+            && ActionInfos[ActionInfos.Num() - 1].precondition.Rows.Num() > 0;
     }
 
     bool GetActionInfo(int index, FExecutorItem& outAction)
@@ -215,10 +212,10 @@ struct FExecutorData
     bool GetCurrentReward(FThing& outReward)
     {
         FExecutorItem info;
-        if (GetActionInfo(info))
-        {
-            outReward = *info.Reward.GetRow<FThing>("Get reward");
-        }
+        // if (GetActionInfo(info))
+        // {
+        //     outReward = *info.Reward.GetRow<FThing>("Get reward");
+        // }
 
         return false;
     }
@@ -270,10 +267,12 @@ public:
     // Get all ways of target
     UFUNCTION(BlueprintCallable)
     bool GetAllWays(FThing target, TArray<FWay>& ways);
-    // Get all situation of one target directly
+    // Get all solutions of one target directly
     UFUNCTION(BlueprintCallable)
-    bool GetAllSituation(FThing target, TArray<FExecutorItem>& situation, const FExecutorItem& excludeAction);
-    void AddSituation(TArray<FWay>& Total, TArray<FExecutorItem> situations, FWay preCondition = FWay());
+    bool GetAllSolutions(const FDataTableRows& goals, TArray<FExecutorItem>& situation, const FExecutorItem& excludeAction);
+    UFUNCTION(BlueprintCallable)
+    bool GetAllSolutionsByThing(const FThing& goal, TArray<FExecutorItem>& situation, const FExecutorItem& excludeAction);
+    void GainGoal(TArray<FWay>& Total, TArray<FExecutorItem> situations, FWay originalGoals = FWay());
     
     #pragma region action
     UFUNCTION(BlueprintCallable)

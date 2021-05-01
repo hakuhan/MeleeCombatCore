@@ -4,6 +4,7 @@
 #include "Structure/Thing.h"
 #include "Core/ActionInterface.h"
 #include "Core/BehaviorExecutorInterface.h"
+#include "Structure/DataTableRows.h"
 #include "ExecutorItem.generated.h"
 
 UENUM(BlueprintType)
@@ -24,9 +25,9 @@ struct MINDCORE_API FExecutorItem
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
     FString Name;
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    FDataTableRowHandle Condition;
+    FDataTableRows precondition;
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    FDataTableRowHandle Reward;
+    FDataTableRows Reward;
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
     EActionCost Cost;
     UPROPERTY(EditAnywhere, BlueprintReadwrite, meta = (MustImplement = "ActionInterface"))
@@ -34,7 +35,7 @@ struct MINDCORE_API FExecutorItem
 
     friend bool operator==(const FExecutorItem& Lhs, const FExecutorItem& Rhs)
     {
-        return Lhs.Name == Rhs.Name && Lhs.Condition == Rhs.Condition && Lhs.Reward == Rhs.Reward;
+        return Lhs.Name == Rhs.Name && Lhs.precondition == Rhs.precondition && Lhs.Reward == Rhs.Reward;
     }
 
     friend bool operator!=(const FExecutorItem& Lhs, const FExecutorItem& Rhs)
@@ -44,7 +45,7 @@ struct MINDCORE_API FExecutorItem
 
     FExecutorItem()
         : Name("Empty")
-        , Condition()
+        , precondition()
         , Reward()
         , Cost(EActionCost::BEHAVIOR_NONE)
         , ActionSequenceClasses()
@@ -53,5 +54,28 @@ struct MINDCORE_API FExecutorItem
     static FExecutorItem EmptyBehavior()
     {
         return FExecutorItem();
+    }
+
+    bool IsNeedsMatched(const FDataTableRows& goal) const
+    {
+        bool result = false;
+        if (Reward.DataTable == goal.DataTable)
+        {
+            for (FName row : Reward.Rows)
+            {
+                if (goal.Rows.Contains(row))
+                {
+                    result = true;
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    bool IsNeedsMatched(const FName& goal) const
+    {
+        return Reward.Rows.Contains(goal);
     }
 };
