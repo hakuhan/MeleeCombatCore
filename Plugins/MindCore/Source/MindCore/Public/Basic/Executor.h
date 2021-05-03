@@ -32,10 +32,16 @@ struct FWay
         ActionInfos.Empty();
     }
 
-    bool HasPrecondition()
+    bool HasPrecondition(FDataTableRows& outPrecondition)
     {
-        return ActionInfos.Num() > 0
-            && ActionInfos[ActionInfos.Num() - 1].precondition.Rows.Num() > 0;
+        if (ActionInfos.Num() > 0
+            && ActionInfos[ActionInfos.Num() - 1].precondition.Rows.Num() > 0)
+        {
+            outPrecondition = ActionInfos[ActionInfos.Num() - 1].precondition;
+            return true;
+        }
+
+        return false;
     }
 
     bool GetActionInfo(int index, FExecutorItem& outAction)
@@ -209,15 +215,16 @@ struct FExecutorData
         return false;
     }
 
-    bool GetCurrentReward(FThing& outReward)
+    bool GetCurrentReward(TArray<FThing*>& outReward)
     {
         FExecutorItem info;
-        // if (GetActionInfo(info))
-        // {
-        //     outReward = *info.Reward.GetRow<FThing>("Get reward");
-        // }
+        outReward.Empty();
+        if (GetActionInfo(info))
+        {
+            info.Reward.GetRows(TEXT("Get rewards"), outReward);
+        }
 
-        return false;
+        return outReward.Num() > 0;
     }
 };
 
@@ -269,11 +276,14 @@ public:
     bool GetAllWays(FThing target, TArray<FWay>& ways);
     // Get all solutions of one target directly
     UFUNCTION(BlueprintCallable)
-    bool GetAllSolutions(const FDataTableRows& goals, TArray<FExecutorItem>& situation, const FExecutorItem& excludeAction);
+    bool GetAllSolutions(const FDataTableRows& goals, const FExecutorItem &excludeAction, TArray<FExecutorItem> &outSolution);
     UFUNCTION(BlueprintCallable)
-    bool GetAllSolutionsByThing(const FThing& goal, TArray<FExecutorItem>& situation, const FExecutorItem& excludeAction);
+    bool GetAllSolutionsByThing(const FThing& goal, TArray<FExecutorItem>& outSolutions);
     void GainGoal(TArray<FWay>& Total, TArray<FExecutorItem> situations, FWay originalGoals = FWay());
     
+    UFUNCTION(BlueprintCallable)
+    bool CheckPreconditions(const FDataTableRows& precondition, FThing& outTarget);
+
     #pragma region action
     UFUNCTION(BlueprintCallable)
     bool CreateActionItem(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass);

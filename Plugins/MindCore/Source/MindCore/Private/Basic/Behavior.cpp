@@ -86,6 +86,8 @@ void UBehavior::UpdateBehavior()
             memory.Type = EMemoryType::Memory_Insensible;
             // TODO remember executor chain
 
+            // TODO Clean executor datas
+
             remember->Remember(memory);
 
             // Update wish

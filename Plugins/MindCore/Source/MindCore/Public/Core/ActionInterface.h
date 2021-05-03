@@ -47,4 +47,6 @@ public:
     bool CanEfficacyLose();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
     bool CheckLose();
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
+    void OnLose();
 };
