@@ -4,6 +4,61 @@
 #include "Engine/DataTable.h"
 #include "DataTableRows.generated.h"
 
+UCLASS()
+class MINDCORE_API UComboBoxExtensionHandler : public UObject
+{
+    GENERATED_BODY()
+
+public:
+    UFUNCTION()
+        void OnGetValue(const FString& value)
+    {
+        if (IsValid())
+        {
+            TSharedRef<IPropertyHandle> handler = m_ArrayHandler->GetElement(m_ComboxIndex);
+            if (handler->IsValidHandle())
+            {
+                handler->SetValue(FName(value));
+            }
+        }
+    }
+
+    UFUNCTION()
+        FString GetCurrentValue()
+    {
+        if (IsValid())
+        {
+            TSharedRef<IPropertyHandle> handler = m_ArrayHandler->GetElement(m_ComboxIndex);
+            if (handler->IsValidHandle())
+            {
+                FName value;
+                handler->GetValue(value);
+                return value.ToString();
+            }
+        }
+
+        return "Empty";
+    }
+
+    bool IsValid()
+    {
+        uint32 count;
+        if (m_ArrayHandler.IsValid())
+        {
+            m_ArrayHandler->GetNumElements(count);
+            if (m_ComboxIndex >= 0 && m_ComboxIndex < (int)count)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    int m_ComboxIndex;
+    TSharedPtr<IPropertyHandleArray> m_ArrayHandler;
+};
+
 USTRUCT(BlueprintType)
 struct MINDCORE_API FDataTableRows
 {

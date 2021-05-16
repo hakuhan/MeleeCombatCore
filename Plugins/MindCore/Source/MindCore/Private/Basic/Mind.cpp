@@ -9,7 +9,7 @@ void UMind::BeginPlay()
     auto behaviorObj = NewObject<UObject>(this, BehaviorClass);
     auto imagineObj = NewObject<UObject>(this, ImagineClass);
 
-    if (Remember == nullptr || Wish == nullptr || Behavior == nullptr || Imagine == nullptr)
+    if (rememberObj == nullptr || wishObj == nullptr || behaviorObj == nullptr || imagineObj == nullptr)
     {
         UE_LOG(LogTemp, Error, TEXT("Mind should be initialized!"));
     }
@@ -35,15 +35,16 @@ void UMind::BeginPlay()
 
 void UMind::BeginDestroy()
 {
+    //if (Wish)
+    //    IMindComponentInterface::Execute_OnStop(Wish.GetObject());
+    //if (Remember)
+    //    IMindComponentInterface::Execute_OnStop(Remember.GetObject());
+    //if (Behavior)
+    //    IMindComponentInterface::Execute_OnStop(Behavior.GetObject());
+    //if (Imagine)
+    //    IMindComponentInterface::Execute_OnStop(Imagine.GetObject());
+
     Super::BeginDestroy();
-    if (Wish.GetObject())
-        IMindComponentInterface::Execute_OnStop(Wish.GetObject());
-    if (Remember.GetObject())
-        IMindComponentInterface::Execute_OnStop(Remember.GetObject());
-    if (Behavior.GetObject())
-        IMindComponentInterface::Execute_OnStop(Behavior.GetObject());
-    if (Imagine.GetObject())
-        IMindComponentInterface::Execute_OnStop(Imagine.GetObject());
 }
 
 void UMind::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
