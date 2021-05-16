@@ -59,13 +59,13 @@ void UExecutor::UpdateBehavior_Implementation()
         {
             return;
         }
-        auto actionState = actionItem->GetState();
+        auto actionState = IActionInterface::Execute_GetState(actionItem.GetObject());
         switch (actionState)
         {
         case EActionState::Action_Failure:
         case EActionState::Action_Unreachable:
             m_Data.State = EExecutorState::EXECUTOR_WAITING;
-            actionItem->FinishAction();
+            IActionInterface::Execute_FinishAction(actionItem.GetObject());
             action.Reset();
 
             // TODO Store data
@@ -73,7 +73,7 @@ void UExecutor::UpdateBehavior_Implementation()
 
         case EActionState::Action_Success:
         {
-            actionItem->FinishAction();
+            IActionInterface::Execute_FinishAction(actionItem.GetObject());
             // own thing
             TArray<FThing*> reward;
             if (m_Data.GetCurrentReward(reward))
@@ -304,7 +304,7 @@ bool UExecutor::GetAllSolutionsByThing(const FThing& goal, TArray<FExecutorItem>
     outSolutions.Empty();
     for (int i = 0; i < TotalActionInfos.Num(); ++i)
     {
-        if (outSolutions[i].IsNeedsMatched(*goal.Name))
+        if (TotalActionInfos[i].IsNeedsMatched(*goal.Name))
         {
             outSolutions.AddUnique(TotalActionInfos[i]);
         }

@@ -31,7 +31,7 @@ void UBehavior::CreateBehavior()
 {
     // Get wishes
     TArray<FThing> Wishes;
-    Mind->Wish->GetWishes(Wishes);
+    IWishInterface::Execute_GetWishes(Mind->Wish.GetObject(), Wishes);
 
     // Find Executor to execute
     for (int i = 0; i < Wishes.Num(); ++i)
@@ -63,7 +63,7 @@ void UBehavior::CreateBehavior()
         else
         {
             // Update executor
-            Behaviors[behaviorIndex].Executor->UpdateBehavior();
+            IBehaviorExecutorInterface::Execute_UpdateBehavior(Behaviors[behaviorIndex].Executor.GetObject());
         }
     }
 }
@@ -72,7 +72,7 @@ void UBehavior::UpdateBehavior()
 {
     for (int j = 0; j < Behaviors.Num(); ++j)
     {
-        auto state = Behaviors[j].Executor->GetExecuteState();
+        auto state = IBehaviorExecutorInterface::Execute_GetExecuteState(Behaviors[j].Executor.GetObject());
 
         if (state == EExecutorState::EXECUTOR_FINISH)
         {
@@ -91,7 +91,7 @@ void UBehavior::UpdateBehavior()
             remember->Remember(memory);
 
             // Update wish
-            Mind->Wish->ObtainThing(Behaviors[j].Target);
+            IWishInterface::Execute_ObtainThing(Mind->Wish.GetObject(), Behaviors[j].Target);
 
         }
     }
@@ -111,7 +111,7 @@ void UBehavior::ExecuteBehavior()
     {
         if (priority < Behaviors[i].Target.Priority)
         {
-            auto state = Behaviors[i].Executor->GetExecuteState();
+            auto state = IBehaviorExecutorInterface::Execute_GetExecuteState(Behaviors[i].Executor.GetObject());
             if (state == EExecutorState::EXECUTOR_READY || state == EExecutorState::EXECUTOR_EXECUTING)
             {
                 targetIndex = i;
@@ -121,7 +121,7 @@ void UBehavior::ExecuteBehavior()
     }
 
     // Execute
-    Behaviors[targetIndex].Executor->ExecuteBehavior();
+    IBehaviorExecutorInterface::Execute_ExecuteBehavior(Behaviors[targetIndex].Executor.GetObject());
 }
 
 void UBehavior::ObtainThing(const FThing &thing)

@@ -51,16 +51,16 @@ void UMind::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-    DoWish();
-    DoBehavior();
-    DoImagine();
+    Execute_DoWish(this);
+    Execute_DoBehavior(this);
+    Execute_DoImagine(this);
 }
 
 void UMind::DoWish_Implementation()
 {
     if (IsMemberValid(Wish))
     {
-        Wish->UpdateWish();
+        IWishInterface::Execute_UpdateWish(Wish.GetObject());
     }
 }
 
@@ -68,11 +68,14 @@ void UMind::DoBehavior_Implementation()
 {
     if (IsMemberValid(Behavior))
     {
-        Behavior->Behave();
+        IBehaviorInterface::Execute_Behave(Behavior.GetObject());
     }
 }
 
 void UMind::DoImagine_Implementation()
 {
-    Imagine->Imaging();
+    if (IsMemberValid(Imagine))
+    {
+        IImagineInterface::Execute_Imaging(Imagine.GetObject());
+    }
 }

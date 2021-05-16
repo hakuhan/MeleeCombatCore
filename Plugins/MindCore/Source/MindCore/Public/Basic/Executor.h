@@ -122,7 +122,7 @@ struct FActionData
         ActionItemIndex++;
     }
 
-    void AddActionItem(TScriptInterface<IActionInterface> item)
+    void AddActionItem(const TScriptInterface<IActionInterface>& item)
     {
         Items.Add(item);
     }
