@@ -33,20 +33,6 @@ void UMind::BeginPlay()
     }
 }
 
-void UMind::BeginDestroy()
-{
-    //if (Wish)
-    //    IMindComponentInterface::Execute_OnStop(Wish.GetObject());
-    //if (Remember)
-    //    IMindComponentInterface::Execute_OnStop(Remember.GetObject());
-    //if (Behavior)
-    //    IMindComponentInterface::Execute_OnStop(Behavior.GetObject());
-    //if (Imagine)
-    //    IMindComponentInterface::Execute_OnStop(Imagine.GetObject());
-
-    Super::BeginDestroy();
-}
-
 void UMind::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);

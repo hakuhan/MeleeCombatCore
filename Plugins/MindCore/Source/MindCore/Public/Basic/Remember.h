@@ -41,6 +41,5 @@ public:
 
 #pragma region mind component
     virtual void OnInit_Implementation(UMind *mind) override;
-    virtual void OnStop_Implementation() override {}
 #pragma endregion
 };

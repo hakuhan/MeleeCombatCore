@@ -22,30 +22,8 @@ class MINDCORE_API UMind : public UActorComponent, public IMindInterface
     GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, meta = (MustImplement = "RememberInterface"))
-    TSubclassOf<UObject> RememberClass;
-    UPROPERTY(BlueprintReadWrite)
-    TScriptInterface<IRememberInterface> Remember;
-
-    UPROPERTY(EditAnywhere, meta = (MustImplement = "WishInterface"))
-    TSubclassOf<UObject> WishClass;
-    UPROPERTY(BlueprintReadWrite)
-    TScriptInterface<IWishInterface> Wish;
-    
-    UPROPERTY(EditAnywhere, meta = (MustImplement = "BehaviorInterface"))
-    TSubclassOf<UObject> BehaviorClass;
-    UPROPERTY(BlueprintReadWrite)
-    TScriptInterface<IBehaviorInterface> Behavior;
-    
-    UPROPERTY(EditAnywhere, meta = (MustImplement = "ImagineInterface"))
-    TSubclassOf<UObject> ImagineClass;
-    UPROPERTY(BlueprintReadWrite)
-    TScriptInterface<IImagineInterface> Imagine;
-
-public:
     void BeginPlay() override;
-    void BeginDestroy() override;
-    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 
     UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     virtual void DoWish_Implementation() override;
@@ -74,5 +52,26 @@ public:
         }
 
         return result;
-    }
+    };
+
+public:
+	UPROPERTY(EditAnywhere, meta = (MustImplement = "RememberInterface"))
+		TSubclassOf<UObject> RememberClass;
+	UPROPERTY(BlueprintReadWrite)
+		TScriptInterface<IRememberInterface> Remember;
+
+	UPROPERTY(EditAnywhere, meta = (MustImplement = "WishInterface"))
+		TSubclassOf<UObject> WishClass;
+	UPROPERTY(BlueprintReadWrite)
+		TScriptInterface<IWishInterface> Wish;
+
+	UPROPERTY(EditAnywhere, meta = (MustImplement = "BehaviorInterface"))
+		TSubclassOf<UObject> BehaviorClass;
+	UPROPERTY(BlueprintReadWrite)
+		TScriptInterface<IBehaviorInterface> Behavior;
+
+	UPROPERTY(EditAnywhere, meta = (MustImplement = "ImagineInterface"))
+		TSubclassOf<UObject> ImagineClass;
+	UPROPERTY(BlueprintReadWrite)
+		TScriptInterface<IImagineInterface> Imagine;
 };

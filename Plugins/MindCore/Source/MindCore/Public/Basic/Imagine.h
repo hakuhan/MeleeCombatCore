@@ -26,6 +26,5 @@ public:
     {
         Mind = mind;
     }
-    virtual void OnStop_Implementation() override {}
 #pragma endregion
 };

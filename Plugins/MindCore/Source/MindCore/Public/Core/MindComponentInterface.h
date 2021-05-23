@@ -15,7 +15,4 @@ class MINDCORE_API IMindComponentInterface
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
     void OnInit(UMind *mind);
-
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
-    void OnStop();
 };

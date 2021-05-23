@@ -33,11 +33,15 @@ void FDataTableListCustomization::CustomizeChildren(TSharedRef<class IPropertyHa
 		m_DataTableHandler->SetOnPropertyValueChanged(OnDataTableChangedDelegate);
 
 		/** Construct a asset picker widget with a custom filter */
-		StructBuilder.AddCustomRow(LOCTEXT("DataTable_TableName", "Data Table"))
+		auto mainName = InStructPropertyHandle->GetPropertyDisplayName();
+
+		m_RowsHandler->SetPropertyDisplayName(FText::FromString(mainName.ToString() + "_Rows"));
+
+		auto mainRow = StructBuilder.AddCustomRow(mainName)
 			.NameContent()
 			[
 				SNew(STextBlock)
-				.Text(LOCTEXT("DataTable_TableName", "Data Table"))
+				.Text(mainName)
 				.Font(StructCustomizationUtils.GetRegularFont())
 			]
 			.ValueContent()
@@ -54,7 +58,6 @@ void FDataTableListCustomization::CustomizeChildren(TSharedRef<class IPropertyHa
 		{
 			TSharedRef<FDetailArrayBuilder> rowsBuilder = MakeShareable(new FDetailArrayBuilder(m_RowsHandler.ToSharedRef()));
 			rowsBuilder->OnGenerateArrayElementWidget(FOnGenerateArrayElementWidget::CreateLambda([&](TSharedRef<IPropertyHandle> handler, int32 index, IDetailChildrenBuilder& childBuilder) {
-
 				FName rowName;
 				const FPropertyAccess::Result rowResult = handler->GetValue(rowName);
 				UComboBoxExtensionHandler* comboHandler = NewObject<UComboBoxExtensionHandler>();
@@ -92,7 +95,7 @@ bool FDataTableListCustomization::GetCurrentValue(UDataTable*& OutDataTable, FNa
 		UObject* SourceDataTable = nullptr;
 		if (m_DataTableHandler->GetValue(SourceDataTable) == FPropertyAccess::Success)
 		{
-			OutDataTable = Cast<UDataTable>(SourceDataTable);
+			OutDataTable = dynamic_cast<UDataTable*>(SourceDataTable);
 
             if (OutDataTable && OutDataTable->FindRow<FTableRowBase>(OutName, TEXT(""), false) != nullptr)
 			{
@@ -122,6 +125,19 @@ void FDataTableListCustomization::OnGetRowStrings(TArray< TSharedPtr<FString> >&
 
 		// Sort the names alphabetically.
 		AllRowNames.Sort(FNameLexicalLess());
+	}
+
+	// Remove item been used
+	uint32 count;
+	m_RowArrayHandler->GetNumElements(count);
+	for (int i = (int)count - 1; i >= 0 ; --i)
+	{
+		FName value;
+		m_RowArrayHandler->GetElement(i)->GetValue(value);
+		if (AllRowNames.Contains(value))
+		{
+			AllRowNames.Remove(value);
+		}
 	}
 
 	for (const FName& RowName : AllRowNames)

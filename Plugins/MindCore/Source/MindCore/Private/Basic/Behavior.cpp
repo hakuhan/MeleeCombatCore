@@ -15,18 +15,6 @@ EBehaviorState UBehavior::GetState_Implementation()
     return EBehaviorState::BEHAVIOR_READY;
 }
 
-void UBehavior::OnStop_Implementation()
-{
-    for (int i = 0; i < Behaviors.Num(); ++i)
-    {
-        UExecutor *executor = dynamic_cast<UExecutor *>(Behaviors[i].Executor.GetObject());
-        if (executor)
-        {
-            executor->Stop();
-        }
-    }
-}
-
 void UBehavior::CreateBehavior()
 {
     // Get wishes
@@ -105,7 +93,7 @@ void UBehavior::ExecuteBehavior()
     }
 
     // Find Target Behavior
-    int priority = 0;
+    int priority = -1;
     int targetIndex = 0;
     for (int i = 0; i < Behaviors.Num(); ++i)
     {
