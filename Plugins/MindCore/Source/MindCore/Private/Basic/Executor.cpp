@@ -289,11 +289,11 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
 bool UExecutor::GetAllSolutions(const FDataTableRows& goals, const FExecutorItem &excludeAction, TArray<FExecutorItem> &outSolution)
 {
     outSolution.Empty();
-    for (int i = 0; i < TotalActionInfos.Num(); ++i)
+    for (int i = 0; i < TotalActions.Num(); ++i)
     {
-        if (outSolution[i].IsNeedsMatched(goals) && TotalActionInfos[i] != excludeAction)
+        if (TotalActions[i].IsNeedsMatched(goals) && TotalActions[i] != excludeAction)
         {
-            outSolution.AddUnique(TotalActionInfos[i]);
+            outSolution.AddUnique(TotalActions[i]);
         }
     }
     return outSolution.Num() >= 0;
@@ -302,11 +302,11 @@ bool UExecutor::GetAllSolutions(const FDataTableRows& goals, const FExecutorItem
 bool UExecutor::GetAllSolutionsByThing(const FThing& goal, TArray<FExecutorItem>& outSolutions)
 {
     outSolutions.Empty();
-    for (int i = 0; i < TotalActionInfos.Num(); ++i)
+    for (int i = 0; i < TotalActions.Num(); ++i)
     {
-        if (TotalActionInfos[i].IsNeedsMatched(*goal.Name))
+        if (TotalActions[i].IsNeedsMatched(*goal.Name))
         {
-            outSolutions.AddUnique(TotalActionInfos[i]);
+            outSolutions.AddUnique(TotalActions[i]);
         }
     }
     return outSolutions.Num() >= 0;

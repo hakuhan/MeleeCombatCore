@@ -18,7 +18,7 @@ enum class EActionCost : uint8
 };
 
 USTRUCT(BlueprintType)
-struct MINDCORE_API FExecutorItem
+struct MINDCORE_API FExecutorItem : public FTableRowBase
 {
     GENERATED_USTRUCT_BODY()
 

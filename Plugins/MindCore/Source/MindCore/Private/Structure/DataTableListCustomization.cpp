@@ -35,13 +35,13 @@ void FDataTableListCustomization::CustomizeChildren(TSharedRef<class IPropertyHa
 		/** Construct a asset picker widget with a custom filter */
 		auto mainName = InStructPropertyHandle->GetPropertyDisplayName();
 
-		m_RowsHandler->SetPropertyDisplayName(FText::FromString(mainName.ToString() + "_Rows"));
+		m_RowsHandler->SetPropertyDisplayName(FText::FromString(mainName.ToString() + "_Lists"));
 
 		auto mainRow = StructBuilder.AddCustomRow(mainName)
 			.NameContent()
 			[
 				SNew(STextBlock)
-				.Text(mainName)
+				.Text(FText::FromString(mainName.ToString() + "_Table"))
 				.Font(StructCustomizationUtils.GetRegularFont())
 			]
 			.ValueContent()

@@ -238,8 +238,10 @@ public:
     UMind* m_Mind;
     UPROPERTY(BlueprintReadwrite)
     FExecutorData m_Data;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FExecutorItem> TotalActionInfos;
+    UPROPERTY(EditAnywhere)
+    UDataTable* m_ActionInfo;
+    UPROPERTY(BlueprintReadWrite)
+    TArray<FExecutorItem> TotalActions;
 
     FObtainThingDelegate OnObtainThing;
     FUseThingDelegate OnUseThing;
@@ -251,6 +253,15 @@ public:
         m_Data.Target = thing;
         m_Data.State = EExecutorState::EXECUTOR_WAITING;
         m_Mind = mind;
+        TArray<FExecutorItem*> allItems;
+        if (m_ActionInfo)
+        {
+            m_ActionInfo->GetAllRows("Init executor items", allItems);
+            for (auto item : allItems)
+            {
+                TotalActions.Add(*item);
+            }
+        }
     }
 
     virtual void Stop();
