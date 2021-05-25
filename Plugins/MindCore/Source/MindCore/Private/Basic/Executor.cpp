@@ -37,17 +37,14 @@ void UExecutor::UpdateBehavior_Implementation()
             for (int j = 0; j < m_Data.Actions[i].Items.Num(); ++j)
             {
                 auto actionItem = m_Data.Actions[i].Items[j];
-                if (actionItem->GetState() == EActionState::Action_Success
-                    && CheckPreconditions(m_Data.Way.ActionInfos[i].Reward, reward)
-                    && actionItem->CanEfficacyLose()
-                    && actionItem->CheckLose())
+                if (actionItem->Execute_GetState(actionItem.GetObject()) == EActionState::Action_Success && CheckPreconditions(m_Data.Way.ActionInfos[0].Reward, reward) && actionItem->Execute_CanEfficacyLose(actionItem.GetObject()) && actionItem->Execute_CheckLose(actionItem.GetObject()))
                 {
                     UseThing(reward);
-                    actionItem->OnLose();
+                    actionItem->Execute_OnLose(actionItem.GetObject());
                 }
             }
         }
-        
+
         // Check state
         FActionData action;
         TScriptInterface<IActionInterface> actionItem;
@@ -55,7 +52,7 @@ void UExecutor::UpdateBehavior_Implementation()
         {
             return;
         }
-        if (!action.GetCurrentActionItem(actionItem, false))
+        if (!action.GetCurrentActionItem(actionItem))
         {
             return;
         }
@@ -75,7 +72,7 @@ void UExecutor::UpdateBehavior_Implementation()
         {
             IActionInterface::Execute_FinishAction(actionItem.GetObject());
             // own thing
-            TArray<FThing*> reward;
+            TArray<FThing *> reward;
             if (m_Data.GetCurrentReward(reward))
             {
                 for (int i = 0; i < reward.Num(); ++i)
@@ -150,7 +147,7 @@ void UExecutor::UpdateBehavior_Implementation()
                         else
                         {
                             UE_LOG(LogTemp, Error, TEXT("Switch next actionItem item failed, Action index out of range!"))
-                        }   
+                        }
                     }
                 }
                 else
@@ -176,7 +173,10 @@ void UExecutor::ExecuteBehavior_Implementation()
             FActionData action;
             if (m_Data.GetCurrentAction(action, false))
             {
-                action.GetCurrentActionItem(actionItem, true);
+                if (!action.GetCurrentActionItem(actionItem))
+                {
+                    CreateActionItem(actionItem, behaviorInfo.ActionSequenceClasses[action.ActionItemIndex]);
+                }
             }
             else
             {
@@ -184,9 +184,9 @@ void UExecutor::ExecuteBehavior_Implementation()
             }
 
             // Execute actionItem
-            if (actionItem != nullptr)
+            if (actionItem.GetObject() != nullptr)
             {
-                actionItem->RunningAction();
+                actionItem->Execute_RunningAction(actionItem.GetObject());
             }
             else
             {
@@ -204,9 +204,9 @@ void UExecutor::Stop()
         FActionData action;
         if (m_Data.GetCurrentAction(action, false))
         {
-            if (action.GetCurrentActionItem(actionItem, false))
+            if (action.GetCurrentActionItem(actionItem))
             {
-                actionItem->FinishAction();
+                actionItem->Execute_FinishAction(actionItem.GetObject());
             }
         }
     }
@@ -274,7 +274,10 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
                         ways.Add(tempWay);
                     }
                 }
-
+                else
+                {
+                    ways.Add(tempWay);
+                }
             }
             else
             {
@@ -286,7 +289,7 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
     return ways.Num() > 0;
 }
 
-bool UExecutor::GetAllSolutions(const FDataTableRows& goals, const FExecutorItem &excludeAction, TArray<FExecutorItem> &outSolution)
+bool UExecutor::GetAllSolutions(const FDataTableRows &goals, const FExecutorItem &excludeAction, TArray<FExecutorItem> &outSolution)
 {
     outSolution.Empty();
     for (int i = 0; i < TotalActions.Num(); ++i)
@@ -299,7 +302,7 @@ bool UExecutor::GetAllSolutions(const FDataTableRows& goals, const FExecutorItem
     return outSolution.Num() >= 0;
 }
 
-bool UExecutor::GetAllSolutionsByThing(const FThing& goal, TArray<FExecutorItem>& outSolutions)
+bool UExecutor::GetAllSolutionsByThing(const FThing &goal, TArray<FExecutorItem> &outSolutions)
 {
     outSolutions.Empty();
     for (int i = 0; i < TotalActions.Num(); ++i)
@@ -323,9 +326,9 @@ void UExecutor::GainGoal(TArray<FWay> &Total, TArray<FExecutorItem> situations, 
     }
 }
 
-bool UExecutor::CheckPreconditions(const FDataTableRows& precondition, FThing& outTarget)
+bool UExecutor::CheckPreconditions(const FDataTableRows &precondition, FThing &outTarget)
 {
-    TArray<FThing*> conditions;
+    TArray<FThing *> conditions;
     precondition.GetRows(TEXT("Get preconditions"), conditions);
     for (int i = 0; i < conditions.Num(); ++i)
     {
@@ -347,12 +350,13 @@ bool UExecutor::CreateActionItem(TScriptInterface<IActionInterface> &actionItem,
     {
         actionItem.SetInterface(dynamic_cast<IActionInterface *>(actionObj));
         actionItem.SetObject(actionObj);
-        actionItem->Init(m_Mind->GetOwner());
+        actionItem->Execute_Init(actionObj, m_Mind->GetOwner());
 
         FActionData action;
         if (m_Data.GetCurrentAction(action))
         {
             action.AddActionItem(actionItem);
+            m_Data.Actions.Add(action);
             result = true;
         }
     }

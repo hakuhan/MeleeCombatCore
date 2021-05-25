@@ -127,17 +127,12 @@ struct FActionData
         Items.Add(item);
     }
 
-    bool GetCurrentActionItem(TScriptInterface<IActionInterface>& item, bool autoCreate = true)
+    bool GetCurrentActionItem(TScriptInterface<IActionInterface>& item)
     {
         if (ActionItemIndex >= 0 && ActionItemIndex < Items.Num())
         {
             item = Items[ActionItemIndex];
             return true;
-        }
-        else if (autoCreate && ActionItemIndex == Items.Num())
-        {
-            item = TScriptInterface<IActionInterface>();
-            Items.Add(item);
         }
 
         return false;
