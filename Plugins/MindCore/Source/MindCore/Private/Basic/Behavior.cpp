@@ -114,10 +114,10 @@ void UBehavior::ExecuteBehavior()
 
 void UBehavior::ObtainThing(const FThing &thing)
 {
-    Mind->Wish->ObtainThing(thing);
+    IWishInterface::Execute_ObtainThing(Mind->Wish.GetObject(), thing);
 }
 
 void UBehavior::UseThing(const FThing &thing)
 {
-    Mind->Wish->LoseThing(thing);
+    IWishInterface::Execute_LoseThing(Mind->Wish.GetObject(), thing);
 }

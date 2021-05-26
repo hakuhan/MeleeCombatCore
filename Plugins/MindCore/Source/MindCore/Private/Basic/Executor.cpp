@@ -37,7 +37,10 @@ void UExecutor::UpdateBehavior_Implementation()
             for (int j = 0; j < m_Data.Actions[i].Items.Num(); ++j)
             {
                 auto actionItem = m_Data.Actions[i].Items[j];
-                if (actionItem->Execute_GetState(actionItem.GetObject()) == EActionState::Action_Success && CheckPreconditions(m_Data.Way.ActionInfos[0].Reward, reward) && actionItem->Execute_CanEfficacyLose(actionItem.GetObject()) && actionItem->Execute_CheckLose(actionItem.GetObject()))
+                if (actionItem->Execute_GetState(actionItem.GetObject()) == EActionState::Action_Success 
+                    && CheckPreconditions(m_Data.Way.ActionInfos[0].Reward, reward) 
+                    && actionItem->Execute_CanEfficacyLose(actionItem.GetObject()) 
+                    && actionItem->Execute_CheckLose(actionItem.GetObject()))
                 {
                     UseThing(reward);
                     actionItem->Execute_OnLose(actionItem.GetObject());
@@ -332,7 +335,7 @@ bool UExecutor::CheckPreconditions(const FDataTableRows &precondition, FThing &o
     precondition.GetRows(TEXT("Get preconditions"), conditions);
     for (int i = 0; i < conditions.Num(); ++i)
     {
-        if (conditions[i] && m_Mind->Wish->CheckThingOwned(*conditions[i]))
+        if (conditions[i] && m_Mind->Wish->Execute_CheckThingOwned(m_Mind->Wish.GetObject(), *conditions[i]))
         {
             outTarget = *conditions[i];
             return true;
