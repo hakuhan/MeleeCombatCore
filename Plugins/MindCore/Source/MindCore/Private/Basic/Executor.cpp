@@ -53,10 +53,12 @@ void UExecutor::UpdateBehavior_Implementation()
         TScriptInterface<IActionInterface> actionItem;
         if (!m_Data.GetCurrentAction(action, false))
         {
+            UE_LOG(LogTemp, Error, TEXT("Current Action lost!"))
             return;
         }
         if (!action.GetCurrentActionItem(actionItem))
         {
+            UE_LOG(LogTemp, Error, TEXT("Current Action item lost!"))
             return;
         }
         auto actionState = IActionInterface::Execute_GetState(actionItem.GetObject());
@@ -360,6 +362,7 @@ bool UExecutor::CreateActionItem(TScriptInterface<IActionInterface> &actionItem,
         {
             action.AddActionItem(actionItem);
             m_Data.Actions.Add(action);
+            m_Data.UpdateCurrentAction(action);
             result = true;
         }
     }

@@ -112,6 +112,11 @@ struct FActionData
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     int ActionItemIndex;
 
+    FActionData()
+        : Items({})
+        , ActionItemIndex(0)
+    {}
+
     void Reset()
     {
         ActionItemIndex = 0;
@@ -169,6 +174,17 @@ struct FExecutorData
             return true;
         }
 
+        return false;
+    }
+
+    bool UpdateCurrentAction(const FActionData& newAction)
+    {
+        if (ActionIndex >= 0 && ActionIndex < Actions.Num())
+        {
+            Actions[ActionIndex] = newAction;
+            return true;
+        }
+        
         return false;
     }
 
