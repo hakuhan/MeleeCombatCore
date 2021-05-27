@@ -40,13 +40,11 @@ struct FSkillComponentData
 		ASkillDynamicData* DynamicData;
 
 	FSkillComponentData()
-	{
-		DynamicData = NewObject<ASkillDynamicData>();
-	}
+	{ }
 
 	FSkillComponentData(bool bDebug)
+		: DynamicData(NewObject<ASkillDynamicData>())
 	{
-		DynamicData = NewObject<ASkillDynamicData>();
 		DynamicData->bDebug = bDebug;
 	}
 };
@@ -96,6 +94,10 @@ public:
 	// It's used in the hold line of skillComponent, skillLine and skill at run time
 	ASkillDynamicData* GetDynamicData()
 	{
+		if (m_Data.DynamicData == nullptr)
+		{
+			m_Data.DynamicData = NewObject<ASkillDynamicData>();
+		}
 		return m_Data.DynamicData;
 	}
 #pragma endregion

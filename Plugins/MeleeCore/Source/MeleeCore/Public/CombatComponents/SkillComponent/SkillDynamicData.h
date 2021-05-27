@@ -13,7 +13,7 @@ enum class ESkillBreakLevel : uint8
     SKILL_BREAK_UNABLE UMETA(DisplayName="不可能"),
 };
 
-UCLASS(BlueprintType)
+UCLASS(Blueprintable)
 class MELEECORE_API ASkillDynamicData : public AInfo
 {
     GENERATED_BODY()
