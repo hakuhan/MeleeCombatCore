@@ -67,7 +67,7 @@ struct FWay
             UE_LOG(LogTemp, Error, TEXT("Behavior index out of range when tring to find action of target behavior"))
             return true;
         }
-        return ActionInfos[actionIndex].ActionSequenceClasses.Num() == actionItemIndex;
+        return ActionInfos[actionIndex].ActionSequenceClasses.Num() - 1 == actionItemIndex;
     }
 
     bool GetActionClass(int actionIndex, int actionItemIndex, TSubclassOf<UObject>& outClass)
@@ -99,6 +99,25 @@ struct FWay
     friend bool operator==(const FWay& l, const FWay& r)
     {
         return l.ActionInfos == r.ActionInfos;
+    }
+
+    void Reverse()
+    {
+        int count = ActionInfos.Num();
+        for (int i = 0; i < count; ++i)
+        {
+            int reverseIndex = count - i - 1;
+            if ( i < reverseIndex)
+            {
+                auto temp = ActionInfos[i];
+                ActionInfos[i] = ActionInfos[reverseIndex];
+                ActionInfos[reverseIndex] = temp;
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 };
 
@@ -301,7 +320,7 @@ public:
     bool GetAllSolutions(const FDataTableRows& goals, const FExecutorItem &excludeAction, TArray<FExecutorItem> &outSolution);
     UFUNCTION(BlueprintCallable)
     bool GetAllSolutionsByThing(const FThing& goal, TArray<FExecutorItem>& outSolutions);
-    void GainGoal(TArray<FWay>& Total, TArray<FExecutorItem> situations, FWay originalGoals = FWay());
+    void StashWay(TArray<FWay>& Ways, TArray<FExecutorItem> situations, FWay originalGoals = FWay());
     
     UFUNCTION(BlueprintCallable)
     bool CheckPreconditions(const FDataTableRows& precondition, FThing& outTarget);

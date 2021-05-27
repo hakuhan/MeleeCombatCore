@@ -137,8 +137,8 @@ void UExecutor::UpdateBehavior_Implementation()
                         {
                             if (CreateActionItem(nextActionItem, actionClass))
                             {
-                                nextActionItem->PrepareAction();
-                                if (nextActionItem->IsCost())
+                                nextActionItem->Execute_PrepareAction(nextActionItem.GetObject());
+                                if (nextActionItem->Execute_IsCost(nextActionItem.GetObject()))
                                 {
                                     // decrease thing
                                     UseThing(nextCondition);
@@ -251,20 +251,20 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
 {
     ways.Empty();
     bool gotAllWays = false;
-    TArray<FWay> AllGoals;
+    TArray<FWay> CheckingWays;
     TArray<FExecutorItem> solutions;
     if (GetAllSolutionsByThing(target, solutions))
     {
         // Get all solution of main target
-        GainGoal(AllGoals, solutions);
+        StashWay(CheckingWays, solutions);
 
         // Find situations of children
         while (!gotAllWays)
         {
-            if (AllGoals.Num() > 0)
+            if (CheckingWays.Num() > 0)
             {
                 // Check and remove solution one by one
-                auto tempWay = AllGoals.Pop();
+                auto tempWay = CheckingWays.Pop();
 
                 FDataTableRows tempCondition;
                 if (tempWay.HasPrecondition(tempCondition))
@@ -272,15 +272,17 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
                     TArray<FExecutorItem> tempSituations;
                     if (GetAllSolutions(tempCondition, tempWay.ActionInfos[tempWay.ActionInfos.Num() - 1], tempSituations))
                     {
-                        GainGoal(AllGoals, tempSituations, tempWay);
+                        StashWay(CheckingWays, tempSituations, tempWay);
                     }
                     else
                     {
+                        tempWay.Reverse();
                         ways.Add(tempWay);
                     }
                 }
                 else
                 {
+					tempWay.Reverse();
                     ways.Add(tempWay);
                 }
             }
@@ -320,14 +322,14 @@ bool UExecutor::GetAllSolutionsByThing(const FThing &goal, TArray<FExecutorItem>
     return outSolutions.Num() >= 0;
 }
 
-void UExecutor::GainGoal(TArray<FWay> &Total, TArray<FExecutorItem> situations, FWay originalGoals)
+void UExecutor::StashWay(TArray<FWay> &Ways, TArray<FExecutorItem> situations, FWay originalGoals)
 {
-    for (auto info : situations)
+    for (auto item : situations)
     {
-        TArray<FExecutorItem> infos;
-        infos.Append(originalGoals.ActionInfos);
-        infos.Add(info);
-        Total.Add(infos);
+        TArray<FExecutorItem> wayInfos;
+        wayInfos.Append(originalGoals.ActionInfos);
+        wayInfos.Add(item);
+        Ways.Add(wayInfos);
     }
 }
 
