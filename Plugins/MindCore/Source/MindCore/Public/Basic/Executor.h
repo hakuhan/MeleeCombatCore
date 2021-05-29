@@ -4,7 +4,7 @@
 #include "Core/BehaviorExecutorInterface.h"
 #include "Core/ActionInterface.h"
 #include "Basic/Mind.h"
-#include "Structure/ExecutorItem.h"
+#include "Structure/ActionInfo.h"
 #include "Structure/Thing.h"
 #include "Executor.generated.h"
 
@@ -18,12 +18,12 @@ struct FWay
     GENERATED_USTRUCT_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FExecutorItem> ActionInfos;
+    TArray<FActionInfo> ActionInfos;
 
     FWay()
     { }
 
-    FWay(TArray<FExecutorItem> hehavior)
+    FWay(TArray<FActionInfo> hehavior)
         : ActionInfos(hehavior)
     { }
 
@@ -44,7 +44,7 @@ struct FWay
         return false;
     }
 
-    bool GetActionInfo(int index, FExecutorItem& outAction)
+    bool GetActionInfo(int index, FActionInfo& outAction)
     {
         if (index < ActionInfos.Num() && index >= 0)
         {
@@ -60,7 +60,7 @@ struct FWay
         return index == ActionInfos.Num() - 1;
     }
 
-    bool IsLastActionItem(int actionIndex, int actionItemIndex)
+    bool IsLastActionSequence(int actionIndex, int actionItemIndex)
     {
         if (actionIndex >= ActionInfos.Num())
         {
@@ -127,35 +127,35 @@ struct FActionData
     GENERATED_USTRUCT_BODY()
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-    TArray<TScriptInterface<IActionInterface>> Items;
+    TArray<TScriptInterface<IActionInterface>> ActionSequence;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-    int ActionItemIndex;
+    int ActionSequenceIndex;
 
     FActionData()
-        : Items({})
-        , ActionItemIndex(0)
+        : ActionSequence({})
+        , ActionSequenceIndex(0)
     {}
 
     void Reset()
     {
-        ActionItemIndex = 0;
+        ActionSequenceIndex = 0;
     }
 
-    void SwitchActionItemIndex()
+    void GainActionSequenceIndex()
     {
-        ActionItemIndex++;
+        ActionSequenceIndex++;
     }
 
-    void AddActionItem(const TScriptInterface<IActionInterface>& item)
+    void AddSequence(const TScriptInterface<IActionInterface>& item)
     {
-        Items.Add(item);
+        ActionSequence.Add(item);
     }
 
-    bool GetCurrentActionItem(TScriptInterface<IActionInterface>& item)
+    bool GetCurrentActionSequence(TScriptInterface<IActionInterface>& item)
     {
-        if (ActionItemIndex >= 0 && ActionItemIndex < Items.Num())
+        if (ActionSequenceIndex >= 0 && ActionSequenceIndex < ActionSequence.Num())
         {
-            item = Items[ActionItemIndex];
+            item = ActionSequence[ActionSequenceIndex];
             return true;
         }
 
@@ -172,10 +172,10 @@ struct FExecutorData
     FThing Target;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     FWay Way;
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-    EExecutorState State;
     UPROPERTY(BlueprintReadwrite)
     TArray<FActionData> Actions;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    EExecutorState State;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     int ActionIndex;
 
@@ -207,7 +207,7 @@ struct FExecutorData
         return false;
     }
 
-    bool GetActionInfo(FExecutorItem& outInfo)
+    bool GetActionInfo(FActionInfo& outInfo)
     {
         return Way.GetActionInfo(ActionIndex, outInfo);
     }
@@ -217,12 +217,6 @@ struct FExecutorData
         if (!IsLastAction())
         {
             ActionIndex++;
-
-            // Create behavior if needed
-            if (ActionIndex >= Actions.Num())
-            {
-                Actions.Add(FActionData());
-            }
             return true;
         }
 
@@ -234,12 +228,12 @@ struct FExecutorData
         return Way.IsLastAction(ActionIndex);
     }
 
-    bool IsLastActionItem()
+    bool IsLastActionSequence()
     {
-        FActionData behavior;
-        if (GetCurrentAction(behavior))
+        FActionData action;
+        if (GetCurrentAction(action, false))
         {
-            return Way.IsLastActionItem(ActionIndex, behavior.ActionItemIndex);
+            return Way.IsLastActionSequence(ActionIndex, action.ActionSequenceIndex);
         }
 
         return false;
@@ -247,7 +241,7 @@ struct FExecutorData
 
     bool GetCurrentReward(TArray<FThing*>& outReward)
     {
-        FExecutorItem info;
+        FActionInfo info;
         outReward.Empty();
         if (GetActionInfo(info))
         {
@@ -271,7 +265,7 @@ public:
     UPROPERTY(EditAnywhere)
     UDataTable* m_ActionInfo;
     UPROPERTY(BlueprintReadWrite)
-    TArray<FExecutorItem> TotalActions;
+    TArray<FActionInfo> TotalActions;
 
     FObtainThingDelegate OnObtainThing;
     FUseThingDelegate OnUseThing;
@@ -283,7 +277,7 @@ public:
         m_Data.Target = thing;
         m_Data.State = EExecutorState::EXECUTOR_WAITING;
         m_Mind = mind;
-        TArray<FExecutorItem*> allItems;
+        TArray<FActionInfo*> allItems;
         if (m_ActionInfo)
         {
             m_ActionInfo->GetAllRows("Init executor items", allItems);
@@ -317,17 +311,17 @@ public:
     bool GetAllWays(FThing target, TArray<FWay>& ways);
     // Get all solutions of one target directly
     UFUNCTION(BlueprintCallable)
-    bool GetAllSolutions(const FDataTableRows& goals, const FExecutorItem &excludeAction, TArray<FExecutorItem> &outSolution);
+    bool GetAllSolutions(const FDataTableRows& goals, const FActionInfo &excludeAction, TArray<FActionInfo> &outSolution);
     UFUNCTION(BlueprintCallable)
-    bool GetAllSolutionsByThing(const FThing& goal, TArray<FExecutorItem>& outSolutions);
-    void StashWay(TArray<FWay>& Ways, TArray<FExecutorItem> situations, FWay originalGoals = FWay());
+    bool GetAllSolutionsByThing(const FThing& goal, TArray<FActionInfo>& outSolutions);
+    void StashWay(TArray<FWay>& Ways, TArray<FActionInfo> situations, FWay originalGoals = FWay());
     
     UFUNCTION(BlueprintCallable)
     bool CheckPreconditions(const FDataTableRows& precondition, FThing& outTarget);
 
     #pragma region action
     UFUNCTION(BlueprintCallable)
-    bool CreateActionItem(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass);
+    bool CreateActionSequence(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass);
 
     #pragma endregion
 

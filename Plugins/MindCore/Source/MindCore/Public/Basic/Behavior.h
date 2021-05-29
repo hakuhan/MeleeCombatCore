@@ -12,7 +12,7 @@
 #include "Core/MindComponentInterface.h"
 #include "Structure/Thing.h"
 #include "Basic/Executor.h"
-#include "Structure/ExecutorItem.h"
+#include "Structure/ActionInfo.h"
 #include "Behavior.generated.h"
 
 USTRUCT(BlueprintType)

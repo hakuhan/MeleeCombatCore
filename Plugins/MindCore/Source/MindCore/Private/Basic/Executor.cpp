@@ -2,7 +2,7 @@
 
 void UExecutor::CreateBehavior_Implementation()
 {
-    // Create actionItem chain
+    // Create actionSequence chain
     bool isWayOk = FindWay(m_Data.Target, m_Data.Way);
 
     if (!isWayOk)
@@ -18,7 +18,7 @@ void UExecutor::CreateBehavior_Implementation()
 
 void UExecutor::UpdateBehavior_Implementation()
 {
-    // Checkout road
+    // Check way
     if (m_Data.State == EExecutorState::EXECUTOR_WAITING)
     {
         bool isWayOk = FindWay(m_Data.Target, m_Data.Way);
@@ -34,40 +34,40 @@ void UExecutor::UpdateBehavior_Implementation()
         for (int i = 0; i < m_Data.Actions.Num(); ++i)
         {
             FThing reward;
-            for (int j = 0; j < m_Data.Actions[i].Items.Num(); ++j)
+            for (int j = 0; j < m_Data.Actions[i].ActionSequence.Num(); ++j)
             {
-                auto actionItem = m_Data.Actions[i].Items[j];
-                if (actionItem->Execute_GetState(actionItem.GetObject()) == EActionState::Action_Success 
+                auto actionSequence = m_Data.Actions[i].ActionSequence[j];
+                if (actionSequence->Execute_GetState(actionSequence.GetObject()) == EActionState::Action_Success 
                     && CheckPreconditions(m_Data.Way.ActionInfos[0].Reward, reward) 
-                    && actionItem->Execute_CanEfficacyLose(actionItem.GetObject()) 
-                    && actionItem->Execute_CheckLose(actionItem.GetObject()))
+                    && actionSequence->Execute_CanEfficacyLose(actionSequence.GetObject()) 
+                    && actionSequence->Execute_CheckLose(actionSequence.GetObject()))
                 {
                     UseThing(reward);
-                    actionItem->Execute_OnLose(actionItem.GetObject());
+                    actionSequence->Execute_OnLose(actionSequence.GetObject());
                 }
             }
         }
 
-        // Check state
         FActionData action;
-        TScriptInterface<IActionInterface> actionItem;
+        TScriptInterface<IActionInterface> actionSequence;
         if (!m_Data.GetCurrentAction(action, false))
         {
             UE_LOG(LogTemp, Error, TEXT("Current Action lost!"))
             return;
         }
-        if (!action.GetCurrentActionItem(actionItem))
+        if (!action.GetCurrentActionSequence(actionSequence))
         {
             UE_LOG(LogTemp, Error, TEXT("Current Action item lost!"))
             return;
         }
-        auto actionState = IActionInterface::Execute_GetState(actionItem.GetObject());
+        // Check state
+        auto actionState = IActionInterface::Execute_GetState(actionSequence.GetObject());
         switch (actionState)
         {
         case EActionState::Action_Failure:
         case EActionState::Action_Unreachable:
             m_Data.State = EExecutorState::EXECUTOR_WAITING;
-            IActionInterface::Execute_FinishAction(actionItem.GetObject());
+            IActionInterface::Execute_FinishAction(actionSequence.GetObject());
             action.Reset();
 
             // TODO Store data
@@ -75,7 +75,7 @@ void UExecutor::UpdateBehavior_Implementation()
 
         case EActionState::Action_Success:
         {
-            IActionInterface::Execute_FinishAction(actionItem.GetObject());
+            IActionInterface::Execute_FinishAction(actionSequence.GetObject());
             // own thing
             TArray<FThing *> reward;
             if (m_Data.GetCurrentReward(reward))
@@ -88,12 +88,12 @@ void UExecutor::UpdateBehavior_Implementation()
             }
             else
             {
-                UE_LOG(LogTemp, Warning, TEXT("Reward of actionItem %s is lost!"), *actionItem.GetObject()->GetName());
+                UE_LOG(LogTemp, Warning, TEXT("Reward of actionSequence %s is lost!"), *actionSequence.GetObject()->GetName());
             }
 
+            // Check Sequence
             bool switchAction = false;
-            // Switch to next actionItem
-            if (m_Data.IsLastActionItem())
+            if (m_Data.IsLastActionSequence())
             {
                 if (m_Data.IsLastAction())
                 {
@@ -111,15 +111,15 @@ void UExecutor::UpdateBehavior_Implementation()
             }
             else
             {
-                // Switch to next actionItem of current behvior
-                action.SwitchActionItemIndex();
+                // Switch to next actionSequence of current behavior
+                action.GainActionSequenceIndex();
                 switchAction = true;
             }
 
-            // Switch to next actionItem
+            // Switch to next actionSequence
             if (switchAction)
             {
-                FExecutorItem NextActionInfo;
+                FActionInfo NextActionInfo;
                 FThing nextCondition;
                 if (m_Data.GetActionInfo(NextActionInfo))
                 {
@@ -131,14 +131,14 @@ void UExecutor::UpdateBehavior_Implementation()
                     FActionData nextAction;
                     if (m_Data.GetCurrentAction(nextAction))
                     {
-                        TScriptInterface<IActionInterface> nextActionItem;
+                        TScriptInterface<IActionInterface> nextSequence;
                         TSubclassOf<UObject> actionClass;
-                        if (m_Data.Way.GetActionClass(m_Data.ActionIndex, nextAction.ActionItemIndex, actionClass))
+                        if (m_Data.Way.GetActionClass(m_Data.ActionIndex, nextAction.ActionSequenceIndex, actionClass))
                         {
-                            if (CreateActionItem(nextActionItem, actionClass))
+                            if (CreateActionSequence(nextSequence, actionClass))
                             {
-                                nextActionItem->Execute_PrepareAction(nextActionItem.GetObject());
-                                if (nextActionItem->Execute_IsCost(nextActionItem.GetObject()))
+                                nextSequence->Execute_PrepareAction(nextSequence.GetObject());
+                                if (nextSequence->Execute_IsCost(nextSequence.GetObject()))
                                 {
                                     // decrease thing
                                     UseThing(nextCondition);
@@ -146,18 +146,18 @@ void UExecutor::UpdateBehavior_Implementation()
                             }
                             else
                             {
-                                UE_LOG(LogTemp, Error, TEXT("Switch next actionItem failed, Create actionItem by class failed!"))
+                                UE_LOG(LogTemp, Error, TEXT("Switch next actionSequence failed, Create actionSequence by class failed!"))
                             }
                         }
                         else
                         {
-                            UE_LOG(LogTemp, Error, TEXT("Switch next actionItem item failed, Action index out of range!"))
+                            UE_LOG(LogTemp, Error, TEXT("Switch next actionSequence item failed, Action index out of range!"))
                         }
                     }
                 }
                 else
                 {
-                    UE_LOG(LogTemp, Error, TEXT("Cannot get next actionItem"))
+                    UE_LOG(LogTemp, Error, TEXT("Cannot get next actionSequence"))
                 }
             }
         }
@@ -171,27 +171,29 @@ void UExecutor::ExecuteBehavior_Implementation()
 {
     if (m_Data.State == EExecutorState::EXECUTOR_READY || m_Data.State == EExecutorState::EXECUTOR_EXECUTING)
     {
-        FExecutorItem behaviorInfo;
+        FActionInfo behaviorInfo;
         if (m_Data.GetActionInfo(behaviorInfo))
         {
-            TScriptInterface<IActionInterface> actionItem;
+            TScriptInterface<IActionInterface> actionSequence;
             FActionData action;
             if (m_Data.GetCurrentAction(action, false))
             {
-                if (!action.GetCurrentActionItem(actionItem))
+                if (!action.GetCurrentActionSequence(actionSequence))
                 {
-                    CreateActionItem(actionItem, behaviorInfo.ActionSequenceClasses[action.ActionItemIndex]);
+                    CreateActionSequence(actionSequence, behaviorInfo.ActionSequenceClasses[action.ActionSequenceIndex]);
                 }
             }
             else
             {
-                CreateActionItem(actionItem, behaviorInfo.ActionSequenceClasses[0]);
+                CreateActionSequence(actionSequence, behaviorInfo.ActionSequenceClasses[0]);
+                //UE_LOG(LogTemp, Error, TEXT("Cannot find action to execute!"));
+                //m_Data.State = EExecutorState::EXECUTOR_WAITING;
             }
 
-            // Execute actionItem
-            if (actionItem.GetObject() != nullptr)
+            // Execute actionSequence
+            if (actionSequence.GetObject() != nullptr)
             {
-                actionItem->Execute_RunningAction(actionItem.GetObject());
+                actionSequence->Execute_RunningAction(actionSequence.GetObject());
             }
             else
             {
@@ -205,13 +207,13 @@ void UExecutor::Stop()
 {
     if (m_Data.State == EExecutorState::EXECUTOR_EXECUTING)
     {
-        TScriptInterface<IActionInterface> actionItem;
+        TScriptInterface<IActionInterface> actionSequence;
         FActionData action;
         if (m_Data.GetCurrentAction(action, false))
         {
-            if (action.GetCurrentActionItem(actionItem))
+            if (action.GetCurrentActionSequence(actionSequence))
             {
-                actionItem->Execute_FinishAction(actionItem.GetObject());
+                actionSequence->Execute_FinishAction(actionSequence.GetObject());
             }
         }
     }
@@ -252,7 +254,7 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
     ways.Empty();
     bool gotAllWays = false;
     TArray<FWay> CheckingWays;
-    TArray<FExecutorItem> solutions;
+    TArray<FActionInfo> solutions;
     if (GetAllSolutionsByThing(target, solutions))
     {
         // Get all solution of main target
@@ -269,7 +271,7 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
                 FDataTableRows tempCondition;
                 if (tempWay.HasPrecondition(tempCondition))
                 {
-                    TArray<FExecutorItem> tempSituations;
+                    TArray<FActionInfo> tempSituations;
                     if (GetAllSolutions(tempCondition, tempWay.ActionInfos[tempWay.ActionInfos.Num() - 1], tempSituations))
                     {
                         StashWay(CheckingWays, tempSituations, tempWay);
@@ -296,7 +298,7 @@ bool UExecutor::GetAllWays(FThing target, TArray<FWay> &ways)
     return ways.Num() > 0;
 }
 
-bool UExecutor::GetAllSolutions(const FDataTableRows &goals, const FExecutorItem &excludeAction, TArray<FExecutorItem> &outSolution)
+bool UExecutor::GetAllSolutions(const FDataTableRows &goals, const FActionInfo &excludeAction, TArray<FActionInfo> &outSolution)
 {
     outSolution.Empty();
     for (int i = 0; i < TotalActions.Num(); ++i)
@@ -309,7 +311,7 @@ bool UExecutor::GetAllSolutions(const FDataTableRows &goals, const FExecutorItem
     return outSolution.Num() >= 0;
 }
 
-bool UExecutor::GetAllSolutionsByThing(const FThing &goal, TArray<FExecutorItem> &outSolutions)
+bool UExecutor::GetAllSolutionsByThing(const FThing &goal, TArray<FActionInfo> &outSolutions)
 {
     outSolutions.Empty();
     for (int i = 0; i < TotalActions.Num(); ++i)
@@ -322,11 +324,11 @@ bool UExecutor::GetAllSolutionsByThing(const FThing &goal, TArray<FExecutorItem>
     return outSolutions.Num() >= 0;
 }
 
-void UExecutor::StashWay(TArray<FWay> &Ways, TArray<FExecutorItem> situations, FWay originalGoals)
+void UExecutor::StashWay(TArray<FWay> &Ways, TArray<FActionInfo> situations, FWay originalGoals)
 {
     for (auto item : situations)
     {
-        TArray<FExecutorItem> wayInfos;
+        TArray<FActionInfo> wayInfos;
         wayInfos.Append(originalGoals.ActionInfos);
         wayInfos.Add(item);
         Ways.Add(wayInfos);
@@ -349,28 +351,27 @@ bool UExecutor::CheckPreconditions(const FDataTableRows &precondition, FThing &o
     return false;
 }
 
-bool UExecutor::CreateActionItem(TScriptInterface<IActionInterface> &actionItem, TSubclassOf<UObject> actionClass)
+bool UExecutor::CreateActionSequence(TScriptInterface<IActionInterface> &actionSequence, TSubclassOf<UObject> actionClass)
 {
     bool result = false;
     UObject *actionObj = NewObject<UObject>(this, actionClass);
     if (actionObj)
     {
-        actionItem.SetInterface(dynamic_cast<IActionInterface *>(actionObj));
-        actionItem.SetObject(actionObj);
-        actionItem->Execute_Init(actionObj, m_Mind->GetOwner());
+        actionSequence.SetInterface(dynamic_cast<IActionInterface *>(actionObj));
+        actionSequence.SetObject(actionObj);
+        actionSequence->Execute_Init(actionObj, m_Mind->GetOwner());
 
         FActionData action;
         if (m_Data.GetCurrentAction(action))
         {
-            action.AddActionItem(actionItem);
-            m_Data.Actions.Add(action);
+            action.AddSequence(actionSequence);
             m_Data.UpdateCurrentAction(action);
             result = true;
         }
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("Executor create actionItem failed!"));
+        UE_LOG(LogTemp, Error, TEXT("Executor create actionSequence failed!"));
     }
 
     return result;

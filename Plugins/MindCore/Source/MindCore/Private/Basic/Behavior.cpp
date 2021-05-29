@@ -38,8 +38,8 @@ void UBehavior::CreateBehavior()
                 executor->Init(Wishes[i], Mind);
                 executor->OnObtainThing.BindUObject(this, &UBehavior::ObtainThing);
                 executor->OnUseThing.BindUObject(this, &UBehavior::UseThing);
-
                 IBehaviorExecutorInterface::Execute_CreateBehavior(executor);
+
                 FBehaviorItem item;
                 item.Target = Wishes[i];
                 item.Executor.SetInterface(dynamic_cast<IBehaviorExecutorInterface *>(executor));
