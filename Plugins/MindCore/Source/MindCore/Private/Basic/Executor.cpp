@@ -38,7 +38,7 @@ void UExecutor::UpdateBehavior_Implementation()
             {
                 auto actionSequence = m_Data.Actions[i].ActionSequence[j];
                 if (actionSequence->Execute_GetState(actionSequence.GetObject()) == EActionState::Action_Success 
-                    && CheckPreconditions(m_Data.Way.ActionInfos[0].Reward, reward) 
+                    && CheckPreconditions(m_Data.Way.ActionInfos[0].RewardTable, reward) 
                     && actionSequence->Execute_CanEfficacyLose(actionSequence.GetObject()) 
                     && actionSequence->Execute_CheckLose(actionSequence.GetObject()))
                 {
@@ -123,7 +123,7 @@ void UExecutor::UpdateBehavior_Implementation()
                 FThing nextCondition;
                 if (m_Data.GetActionInfo(NextActionInfo))
                 {
-                    if (!CheckPreconditions(NextActionInfo.precondition, nextCondition))
+                    if (!CheckPreconditions(NextActionInfo.PreconditionTable, nextCondition))
                     {
                         m_Data.State = EExecutorState::EXECUTOR_WAITING;
                         return;
@@ -137,12 +137,7 @@ void UExecutor::UpdateBehavior_Implementation()
                         {
                             if (CreateActionSequence(nextSequence, actionClass))
                             {
-                                nextSequence->Execute_PrepareAction(nextSequence.GetObject());
-                                if (nextSequence->Execute_IsCost(nextSequence.GetObject()))
-                                {
-                                    // decrease thing
-                                    UseThing(nextCondition);
-                                }
+                                BeginSequence(nextSequence, nextCondition);
                             }
                             else
                             {
@@ -181,11 +176,17 @@ void UExecutor::ExecuteBehavior_Implementation()
                 if (!action.GetCurrentActionSequence(actionSequence))
                 {
                     CreateActionSequence(actionSequence, behaviorInfo.ActionSequenceClasses[action.ActionSequenceIndex]);
+                    FThing precondition;
+                    CheckPreconditions(behaviorInfo.PreconditionTable, precondition);
+                    BeginSequence(actionSequence, precondition);
                 }
             }
             else
             {
                 CreateActionSequence(actionSequence, behaviorInfo.ActionSequenceClasses[0]);
+                FThing precondition;
+                CheckPreconditions(behaviorInfo.PreconditionTable, precondition);
+                BeginSequence(actionSequence, precondition);
             }
 
             // Execute actionSequence
@@ -373,4 +374,21 @@ bool UExecutor::CreateActionSequence(TScriptInterface<IActionInterface> &actionS
     }
 
     return result;
+}
+
+bool UExecutor::BeginSequence(TScriptInterface<IActionInterface>& sequence, const FThing& precondition)
+{
+    if (sequence.GetObject())
+    {
+        sequence->Execute_PrepareAction(sequence.GetObject());
+        if (sequence->Execute_IsCost(sequence.GetObject()))
+        {
+            // decrease thing
+            UseThing(precondition);
+        }
+
+        return true;
+    }
+
+    return false;
 }

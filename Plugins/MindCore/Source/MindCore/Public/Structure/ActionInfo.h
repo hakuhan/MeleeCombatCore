@@ -25,9 +25,9 @@ struct MINDCORE_API FActionInfo : public FTableRowBase
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
     FString Name;
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    FDataTableRows precondition;
+    FDataTableRows PreconditionTable;
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
-    FDataTableRows Reward;
+    FDataTableRows RewardTable;
     UPROPERTY(EditAnywhere, BlueprintReadwrite)
     EActionCost Cost;
     UPROPERTY(EditAnywhere, BlueprintReadwrite, meta = (MustImplement = "ActionInterface"))
@@ -35,7 +35,7 @@ struct MINDCORE_API FActionInfo : public FTableRowBase
 
     friend bool operator==(const FActionInfo& Lhs, const FActionInfo& Rhs)
     {
-        return Lhs.Name == Rhs.Name && Lhs.precondition == Rhs.precondition && Lhs.Reward == Rhs.Reward;
+        return Lhs.Name == Rhs.Name && Lhs.PreconditionTable == Rhs.PreconditionTable && Lhs.RewardTable == Rhs.RewardTable;
     }
 
     friend bool operator!=(const FActionInfo& Lhs, const FActionInfo& Rhs)
@@ -45,8 +45,8 @@ struct MINDCORE_API FActionInfo : public FTableRowBase
 
     FActionInfo()
         : Name("Empty")
-        , precondition()
-        , Reward()
+        , PreconditionTable()
+        , RewardTable()
         , Cost(EActionCost::BEHAVIOR_NONE)
         , ActionSequenceClasses()
     { }
@@ -59,9 +59,9 @@ struct MINDCORE_API FActionInfo : public FTableRowBase
     bool IsNeedsMatched(const FDataTableRows& goal) const
     {
         bool result = false;
-        if (Reward.DataTable == goal.DataTable)
+        if (RewardTable.DataTable == goal.DataTable)
         {
-            for (FName row : Reward.Rows)
+            for (FName row : RewardTable.Rows)
             {
                 if (goal.Rows.Contains(row))
                 {
@@ -76,6 +76,6 @@ struct MINDCORE_API FActionInfo : public FTableRowBase
 
     bool IsNeedsMatched(const FName& goal) const
     {
-        return Reward.Rows.Contains(goal);
+        return RewardTable.Rows.Contains(goal);
     }
 };

@@ -35,9 +35,9 @@ struct FWay
     bool HasPrecondition(FDataTableRows& outPrecondition)
     {
         if (ActionInfos.Num() > 0
-            && ActionInfos[ActionInfos.Num() - 1].precondition.Rows.Num() > 0)
+            && ActionInfos[ActionInfos.Num() - 1].PreconditionTable.Rows.Num() > 0)
         {
-            outPrecondition = ActionInfos[ActionInfos.Num() - 1].precondition;
+            outPrecondition = ActionInfos[ActionInfos.Num() - 1].PreconditionTable;
             return true;
         }
 
@@ -245,7 +245,7 @@ struct FExecutorData
         outReward.Empty();
         if (GetActionInfo(info))
         {
-            info.Reward.GetRows(TEXT("Get rewards"), outReward);
+            info.RewardTable.GetRows(TEXT("Get rewards"), outReward);
         }
 
         return outReward.Num() > 0;
@@ -322,6 +322,8 @@ public:
     #pragma region action
     UFUNCTION(BlueprintCallable)
     bool CreateActionSequence(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass);
+    UFUNCTION(BlueprintCallable)
+    bool BeginSequence(TScriptInterface<IActionInterface>& action, const FThing& precondition);
 
     #pragma endregion
 
