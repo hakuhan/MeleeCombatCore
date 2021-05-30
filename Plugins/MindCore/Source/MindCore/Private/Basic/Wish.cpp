@@ -62,18 +62,19 @@ bool UWish::CreateWish_Implementation(const FThing &wish)
 
 bool UWish::ObtainThing_Implementation(const FThing &thing)
 {
+	if (thing.NeverEnding)
+	{
+		return false;
+	}
+
 	int index = m_Data.OwnedThings.IndexOfByPredicate([&](const FThing &target) { return target == thing; });
 	if (index < 0)
 	{
 		m_Data.OwnedThings.Add(thing);
 	}
-	else if (!thing.NeverEnding)
+	else 
 	{
 		m_Data.OwnedThings[index].Number += thing.Number;
-	}
-	else
-	{
-		return false;
 	}
 
 	return true;

@@ -326,6 +326,7 @@ public:
     UFUNCTION(BlueprintCallable)
     bool BeginSequence(TScriptInterface<IActionInterface>& action, const FThing& precondition);
     void UpdateDifficulty(UMindAction* targetAction, EActionDifficulty difficulty);
+    void OwnCurrentTarget();
     #pragma endregion
 
 #pragma region IExecutor implement

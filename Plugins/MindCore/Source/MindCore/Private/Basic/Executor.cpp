@@ -76,22 +76,8 @@ void UExecutor::UpdateBehavior_Implementation()
         case EActionState::Action_Success:
         {
             IActionInterface::Execute_FinishAction(actionSequence.GetObject());
-            // own thing
-            TArray<FThing *> reward;
-            if (m_Data.GetCurrentReward(reward))
-            {
-                for (int i = 0; i < reward.Num(); ++i)
-                {
-                    if (reward[i])
-                        OwnThing(*reward[i]);
-                }
-            }
-            else
-            {
-                UE_LOG(LogTemp, Warning, TEXT("Reward of actionSequence %s is lost!"), *actionSequence.GetObject()->GetName());
-            }
 
-            // Check Sequence
+            // Check behaviors
             bool switchAction = false;
             if (m_Data.IsLastActionSequence())
             {
@@ -104,6 +90,8 @@ void UExecutor::UpdateBehavior_Implementation()
                 }
                 else
                 {
+                    OwnCurrentTarget();
+
                     // Switch to next action
                     action.Reset();
                     m_Data.SwitchAction();
@@ -112,6 +100,8 @@ void UExecutor::UpdateBehavior_Implementation()
             }
             else
             {
+                OwnCurrentTarget();
+
                 // Switch to next actionSequence of current behavior
                 action.GainActionSequenceIndex();
                 switchAction = true;
@@ -430,5 +420,22 @@ void UExecutor::UpdateDifficulty(UMindAction* targetAction, EActionDifficulty di
                 TotalActions[i].Difficulty = difficulty;
             }
         }
+    }
+}
+
+void UExecutor::OwnCurrentTarget()
+{
+    TArray<FThing *> reward;
+    if (m_Data.GetCurrentReward(reward))
+    {
+        for (int i = 0; i < reward.Num(); ++i)
+        {
+            if (reward[i])
+                OwnThing(*reward[i]);
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Reward is lost!"));
     }
 }
