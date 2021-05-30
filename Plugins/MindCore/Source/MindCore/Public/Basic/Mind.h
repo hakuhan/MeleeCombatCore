@@ -22,6 +22,7 @@ class MINDCORE_API UMind : public UActorComponent, public IMindInterface
     GENERATED_BODY()
 
 public:
+    UMind();
     void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 

@@ -1,5 +1,11 @@
 #include "Basic/Mind.h"
 
+UMind::UMind()
+{
+    PrimaryComponentTick.bCanEverTick = true;
+    PrimaryComponentTick.bStartWithTickEnabled = true;
+}
+
 void UMind::BeginPlay()
 {
     Super::BeginPlay();

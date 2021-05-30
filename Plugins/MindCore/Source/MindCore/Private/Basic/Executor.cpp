@@ -44,6 +44,7 @@ void UExecutor::UpdateBehavior_Implementation()
                 {
                     UseThing(reward);
                     actionSequence->Execute_OnLose(actionSequence.GetObject());
+                    m_Data.State = EExecutorState::EXECUTOR_WAITING;
                 }
             }
         }
