@@ -186,8 +186,6 @@ void UExecutor::ExecuteBehavior_Implementation()
             else
             {
                 CreateActionSequence(actionSequence, behaviorInfo.ActionSequenceClasses[0]);
-                //UE_LOG(LogTemp, Error, TEXT("Cannot find action to execute!"));
-                //m_Data.State = EExecutorState::EXECUTOR_WAITING;
             }
 
             // Execute actionSequence
