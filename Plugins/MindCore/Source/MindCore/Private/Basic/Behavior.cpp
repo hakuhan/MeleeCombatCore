@@ -64,22 +64,28 @@ void UBehavior::UpdateBehavior()
 
         if (state == EExecutorState::EXECUTOR_FINISH)
         {
-            // Remember
-            TScriptInterface<IRememberInterface> remember;
-            Mind->GetRemember(remember);
-            FMemoryFragment memory;
-            remember->Remind(Behaviors[j].Target.Name, memory);
-            memory.Target = Behaviors[j].Target;
-
-            memory.Type = EMemoryType::Memory_Insensible;
-            // TODO remember executor chain
-
-            // TODO Clean executor datas
-
-            remember->Remember(memory);
-
             // Update wish
-            IWishInterface::Execute_ObtainThing(Mind->Wish.GetObject(), Behaviors[j].Target);
+            bool obtainResult = IWishInterface::Execute_ObtainThing(Mind->Wish.GetObject(), Behaviors[j].Target);
+            if (obtainResult)
+            {
+                // Remember
+                TScriptInterface<IRememberInterface> remember;
+                Mind->GetRemember(remember);
+                FMemoryFragment memory;
+                remember->Remind(Behaviors[j].Target.Name, memory);
+                memory.Target = Behaviors[j].Target;
+
+                memory.Type = EMemoryType::Memory_Insensible;
+                // TODO remember executor chain
+
+                // TODO Clean executor datas
+
+                remember->Remember(memory);
+            }
+            else
+            {
+                IBehaviorExecutorInterface::Execute_UpdateState(Behaviors[j].Executor.GetObject(), EExecutorState::EXECUTOR_WAITING);
+            }
 
         }
     }

@@ -4,6 +4,8 @@
 #include "Core/ActionInterface.h"
 #include "MindAction.generated.h"
 
+DECLARE_DELEGATE_TwoParams(FUpdateDifficultyDelegate, UMindAction*, EActionDifficulty)
+
 UCLASS(Blueprintable)
 class MINDCORE_API UMindAction : public UObject, public IActionInterface
 {
@@ -50,6 +52,11 @@ public:
 	{
 		
 	}
+
+	void UpdateDifficulty_Implementation(EActionDifficulty difficulty)
+	{
+		OnUpdateDifficulty.ExecuteIfBound(this, difficulty);
+	}
 #pragma endregion events
 
 	EActionState GetState_Implementation() override
@@ -76,5 +83,7 @@ public:
 	AActor* m_Owner;
 	UPROPERTY(BlueprintReadwrite)
 	bool m_bLose;
+
+	FUpdateDifficultyDelegate OnUpdateDifficulty;
 
 };

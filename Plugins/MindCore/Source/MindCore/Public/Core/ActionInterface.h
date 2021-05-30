@@ -8,6 +8,16 @@
 #include "ActionInterface.generated.h"
 
 UENUM(BlueprintType)
+enum class EActionDifficulty : uint8
+{
+    BEHAVIOR_NONE = 0 UMETA(DisplayName="None"),
+    BEHAVIOR_EASY UMETA(DisplayName="Easy"),
+    BEHAVIOR_NORMAL UMETA(DisplayName="Normal"),
+    BEHAVIOR_HARD UMETA(DisplayName="Hard"),
+    BEHAVIOR_DIFFICULT UMETA(DisplayName="Difficult"),
+};
+
+UENUM(BlueprintType)
 enum class EActionState : uint8
 {
     Action_Inactive UMETA(DisplayName = "Inactive"),
@@ -49,4 +59,8 @@ public:
     bool CheckLose();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
     void OnLose();
+
+    // Difficulty
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
+    void UpdateDifficulty(EActionDifficulty difficulty);
 };

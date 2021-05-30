@@ -67,13 +67,13 @@ bool UWish::ObtainThing_Implementation(const FThing &thing)
 	{
 		m_Data.OwnedThings.Add(thing);
 	}
-	else if (thing.NeverEnding)
+	else if (!thing.NeverEnding)
 	{
-		m_Data.OwnedThings[index] = thing;
+		m_Data.OwnedThings[index].Number += thing.Number;
 	}
 	else
 	{
-		m_Data.OwnedThings[index].Number += thing.Number;
+		return false;
 	}
 
 	return true;

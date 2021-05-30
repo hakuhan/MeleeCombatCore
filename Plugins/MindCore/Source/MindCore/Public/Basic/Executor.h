@@ -6,6 +6,7 @@
 #include "Basic/Mind.h"
 #include "Structure/ActionInfo.h"
 #include "Structure/Thing.h"
+#include "Basic/MindAction.h"
 #include "Executor.generated.h"
 
 class UMind;
@@ -90,7 +91,7 @@ struct FWay
 
         for (int i = 0; i < ActionInfos.Num(); ++i)
         {
-            cost += (int)ActionInfos[i].Cost;
+            cost += (int)ActionInfos[i].Difficulty;
         }
 
         return cost;
@@ -324,7 +325,7 @@ public:
     bool CreateActionSequence(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass);
     UFUNCTION(BlueprintCallable)
     bool BeginSequence(TScriptInterface<IActionInterface>& action, const FThing& precondition);
-
+    void UpdateDifficulty(UMindAction* targetAction, EActionDifficulty difficulty);
     #pragma endregion
 
 #pragma region IExecutor implement
@@ -332,5 +333,6 @@ public:
     virtual void UpdateBehavior_Implementation() override;
     virtual void ExecuteBehavior_Implementation() override;
     virtual EExecutorState GetExecuteState_Implementation() override;
+    virtual void UpdateState_Implementation(EExecutorState state) override;
 #pragma endregion
 };

@@ -100,6 +100,7 @@ void UExecutor::UpdateBehavior_Implementation()
                     m_Data.State = EExecutorState::EXECUTOR_FINISH;
                     m_Data.ActionIndex = 0;
                     action.Reset();
+                    m_Data.Actions.Empty();
                 }
                 else
                 {
@@ -135,7 +136,7 @@ void UExecutor::UpdateBehavior_Implementation()
                         TSubclassOf<UObject> actionClass;
                         if (m_Data.Way.GetActionClass(m_Data.ActionIndex, nextAction.ActionSequenceIndex, actionClass))
                         {
-                            if (CreateActionSequence(nextSequence, actionClass))
+                            if (nextAction.GetCurrentActionSequence(nextSequence) || CreateActionSequence(nextSequence, actionClass))
                             {
                                 BeginSequence(nextSequence, nextCondition);
                             }
@@ -220,7 +221,12 @@ void UExecutor::Stop()
 
 EExecutorState UExecutor::GetExecuteState_Implementation()
 {
-    return EExecutorState::EXECUTOR_READY;
+    return m_Data.State;
+}
+
+void UExecutor::UpdateState_Implementation(EExecutorState state)
+{
+    m_Data.State = state;
 }
 
 bool UExecutor::FindWay_Implementation(FThing target, FWay &way)
@@ -359,6 +365,11 @@ bool UExecutor::CreateActionSequence(TScriptInterface<IActionInterface> &actionS
         actionSequence.SetInterface(dynamic_cast<IActionInterface *>(actionObj));
         actionSequence.SetObject(actionObj);
         actionSequence->Execute_Init(actionObj, m_Mind->GetOwner());
+        UMindAction* sequence = dynamic_cast<UMindAction*>(actionObj);
+        if (sequence)
+        {
+            sequence->OnUpdateDifficulty.BindUObject(this,  &UExecutor::UpdateDifficulty);
+        }
 
         FActionData action;
         if (m_Data.GetCurrentAction(action))
@@ -391,4 +402,33 @@ bool UExecutor::BeginSequence(TScriptInterface<IActionInterface>& sequence, cons
     }
 
     return false;
+}
+
+void UExecutor::UpdateDifficulty(UMindAction* targetAction, EActionDifficulty difficulty)
+{
+    // Find target action
+    FActionInfo* targetInfo = nullptr;
+    for (FActionData actionData : m_Data.Actions)
+    {
+        int targetIndex = actionData.ActionSequence.IndexOfByPredicate([&](const TScriptInterface<IActionInterface>& sequence){
+            return sequence.GetObject() == targetAction;
+        });
+        if (targetIndex >= 0)
+        {
+            targetInfo = &m_Data.Way.ActionInfos[targetIndex];
+            break;
+        }
+    }
+
+    // Update difficulty
+    if (targetInfo)
+    {
+        for (int i = 0; i < TotalActions.Num(); ++i)
+        {
+            if (TotalActions[i] == *targetInfo)
+            {
+                TotalActions[i].Difficulty = difficulty;
+            }
+        }
+    }
 }

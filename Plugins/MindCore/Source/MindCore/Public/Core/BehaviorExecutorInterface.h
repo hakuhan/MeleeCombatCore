@@ -36,4 +36,6 @@ public:
     void ExecuteBehavior();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
     EExecutorState GetExecuteState();
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
+    void UpdateState(EExecutorState state);
 };
