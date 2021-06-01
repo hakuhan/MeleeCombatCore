@@ -13,6 +13,8 @@
 #include "Structure/Thing.h"
 #include "Wish.generated.h"
 
+DECLARE_DELEGATE_OneParam(FOnUpdateThingDelegate, const FThing &)
+
 USTRUCT(BlueprintType)
 struct MINDCORE_API FWishInfo
 {
@@ -44,6 +46,8 @@ public:
     FWishInfo m_Info;
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     FWishData m_Data;
+    
+    FOnUpdateThingDelegate OnUpdateThing;
 
     UFUNCTION(BlueprintCallable)
     void Init(const FWishInfo &Info);
@@ -57,6 +61,8 @@ public:
     virtual bool LoseThing_Implementation(const FThing &thing) override;
     virtual bool GetWishes_Implementation(TArray<FThing> &wishes) override;
     virtual bool CheckThingOwned_Implementation(const FThing& thing) override;
+    virtual bool UpdatePriority_Implementation(const FThing& target, int priority) override;
+
 #pragma endregion
 
 #pragma region mind component

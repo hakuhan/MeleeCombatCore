@@ -34,4 +34,6 @@ public:
     bool GetWishes(TArray<FThing>& wishes);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
     bool CheckThingOwned(const FThing& wishName);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Wish")
+    bool UpdatePriority(const FThing& target, int priority);
 };

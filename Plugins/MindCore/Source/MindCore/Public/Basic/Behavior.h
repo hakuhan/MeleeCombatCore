@@ -48,10 +48,8 @@ public:
 #pragma endregion
 
 #pragma region mind component
-    virtual void OnInit_Implementation(UMind *mind) override
-    {
-        Mind = mind;
-    }
+    virtual void OnInit_Implementation(UMind *mind) override;
+
 #pragma endregion
 
     virtual void CreateBehavior();
@@ -59,4 +57,6 @@ public:
     virtual void ExecuteBehavior();
     virtual void ObtainThing(const FThing& thing);
     virtual void UseThing(const FThing &thing);    
+
+    void OnUpdateThing(const FThing &thing);
 };

@@ -1,4 +1,5 @@
 #include "Basic/Behavior.h"
+#include "Basic/Wish.h"
 
 // TODO implement
 void UBehavior::Behave_Implementation()
@@ -13,6 +14,16 @@ void UBehavior::Behave_Implementation()
 EBehaviorState UBehavior::GetState_Implementation()
 {
     return EBehaviorState::BEHAVIOR_READY;
+}
+
+void UBehavior::OnInit_Implementation(UMind* mind)
+{
+    Mind = mind;
+    UWish* _wish = dynamic_cast<UWish*>(Mind->Wish.GetObject());
+    if (_wish)
+    {
+        _wish->OnUpdateThing.BindUObject(this, &UBehavior::OnUpdateThing);
+    }
 }
 
 void UBehavior::CreateBehavior()
@@ -126,4 +137,16 @@ void UBehavior::ObtainThing(const FThing &thing)
 void UBehavior::UseThing(const FThing &thing)
 {
     IWishInterface::Execute_LoseThing(Mind->Wish.GetObject(), thing);
+}
+
+void UBehavior::OnUpdateThing(const FThing& thing)
+{
+    int thingIndex = Behaviors.IndexOfByPredicate([&](const FBehaviorItem& item){
+        return item.Target == thing;
+    });
+
+    if (thingIndex >= 0)
+    {
+        Behaviors[thingIndex].Target = thing;
+    }
 }

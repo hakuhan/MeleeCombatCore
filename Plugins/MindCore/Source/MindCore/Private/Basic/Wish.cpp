@@ -127,6 +127,22 @@ void UWish::Reset()
 	m_Data.OwnedThings.Empty();
 }
 
+bool UWish::UpdatePriority_Implementation(const FThing& target, int priority)
+{
+	bool result = false;
+	for (int i = 0; i < m_Data.SeekingWishes.Num(); ++i)
+	{
+		if (m_Data.SeekingWishes[i] == target)
+		{
+			m_Data.SeekingWishes[i].Priority = priority;
+			result = true;
+			OnUpdateThing.ExecuteIfBound(m_Data.SeekingWishes[i]);
+		}
+	}
+
+	return result;
+}
+
 void UWish::OnInit_Implementation(UMind *mind)
 {
 	Mind = mind;
