@@ -175,6 +175,8 @@ struct FExecutorData
     FWay Way;
     UPROPERTY(BlueprintReadwrite)
     TArray<FActionData> Actions;
+    UPROPERTY(BlueprintReadwrite)
+    TArray<TScriptInterface<IActionValidatyInterface>> Validaties;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     EExecutorState State;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -327,6 +329,7 @@ public:
     bool BeginSequence(TScriptInterface<IActionInterface>& action, const FThing& precondition);
     void UpdateDifficulty(UMindAction* targetAction, EActionDifficulty difficulty);
     void OwnCurrentTarget();
+    void UpdateValidaties(const FWay& way);
     #pragma endregion
 
 #pragma region IExecutor implement

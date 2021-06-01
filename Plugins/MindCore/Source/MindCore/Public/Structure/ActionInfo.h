@@ -4,6 +4,7 @@
 #include "Structure/Thing.h"
 #include "Core/ActionInterface.h"
 #include "Core/BehaviorExecutorInterface.h"
+#include "Core/ActionValidatyInterface.h"
 #include "Structure/DataTableRows.h"
 #include "ActionInfo.generated.h"
 
@@ -22,6 +23,8 @@ struct MINDCORE_API FActionInfo : public FTableRowBase
     EActionDifficulty Difficulty;
     UPROPERTY(EditAnywhere, BlueprintReadwrite, meta = (MustImplement = "ActionInterface"))
     TArray<TSubclassOf<UObject>> ActionSequenceClasses;
+    UPROPERTY(EditAnywhere, BlueprintReadwrite, meta = (MustImplement = "ActionValidatyInterface"))
+    TSubclassOf<UObject> ActionValidatyClass;
 
     friend bool operator==(const FActionInfo& Lhs, const FActionInfo& Rhs)
     {
@@ -39,6 +42,7 @@ struct MINDCORE_API FActionInfo : public FTableRowBase
         , RewardTable()
         , Difficulty(EActionDifficulty::BEHAVIOR_NONE)
         , ActionSequenceClasses()
+        , ActionValidatyClass()
     { }
 
     static FActionInfo EmptyBehavior()

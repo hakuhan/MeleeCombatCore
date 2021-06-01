@@ -30,6 +30,16 @@ void UExecutor::UpdateBehavior_Implementation()
     }
     else
     {
+        // Check action validaty
+        for (auto validaty : m_Data.Validaties)
+        {
+            if (!IActionValidatyInterface::Execute_CheckActionValidaty(validaty.GetObject(), m_Mind->GetOwner()))
+            {
+                m_Data.State = EExecutorState::EXECUTOR_WAITING;
+                return;
+            }
+        }
+
         // Check thing lose
         for (int i = 0; i < m_Data.Actions.Num(); ++i)
         {
@@ -239,6 +249,7 @@ bool UExecutor::FindWay_Implementation(FThing target, FWay &way)
             }
         }
 
+        UpdateValidaties(way);
         return true;
     }
 
@@ -438,5 +449,22 @@ void UExecutor::OwnCurrentTarget()
     else
     {
         UE_LOG(LogTemp, Warning, TEXT("Reward is lost!"));
+    }
+}
+
+void UExecutor::UpdateValidaties(const FWay& way)
+{
+    m_Data.Validaties.Empty();
+
+    for (int i = 0; i < way.ActionInfos.Num(); ++i)
+    {
+        if (way.ActionInfos[i].ActionValidatyClass.Get() != nullptr)
+        {
+            TScriptInterface<IActionValidatyInterface> validaty;
+            UObject* validatyObj = NewObject<UObject>(this, way.ActionInfos[i].ActionValidatyClass);
+            validaty.SetInterface(dynamic_cast<IActionValidatyInterface*>(validatyObj));
+            validaty.SetObject(validatyObj);
+            m_Data.Validaties.Add(validaty);
+        }
     }
 }

@@ -26,8 +26,6 @@ struct MINDCORE_API FThing : public FTableRowBase
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     int Priority;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
-    TSubclassOf<UObject> TargetType;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Thing")
     bool Disappearance;
 
     FThing()
