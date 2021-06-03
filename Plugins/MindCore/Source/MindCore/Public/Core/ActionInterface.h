@@ -7,6 +7,8 @@
 
 #include "ActionInterface.generated.h"
 
+DECLARE_DELEGATE_TwoParams(FUpdateDifficultyDelegate, UObject*, EActionDifficulty)
+
 UENUM(BlueprintType)
 enum class EActionDifficulty : uint8
 {
@@ -61,6 +63,7 @@ public:
     void OnLose();
 
     // Difficulty
+    virtual FUpdateDifficultyDelegate GetDifficultyDelegate() = 0;
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
     void UpdateDifficulty(EActionDifficulty difficulty);
 };

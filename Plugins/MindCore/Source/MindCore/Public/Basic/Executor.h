@@ -6,7 +6,6 @@
 #include "Basic/Mind.h"
 #include "Structure/ActionInfo.h"
 #include "Structure/Thing.h"
-#include "Basic/MindAction.h"
 #include "Executor.generated.h"
 
 class UMind;
@@ -327,7 +326,7 @@ public:
     bool CreateActionSequence(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass);
     UFUNCTION(BlueprintCallable)
     bool BeginSequence(TScriptInterface<IActionInterface>& action, const FThing& precondition);
-    void UpdateDifficulty(UMindAction* targetAction, EActionDifficulty difficulty);
+    void UpdateDifficulty(UObject* targetAction, EActionDifficulty difficulty);
     void OwnCurrentTarget();
     void UpdateValidaties(const FWay& way);
     #pragma endregion

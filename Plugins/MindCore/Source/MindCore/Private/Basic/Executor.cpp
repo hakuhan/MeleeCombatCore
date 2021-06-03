@@ -361,17 +361,22 @@ bool UExecutor::CheckPreconditions(const FDataTableRows &precondition, FThing &o
 bool UExecutor::CreateActionSequence(TScriptInterface<IActionInterface> &actionSequence, TSubclassOf<UObject> actionClass)
 {
     bool result = false;
-    UObject *actionObj = NewObject<UObject>(this, actionClass);
+    UObject *actionObj = nullptr;
+    //if (actionClass->IsChildOf(AActor::StaticClass()))
+    //{
+    //    actionObj = m_Mind->GetOwner()->GetWorld()->SpawnActor(actionClass);
+    //}
+    //else
+    //{
+    //    actionObj = NewObject<UObject>(this, actionClass);
+    //}
+    actionObj = NewObject<UObject>(this, actionClass);
     if (actionObj)
     {
         actionSequence.SetInterface(dynamic_cast<IActionInterface *>(actionObj));
         actionSequence.SetObject(actionObj);
         actionSequence->Execute_Init(actionObj, m_Mind->GetOwner());
-        UMindAction* sequence = dynamic_cast<UMindAction*>(actionObj);
-        if (sequence)
-        {
-            sequence->OnUpdateDifficulty.BindUObject(this,  &UExecutor::UpdateDifficulty);
-        }
+        actionSequence->GetDifficultyDelegate().BindUObject(this,  &UExecutor::UpdateDifficulty);
 
         FActionData action;
         if (m_Data.GetCurrentAction(action))
@@ -406,7 +411,7 @@ bool UExecutor::BeginSequence(TScriptInterface<IActionInterface>& sequence, cons
     return false;
 }
 
-void UExecutor::UpdateDifficulty(UMindAction* targetAction, EActionDifficulty difficulty)
+void UExecutor::UpdateDifficulty(UObject* targetAction, EActionDifficulty difficulty)
 {
     // Find target action
     FActionInfo* targetInfo = nullptr;

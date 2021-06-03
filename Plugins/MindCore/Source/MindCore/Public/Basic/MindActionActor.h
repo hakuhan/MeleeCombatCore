@@ -2,16 +2,19 @@
 
 #include "CoreMinimal.h"
 #include "Core/ActionInterface.h"
-#include "MindAction.generated.h"
+#include "MindActionActor.generated.h"
+
 
 UCLASS(Blueprintable)
-class MINDCORE_API UMindAction : public UObject, public IActionInterface
+class MINDCORE_API AMindActionActor : public AActor, public IActionInterface
 {
     GENERATED_BODY()
 
 public:
-	UMindAction()
+	AMindActionActor()
 	{
+		PrimaryActorTick.bCanEverTick = false;
+		PrimaryActorTick.bStartWithTickEnabled = false;
 		m_State = EActionState::Action_Inactive;
 		m_bLose = false;
 	}
