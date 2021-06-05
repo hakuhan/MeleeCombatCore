@@ -4,10 +4,12 @@
 #include "Core/ActionInterface.h"
 #include "MindAction.generated.h"
 
+class UMind;
+
 UCLASS(Blueprintable)
 class MINDCORE_API UMindAction : public UObject, public IActionInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
 	UMindAction()
@@ -21,41 +23,10 @@ public:
 		m_Owner = owner;
 	}
 
-
 	bool IsCost_Implementation() override
 	{
 		return true;
 	}
-
-#pragma region events
-
-	void PrepareAction_Implementation() override
-	{
-		
-	}
-
-
-	void RunningAction_Implementation() override
-	{
-		
-	}
-
-
-	void FinishAction_Implementation() override
-	{
-		
-	}
-
-	void OnLose_Implementation() override
-	{
-		
-	}
-
-	void UpdateDifficulty_Implementation(EActionDifficulty difficulty)
-	{
-		OnUpdateDifficulty.ExecuteIfBound(this, difficulty);
-	}
-#pragma endregion events
 
 	EActionState GetState_Implementation() override
 	{
@@ -80,14 +51,44 @@ public:
 		return OnUpdateDifficulty;
 	}
 
+	FSwitchDifficultyDelegate& GetSwitchDifficultyDelegate() override
+	{
+		return OnSwitchDifficulty;
+	}
+
+	void UpdateDifficulty_Implementation(EActionDifficulty difficulty) override
+	{
+		OnUpdateDifficulty.ExecuteIfBound(this, difficulty);
+	}
+
+	void SwitchDifficulty_Implementation(const FString& targetActionName) override
+	{
+		OnSwitchDifficulty.ExecuteIfBound(this, targetActionName);
+	}
+
+	UObject* GetImagine_Implementation(TSubclassOf<UImagine> imagineClass) override
+	{
+		if (m_Owner)
+		{
+			auto mind = dynamic_cast<UMind*>(m_Owner->GetComponentByClass(UMind::StaticClass()));
+			if (mind)
+			{
+				return mind->Imagine.GetObject();
+			}
+		}
+
+		return nullptr;
+	}
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadwrite)
-	EActionState m_State;
+		EActionState m_State;
 	UPROPERTY(EditAnywhere, BlueprintReadwrite)
-	AActor* m_Owner;
+		AActor* m_Owner;
 	UPROPERTY(BlueprintReadwrite)
-	bool m_bLose;
+		bool m_bLose;
 
 	FUpdateDifficultyDelegate OnUpdateDifficulty;
+	FSwitchDifficultyDelegate OnSwitchDifficulty;
 
 };

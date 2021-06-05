@@ -326,9 +326,12 @@ public:
     bool CreateActionSequence(TScriptInterface<IActionInterface>& action, TSubclassOf<UObject> actionClass);
     UFUNCTION(BlueprintCallable)
     bool BeginSequence(TScriptInterface<IActionInterface>& action, const FThing& precondition);
+    FActionInfo* GetActionInfo(UObject* sequence);
     void UpdateDifficulty(UObject* targetAction, EActionDifficulty difficulty);
+    void SwitchDifficulty(UObject* targetAction, const FString& targetActionName);
     void OwnCurrentTarget();
     void UpdateValidaties(const FWay& way);
+    void FinishWay();
     #pragma endregion
 
 #pragma region IExecutor implement

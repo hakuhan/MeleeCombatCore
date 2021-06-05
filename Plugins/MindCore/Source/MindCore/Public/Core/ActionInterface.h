@@ -7,7 +7,10 @@
 
 #include "ActionInterface.generated.h"
 
+class UImagine;
+
 DECLARE_DELEGATE_TwoParams(FUpdateDifficultyDelegate, UObject*, EActionDifficulty)
+DECLARE_DELEGATE_TwoParams(FSwitchDifficultyDelegate, UObject*, const FString&)
 
 UENUM(BlueprintType)
 enum class EActionDifficulty : uint8
@@ -52,6 +55,8 @@ public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
     void FinishAction();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
+    void End();
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
     EActionState GetState();
 
     // Efficay check
@@ -64,6 +69,12 @@ public:
 
     // Difficulty
     virtual FUpdateDifficultyDelegate& GetDifficultyDelegate() = 0;
+    virtual FSwitchDifficultyDelegate& GetSwitchDifficultyDelegate() = 0;
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
     void UpdateDifficulty(EActionDifficulty difficulty);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Action")
+    void SwitchDifficulty(const FString& targetActionName);
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta = (DeterminesOutputType = "imagineClass"), Category = "Action")
+    UObject* GetImagine(TSubclassOf<UImagine> imagineClass);
 };
