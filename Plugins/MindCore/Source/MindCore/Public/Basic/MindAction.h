@@ -75,7 +75,7 @@ public:
 	}
 
 
-	FUpdateDifficultyDelegate GetDifficultyDelegate() override
+	FUpdateDifficultyDelegate& GetDifficultyDelegate() override
 	{
 		return OnUpdateDifficulty;
 	}
