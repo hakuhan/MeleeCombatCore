@@ -41,6 +41,9 @@ void UMind::BeginPlay()
 
 void UMind::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
+    if (Stop)
+        return;
+
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
     Execute_DoWish(this);

@@ -75,4 +75,7 @@ public:
 		TSubclassOf<UObject> ImagineClass;
 	UPROPERTY(BlueprintReadWrite)
 		TScriptInterface<IImagineInterface> Imagine;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        bool Stop;
 };

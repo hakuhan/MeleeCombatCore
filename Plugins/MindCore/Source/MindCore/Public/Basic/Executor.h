@@ -327,12 +327,28 @@ public:
     UFUNCTION(BlueprintCallable)
     bool BeginSequence(TScriptInterface<IActionInterface>& action, const FThing& precondition);
     FActionInfo* GetActionInfo(UObject* sequence);
-    void UpdateDifficulty(UObject* targetAction, EActionDifficulty difficulty);
-    void SwitchDifficulty(UObject* targetAction, const FString& targetActionName);
+    
     void OwnCurrentTarget();
     void UpdateValidaties(const FWay& way);
     void FinishWay();
-    #pragma endregion
+    #pragma endregion action
+
+    #pragma region difficulty
+    UFUNCTION(BlueprintCallable)
+    bool UpdateDifficulty(const FString& actionName, EActionDifficulty difficulty);
+    void UpdateDifficulty(UObject* targetAction, EActionDifficulty difficulty);
+    void SwitchDifficulty(UObject* targetAction, const FString& targetActionName);
+    #pragma endregion difficulty
+
+    UFUNCTION(BlueprintCallable)
+    bool GetCurrentAction(FActionData& outAction);
+    UFUNCTION(BlueprintCallable)
+    bool GetCurrentActionInfo(FActionInfo& outInfo);
+    UFUNCTION(BlueprintCallable)
+    static bool GetActionSequence(FActionData action, TScriptInterface<IActionInterface>& sequence)
+    {
+        return action.GetCurrentActionSequence(sequence);
+    }
 
 #pragma region IExecutor implement
     virtual void CreateBehavior_Implementation() override;

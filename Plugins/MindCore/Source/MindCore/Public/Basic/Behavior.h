@@ -58,5 +58,8 @@ public:
     virtual void ObtainThing(const FThing& thing);
     virtual void UseThing(const FThing &thing);    
 
+    UFUNCTION(BlueprintCallable)
+    bool GetCurrentExecutor(TScriptInterface<IBehaviorExecutorInterface>& outExecutor);
+
     void OnUpdateThing(const FThing &thing);
 };

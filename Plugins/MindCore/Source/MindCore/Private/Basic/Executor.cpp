@@ -427,6 +427,20 @@ FActionInfo* UExecutor::GetActionInfo(UObject* sequenceObj)
 	return targetInfo;
 }
 
+bool UExecutor::UpdateDifficulty(const FString& actionName, EActionDifficulty difficulty)
+{
+	int targetIndex = TotalActions.IndexOfByPredicate([&](const FActionInfo& _target) {
+		return _target.Name == actionName;
+		});
+
+	if (targetIndex >= 0)
+	{
+		TotalActions[targetIndex].Difficulty = difficulty;
+	}
+
+	return false;
+}
+
 void UExecutor::UpdateDifficulty(UObject* targetAction, EActionDifficulty difficulty)
 {
 	// Find target action
@@ -467,6 +481,26 @@ void UExecutor::SwitchDifficulty(UObject* targetAction, const FString& targetAct
 			TotalActions[targetIndex].Difficulty = tempDifficulty;
 		}
 	}
+}
+
+bool UExecutor::GetCurrentAction(FActionData& outAction)
+{
+	return m_Data.GetCurrentAction(outAction, false);
+}
+
+bool UExecutor::GetCurrentActionInfo(FActionInfo& outInfo)
+{
+	if (m_Data.GetActionInfo(outInfo))
+	{
+		int index = TotalActions.IndexOfByKey(outInfo);
+		if (index > 0)
+		{
+			outInfo = TotalActions[index];
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void UExecutor::OwnCurrentTarget()

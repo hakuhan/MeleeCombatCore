@@ -2,6 +2,10 @@
 
 #include "Core/ImagineInterface.h"
 #include "Core/MindComponentInterface.h"
+#include "Core/BehaviorInterface.h"
+#include "Core/WishInterface.h"
+#include "Core/RememberInterface.h"
+#include "Structure/ActionInfo.h"
 #include "Imagine.generated.h"
 
 UCLASS(Blueprintable)
@@ -13,13 +17,13 @@ public:
 
     void Imaging_Implementation();
 
-    void JoinWish_Implementation(TScriptInterface<IWishInterface> &wish);
-
-    void JoinBehavior_Implementation(TScriptInterface<IBehaviorInterface> &plan);
-
-    void JoinAction_Implementation(TScriptInterface<IActionInterface> &acton);
-
-    void JoinMemory_Implementation(TScriptInterface<IRememberInterface> &remember);
+    UFUNCTION(BlueprintNativeEvent, Category = "Imagine")
+    void JoinWish(const TScriptInterface<IWishInterface>& wish);
+    void JoinBehavior(const TScriptInterface<IBehaviorInterface>& behavior);
+    UFUNCTION(BlueprintNativeEvent, Category = "Imagine")
+    void JoinAction(const TScriptInterface<IBehaviorExecutorInterface>&executor ,const TScriptInterface<IActionInterface>& acton, const FActionInfo& actionInfo);
+    UFUNCTION(BlueprintNativeEvent, Category = "Imagine")
+    void JoinMemory(const TScriptInterface<IRememberInterface>& remember);
 
 #pragma region mind component
     virtual void OnInit_Implementation(UMind *mind) override

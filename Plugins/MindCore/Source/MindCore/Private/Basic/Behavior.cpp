@@ -104,9 +104,29 @@ void UBehavior::UpdateBehavior()
 
 void UBehavior::ExecuteBehavior()
 {
+    TScriptInterface<IBehaviorExecutorInterface> executor;
+    if (GetCurrentExecutor(executor))
+    {
+        // Execute
+        IBehaviorExecutorInterface::Execute_ExecuteBehavior(executor.GetObject());
+    }
+}
+
+void UBehavior::ObtainThing(const FThing &thing)
+{
+    IWishInterface::Execute_ObtainThing(Mind->Wish.GetObject(), thing);
+}
+
+void UBehavior::UseThing(const FThing &thing)
+{
+    IWishInterface::Execute_LoseThing(Mind->Wish.GetObject(), thing);
+}
+
+bool UBehavior::GetCurrentExecutor(TScriptInterface<IBehaviorExecutorInterface>& outExecutor)
+{
     if (Behaviors.Num() <= 0)
     {
-        return;
+        return false;
     }
 
     // Find Target Behavior
@@ -125,18 +145,9 @@ void UBehavior::ExecuteBehavior()
         }
     }
 
-    // Execute
-    IBehaviorExecutorInterface::Execute_ExecuteBehavior(Behaviors[targetIndex].Executor.GetObject());
-}
-
-void UBehavior::ObtainThing(const FThing &thing)
-{
-    IWishInterface::Execute_ObtainThing(Mind->Wish.GetObject(), thing);
-}
-
-void UBehavior::UseThing(const FThing &thing)
-{
-    IWishInterface::Execute_LoseThing(Mind->Wish.GetObject(), thing);
+    outExecutor = Behaviors[targetIndex].Executor;
+    
+    return true;
 }
 
 void UBehavior::OnUpdateThing(const FThing& thing)
