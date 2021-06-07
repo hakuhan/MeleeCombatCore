@@ -131,6 +131,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee")
 	bool m_IsDebug = false;
 
+	UPROPERTY()
+	float m_DetectTiming = 0;
+
 protected:
 	void BeginPlay() override;
 	void BeginDestroy() override;
@@ -169,7 +172,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 	// Detection
 	UFUNCTION(BlueprintCallable)
-	void StartDetection();
+	void StartDetection(float duration);
 
 	UFUNCTION(BlueprintCallable)
 	void EndDetection();

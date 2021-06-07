@@ -69,7 +69,7 @@ void UDetectMelee::UpdateHurts(EMeleeHurt newHurt, EHurtType newSolution)
 		return;
 	}
 
-	FHurtSolutionTable *solutionInfo = m_HurtSolutionTable.GetRow<FHurtSolutionTable>("Find combat solution");
+	FHurtSolutionTable* solutionInfo = m_HurtSolutionTable.GetRow<FHurtSolutionTable>("Find combat solution");
 	if (newSolution != m_HurtSolutionType)
 	{
 		for (auto solutionName : m_HurtSolutionTable.DataTable->GetRowNames())
@@ -165,10 +165,11 @@ void UDetectMelee::ResetHurts()
 }
 
 // Called every frame
-void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	if (m_IsDetecting)
+	if (m_IsDetecting && m_DetectTiming > 0)
 	{
+		m_DetectTiming -= DeltaTime;
 		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 		m_HitActorTemps.Empty();
 
@@ -183,7 +184,7 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 		// attack check
 		for (int i = 0; i < m_MeleeWeapons.Num(); ++i)
 		{
-			if (!m_MeleeWeapons[i] || !m_MeleeWeapons[i]->IsTargetWeapon(m_WeaponMask) 
+			if (!m_MeleeWeapons[i] || !m_MeleeWeapons[i]->IsTargetWeapon(m_WeaponMask)
 				|| !m_MeleeWeapons[i]->IsWeaponEnabled())
 			{
 				continue;
@@ -241,13 +242,14 @@ void UDetectMelee::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	}
 }
 
-void UDetectMelee::StartDetection()
+void UDetectMelee::StartDetection(float duration)
 {
 	if (m_HurtSolution != nullptr)
 	{
 		ICombatSolution::Execute_OnStartDetection(m_HurtSolution.GetObject());
 	}
 	m_IsDetecting = true;
+	m_DetectTiming = duration;
 
 	ResetData();
 }
@@ -300,7 +302,7 @@ void UDetectMelee::UpdateWeapon()
 
 void UDetectMelee::ExecuteHit(FDetectInfo& hit)
 {
-	AActor *actor = hit.target;
+	AActor* actor = hit.target;
 	if (m_HitActorTemps.Contains(actor))
 	{
 		return;

@@ -37,7 +37,7 @@ void UMeleeDetectionNotify::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimS
         m_MeleeCombat->UpdateHurtRate(m_HurtCurve->GetFloatValue(0));
         m_MeleeCombat->UpdateWeaponMask(m_WeaponFlags);
         
-        m_MeleeCombat->StartDetection();
+        m_MeleeCombat->StartDetection(TotalDuration);
     }
 }
 
