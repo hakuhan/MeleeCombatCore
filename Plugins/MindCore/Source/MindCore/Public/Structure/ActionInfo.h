@@ -24,7 +24,7 @@ struct MINDCORE_API FActionInfo : public FTableRowBase
     UPROPERTY(EditAnywhere, BlueprintReadwrite, meta = (MustImplement = "ActionInterface"))
     TArray<TSubclassOf<UObject>> ActionSequenceClasses;
     UPROPERTY(EditAnywhere, BlueprintReadwrite, meta = (MustImplement = "ActionValidatyInterface"))
-    TSubclassOf<UObject> ActionValidatyClass;
+    TSubclassOf<AActor> ActionValidatyClass;
 
     friend bool operator==(const FActionInfo& Lhs, const FActionInfo& Rhs)
     {

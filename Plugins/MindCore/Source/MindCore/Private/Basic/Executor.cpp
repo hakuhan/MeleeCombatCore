@@ -522,6 +522,18 @@ void UExecutor::OwnCurrentTarget()
 
 void UExecutor::UpdateValidaties(const FWay& way)
 {
+	for (int i =0; i < m_Data.Validaties.Num(); ++i)
+	{
+		if (m_Data.Validaties[i].GetObject())
+		{
+			AActor* validatyActor = dynamic_cast<AActor*>(m_Data.Validaties[i].GetObject());
+			if (validatyActor)
+			{
+				validatyActor->Destroy();
+			}
+			m_Data.Validaties[i].GetObject()->IsReadyForFinishDestroy();
+		}
+	}
 	m_Data.Validaties.Empty();
 
 	for (int i = 0; i < way.ActionInfos.Num(); ++i)
@@ -529,7 +541,7 @@ void UExecutor::UpdateValidaties(const FWay& way)
 		if (way.ActionInfos[i].ActionValidatyClass.Get() != nullptr)
 		{
 			TScriptInterface<IActionValidatyInterface> validaty;
-			UObject* validatyObj = NewObject<UObject>(this, way.ActionInfos[i].ActionValidatyClass);
+			AActor* validatyObj = m_Mind->GetOwner()->GetWorld()->SpawnActor(way.ActionInfos[i].ActionValidatyClass);
 			validaty.SetInterface(dynamic_cast<IActionValidatyInterface*>(validatyObj));
 			validaty.SetObject(validatyObj);
 			m_Data.Validaties.Add(validaty);

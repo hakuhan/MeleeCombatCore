@@ -7,7 +7,7 @@
 #include "MindActionValidaty.generated.h"
 
 UCLASS(Blueprintable)
-class MINDCORE_API UMindActionValidaty : public UObject, public IActionValidatyInterface
+class MINDCORE_API AMindActionValidaty : public AActor, public IActionValidatyInterface
 {
     GENERATED_BODY()
 
