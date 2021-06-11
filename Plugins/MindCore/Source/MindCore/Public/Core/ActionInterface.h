@@ -15,7 +15,7 @@ DECLARE_DELEGATE_TwoParams(FSwitchDifficultyDelegate, UObject*, const FString&)
 UENUM(BlueprintType)
 enum class EActionDifficulty : uint8
 {
-    BEHAVIOR_NONE = 0 UMETA(DisplayName="None"),
+    BEHAVIOR_NONE = 0 UMETA(DisplayName="None", Hidden),
     BEHAVIOR_EASY UMETA(DisplayName="Easy"),
     BEHAVIOR_NORMAL UMETA(DisplayName="Normal"),
     BEHAVIOR_HARD UMETA(DisplayName="Hard"),
