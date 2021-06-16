@@ -531,7 +531,6 @@ void UExecutor::UpdateValidaties(const FWay& way)
 			{
 				validatyActor->Destroy();
 			}
-			m_Data.Validaties[i].GetObject()->IsReadyForFinishDestroy();
 		}
 	}
 	m_Data.Validaties.Empty();
@@ -568,9 +567,8 @@ void UExecutor::FinishWay()
 				}
 				else
 				{
-					sequenceObj->MarkPendingKill();
+					sequenceObj->ConditionalBeginDestroy();
 				}
-				sequenceObj->ConditionalBeginDestroy();
 				m_Data.Actions[i].ActionSequence[j].SetObject(nullptr);
 			}
 		}
