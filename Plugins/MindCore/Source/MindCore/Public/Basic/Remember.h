@@ -23,6 +23,9 @@ public:
     UPROPERTY(BlueprintReadWrite)
     TArray<FMemoryFragment> m_Memories;
 
+
+    void UnInstall_Implementation() override;
+
 public:
     virtual bool Remember_Implementation(const FMemoryFragment &target) override;
 

@@ -31,4 +31,7 @@ public:
         Mind = mind;
     }
 #pragma endregion
+
+    void UnInstall_Implementation() override;
+
 };

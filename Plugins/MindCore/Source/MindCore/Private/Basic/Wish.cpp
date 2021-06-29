@@ -127,6 +127,14 @@ void UWish::Reset()
 	m_Data.OwnedThings.Empty();
 }
 
+void UWish::UnInstall_Implementation()
+{
+	Mind = nullptr;
+	m_Info.Empty();
+	m_Data.Empty();
+    UE_LOG(LogTemp, Warning, TEXT("Wish uninstall!"))
+}
+
 bool UWish::UpdatePriority_Implementation(const FThing& target, int priority)
 {
 	bool result = false;

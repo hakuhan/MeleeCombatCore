@@ -26,14 +26,14 @@ public:
     void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 
-    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
+    //UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     virtual void DoWish_Implementation() override;
-    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
+    //UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     virtual void DoBehavior_Implementation() override;
-    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
+    //UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     virtual void DoImagine_Implementation() override;
 
-    UFUNCTION(BlueprintCallable, Category = "Basic Mind")
+    //UFUNCTION(BlueprintCallable, Category = "Basic Mind")
     void GetRemember_Implementation(TScriptInterface<IRememberInterface>& outRemember)
     {
         outRemember = Remember;
@@ -54,6 +54,9 @@ public:
 
         return result;
     };
+
+
+    void UpdateComponent_Implementation(EMindComponentType type, TSubclassOf<UObject> newComponent) override;
 
 public:
 	UPROPERTY(EditAnywhere, meta = (MustImplement = "RememberInterface"))

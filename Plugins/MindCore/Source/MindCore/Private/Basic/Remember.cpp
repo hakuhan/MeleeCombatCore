@@ -72,6 +72,13 @@ void URemenber::Accept_Implementation(const FString &thingID, const FMemoryFragm
     m_Memories.Add(inMemory);
 }
 
+void URemenber::UnInstall_Implementation()
+{
+    m_Memories.Empty();
+    Mind = nullptr;
+    UE_LOG(LogTemp, Warning, TEXT("Remember uninstall!"))
+}
+
 void URemenber::Clean()
 {
     m_Memories.Empty();

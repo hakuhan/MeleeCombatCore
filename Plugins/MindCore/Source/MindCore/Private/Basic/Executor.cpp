@@ -567,7 +567,8 @@ void UExecutor::FinishWay()
 				}
 				else
 				{
-					sequenceObj->ConditionalBeginDestroy();
+					sequenceObj->MarkPendingKill();
+					sequenceObj = nullptr;
 				}
 				m_Data.Actions[i].ActionSequence[j].SetObject(nullptr);
 			}

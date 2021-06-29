@@ -22,6 +22,11 @@ struct MINDCORE_API FWishInfo
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     TArray<FThing> Wishes;
+
+    void Empty()
+    {
+        Wishes.Empty();
+    }
 };
 
 USTRUCT(BlueprintType)
@@ -33,6 +38,12 @@ struct FWishData
     TArray<FThing> OwnedThings;
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MindCore)
     TArray<FThing> SeekingWishes;
+
+    void Empty()
+    {
+        OwnedThings.Empty();
+        SeekingWishes.Empty();
+    }
 };
 
 UCLASS(Blueprintable)
@@ -68,4 +79,7 @@ public:
 #pragma region mind component
     virtual void OnInit_Implementation(UMind *mind) override;
 #pragma endregion
+
+    void UnInstall_Implementation() override;
+
 };

@@ -54,3 +54,9 @@ void UImagine::JoinMemory_Implementation(const TScriptInterface<IRememberInterfa
 {
 
 }
+
+void UImagine::UnInstall_Implementation()
+{
+	Mind = nullptr;
+	UE_LOG(LogTemp, Warning, TEXT("Imagine uninstall!"))
+}

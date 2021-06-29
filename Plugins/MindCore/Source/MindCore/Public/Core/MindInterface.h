@@ -4,7 +4,18 @@
 */
 
 #pragma once
+#include "Core/MindComponentInterface.h"
 #include "MindInterface.generated.h"
+
+UENUM(BlueprintType)
+enum class EMindComponentType : uint8
+{
+	WISH_COMP = 0 UMETA(DisplayName="Wish"),
+	BEHAVIOR_COMP UMETA(DisplayName="Behavior"),
+    IMAGINE_COMP UMETA(DisplayName="Imagine"),
+    REMEMBER_COMP UMETA(DisplayName="Remember")
+};
+
 
 UINTERFACE(Blueprintable)
 class MINDCORE_API UMindInterface : public UInterface
@@ -24,4 +35,6 @@ public:
     void DoImagine();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
     void GetRemember(TScriptInterface<IRememberInterface>& outRemember);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mind")
+    void UpdateComponent(EMindComponentType type, TSubclassOf<UObject> newComponent);
 };

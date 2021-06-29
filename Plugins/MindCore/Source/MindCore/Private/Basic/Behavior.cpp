@@ -26,6 +26,13 @@ void UBehavior::OnInit_Implementation(UMind* mind)
     }
 }
 
+void UBehavior::UnInstall_Implementation()
+{
+	Mind = nullptr;
+    Behaviors.Empty();
+    UE_LOG(LogTemp, Warning, TEXT("Behavior uninstall!"))
+}
+
 void UBehavior::CreateBehavior()
 {
     // Get wishes

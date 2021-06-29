@@ -41,6 +41,9 @@ public:
     UPROPERTY(BlueprintReadwrite)
     TArray<FBehaviorItem> Behaviors;
 
+
+    void UnInstall_Implementation() override;
+
 public:
 #pragma region behavior
     virtual void Behave_Implementation() override;
