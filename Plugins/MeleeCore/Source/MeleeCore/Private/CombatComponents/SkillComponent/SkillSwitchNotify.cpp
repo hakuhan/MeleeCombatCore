@@ -39,5 +39,6 @@ void USkillSwitchNotify::NotifyEnd(USkeletalMeshComponent * MeshComp, UAnimSeque
         {
             skillDynamicData->IsSwitchable = false;
         }
+        skillComponent->OnSwitchEnd();
     }
 }

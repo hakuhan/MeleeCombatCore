@@ -38,6 +38,12 @@ struct FSkillComponentData
 		ESkillState State = ESkillState::SKILL_UNSTART;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		ASkillDynamicData* DynamicData;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		bool bSwitch;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		int SwitchLineIndex;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		FString SwitchSkillName;
 
 	FSkillComponentData()
 	{ }
@@ -46,6 +52,13 @@ struct FSkillComponentData
 		: DynamicData(NewObject<ASkillDynamicData>())
 	{
 		DynamicData->bDebug = bDebug;
+	}
+
+	void ResetSwitchData()
+	{
+		SwitchSkillName = "";
+		SwitchLineIndex = -1;
+		bSwitch = false;
 	}
 };
 
@@ -79,6 +92,8 @@ public:
 #pragma region Switch
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "skillName"))
 		bool SwitchSkill(const FString& lineName, const FString& skillName, bool bForce = false);
+	bool SwitchSkill(int lineIndex, const FString& skillName);
+	void OnSwitchEnd();
 #pragma endregion
 
 #pragma region switch conditions

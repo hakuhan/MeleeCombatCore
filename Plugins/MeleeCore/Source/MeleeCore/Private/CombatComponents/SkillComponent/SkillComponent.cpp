@@ -2,8 +2,6 @@
 
 void USkillComponent::BeginPlay()
 {
-    Super::BeginPlay();
-    
     InitInfo();
 
     m_Data = FSkillComponentData(m_debug);
@@ -24,24 +22,45 @@ bool USkillComponent::SwitchSkill(const FString& lineName, const FString& skillN
         return _line.Name == lineName;
     });
 
-    if (index >= 0)
+    if (bForce || !m_LineControl->IsExecuting())
     {
-        if (bForce || !m_LineControl->IsExecuting() || m_LineControl->CanSwitch())
-        {
-            m_LineControl->OnSwitchOut();
-
-            if (m_Data.LineIndex != index)
-            {
-                m_LineControl->UpdateInfo(m_Info.SkillLines[index], GetOwner(), m_Data.DynamicData);
-                m_Data.LineIndex = index;
-            }
-            
-            result = m_LineControl->StartLine(skillName);
-        }
-
+        SwitchSkill(index, skillName);
+        m_Data.ResetSwitchData();
+        result = true;
+    }
+    else if (m_LineControl->CanSwitch())
+    {
+        m_Data.bSwitch = true;
+        m_Data.SwitchLineIndex = index;
+        m_Data.SwitchSkillName = skillName;
+        result = true;
     }
 
     return result;
+}
+
+
+bool USkillComponent::SwitchSkill(int lineIndex, const FString& skillName)
+{
+    m_LineControl->OnSwitchOut();
+
+    if (lineIndex >= 0 && m_Data.LineIndex != lineIndex)
+    {
+        m_LineControl->UpdateInfo(m_Info.SkillLines[lineIndex], GetOwner(), m_Data.DynamicData);
+        m_Data.LineIndex = lineIndex;
+    }
+
+    return m_LineControl->StartLine(skillName);
+}
+
+void USkillComponent::OnSwitchEnd()
+{
+    if (m_Data.bSwitch)
+    {
+        SwitchSkill(m_Data.SwitchLineIndex, m_Data.SwitchSkillName);
+    }
+
+    m_Data.ResetSwitchData();
 }
 
 bool USkillComponent::ExecuteSkill()
