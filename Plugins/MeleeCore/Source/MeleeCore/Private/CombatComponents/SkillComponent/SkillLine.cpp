@@ -2,15 +2,16 @@
 
 void USkillLine::Tick(float DeltaTime)
 {
-    if (!m_DynamicData)
+    if (!m_DynamicData || !m_Data.IsEnable)
     {
         return;
     }
 
-    if (m_DynamicData->IsSkillLineEnd)
+    if (m_Skill->GetState() == ESkillExecuteState::SKILL_EXECUTE_END)
     {
         UpdateState(ESkillLineState::SKILL_LINE_FINISHED);
         m_Data.IsEnable = false;
+        OnSkillLineEnd.Broadcast(m_Info.Name);
     }
 }
 
@@ -54,28 +55,16 @@ bool USkillLine::StartLine(const FString& skillName)
     return result;
 }
 
-bool USkillLine::SwitchWithRule()
-{
-    bool result = false;
-    if (CanSwitch())
-    {
-        result = NextSkill();
-        if (m_DynamicData->bDebug && result)
-            UE_LOG(LogTemp, Warning, TEXT("Switch Skill line : %s"), *(m_Info.Name));
-    }
 
-    return result;
-}
-
-bool USkillLine::NextSkill()
+bool USkillLine::GetNextSkillName(FString& outName)
 {
-    bool result = false;
     if (m_Info.SkillLine.IsValidIndex(m_Data.SkillOffset + 1))
     {
-        result = SwitchSkillByIndex(m_Data.SkillOffset + 1);
+        outName = m_Info.SkillLine[m_Data.SkillOffset + 1].Name;
+        return true;
     }
 
-    return result;
+    return false;
 }
 
 bool USkillLine::IsExecuting()
@@ -90,39 +79,27 @@ bool USkillLine::IsEndSkillLine()
 
 void USkillLine::FinishSkill(bool terminate, const FAlphaBlend& InBlendOut)
 {
-    FSkillInfo skillInfo;
-    bool isInfoOk = GetCurrentSkillInfo(skillInfo);
-    if (isInfoOk)
+    if (m_Skill)
     {
-        auto skill = GetSkill(skillInfo, false);
-        if (skill)
+        if (terminate)
         {
-            if (terminate)
-            {
-                skill->Terminate();
-            }
-            else
-            {
-                skill->Stop(InBlendOut);
-            }
+            m_Skill->Terminate();
+        }
+        else
+        {
+            m_Skill->Stop(InBlendOut);
         }
     }
+
     UpdateState(ESkillLineState::SKILL_LINE_FINISHED);
 }
 
 bool USkillLine::CanSwitch()
 {
     bool result = false;
-    FSkillInfo skillInfo;
-    bool isInfoOk = GetCurrentSkillInfo(skillInfo);
-    if (isInfoOk)
+    if (m_Skill)
     {
-        USkill* _skill = GetSkill(skillInfo, false);
-
-        if (_skill)
-        {
-            result = _skill->CanSwitch();
-        }
+        result = m_Skill->CanSwitch();
     }
 
     return result;
@@ -132,10 +109,11 @@ bool USkillLine::SwitchSkillByIndex(int index)
 {
     if (m_Info.SkillLine.IsValidIndex(index))
     {
-        USkill* skill = GetSkill(m_Info.SkillLine[index]);
-        skill->ExecuteSkill(m_Target);
+        if (UpdateSkill(m_Info.SkillLine[index]))
+        {
+            m_Skill->ExecuteSkill(m_Target);
+        }
         
-        m_DynamicData->IsSkillLineEnd = false;
         m_Data.SkillOffset = index;
         m_Data.Record.SkillLine.Add(m_Info.SkillLine[index]);
         return true;
@@ -159,35 +137,25 @@ bool USkillLine::IsCurrentSkillOver()
     bool result = false;
     if (m_Data.State != ESkillLineState::SKILL_LINE_UNSTART)
     {
-        auto _skill = m_Data.GetCurrentSkill();
-        if (_skill)
+        if (m_Skill)
         {
-            result = _skill->m_Data.ExecuteState == ESkillExecuteState::SKILL_EXECUTE_END;
+            result = m_Skill->m_Data.ExecuteState == ESkillExecuteState::SKILL_EXECUTE_END;
         }
     }
 
     return result;
 }
 
-USkill* USkillLine::GetSkill(const FSkillInfo& skillInfo, bool bCreateNew)
+USkill* USkillLine::UpdateSkill(const FSkillInfo& skillInfo)
 {
-    USkill* result = nullptr;
-    int index = m_Data.Skills.IndexOfByPredicate([&](USkill* _skill){
-        return _skill->IsMatch(skillInfo);
-    });
-    if (index >= 0)
+    if (m_Skill == nullptr)
     {
-        result = m_Data.Skills[index];
-    }
-    else if (bCreateNew)
-    {
-        USkill* _skill = NewObject<USkill>();
-        m_Data.Skills.Add(_skill);
-        _skill->UpdateData(skillInfo, m_DynamicData);
-        result = _skill;
+        m_Skill = NewObject<USkill>();
     }
 
-    return result;
+    m_Skill->UpdateData(skillInfo, m_DynamicData);
+
+    return m_Skill;
 }
 
 bool USkillLine::GetCurrentSkillInfo(FSkillInfo& outInfo)

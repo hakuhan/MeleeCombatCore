@@ -30,11 +30,15 @@ struct FSkillData
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     bool IsEnable = false;
 
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    float TimeLeft;
+
     FSkillData() 
     {
         ExecuteState = ESkillExecuteState::SKILL_EXECUTE_NONE;
         BreakState = ESkillBreakLevel::SKILL_BREAK_EASY;
         IsEnable = false;
+        TimeLeft = 0;
     }
 };
 
@@ -60,6 +64,11 @@ public:
     ASkillDynamicData* m_DynamicData;
 
     void UpdateData(const FSkillInfo& info, ASkillDynamicData* dynamicData);
+
+    ESkillExecuteState GetState()
+    {
+        return m_Data.ExecuteState;
+    }
 
     UFUNCTION(BlueprintCallable)
     void ExecuteSkill(AActor* target);

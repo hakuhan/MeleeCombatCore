@@ -8,8 +8,6 @@
 #include "SkillComponent/SkillDynamicData.h"
 #include "SkillComponent.generated.h"
 
-DECLARE_MULTICAST_DELEGATE_OneParam(OnSkillEndDelegate, FString)
-
 UENUM(BlueprintType)
 enum class ESkillState : uint8
 {
@@ -53,13 +51,6 @@ struct FSkillComponentData
 	{
 		DynamicData->bDebug = bDebug;
 	}
-
-	void ResetSwitchData()
-	{
-		SwitchSkillName = "";
-		SwitchLineIndex = -1;
-		bSwitch = false;
-	}
 };
 
 UCLASS(Blueprintable, ClassGroup = (MeleeCore))
@@ -90,6 +81,14 @@ public:
 #pragma endregion
 
 #pragma region Switch
+	/// <summary>
+	/// Update switch state
+	/// </summary>
+	/// <param name="bSwitch">if true, skil will switch next when skill ending</param>
+	/// <param name="LineIndex">if this value less than 0, line will not switch</param>
+	/// <param name="skilName">skill name, if it's invalid skill will not swich successfuly</param>
+	void UpdateSwitchState(bool bSwitch,int LineIndex, const FString& skilName);
+	void ResetSwitchState();
 	UFUNCTION(BlueprintCallable, meta = (AutoCreateRefTerm = "skillName"))
 		bool SwitchSkill(const FString& lineName, const FString& skillName, bool bForce = false);
 	bool SwitchSkill(int lineIndex, const FString& skillName);
@@ -126,9 +125,6 @@ public:
 	// For notify
 	UFUNCTION(BlueprintImplementableEvent)
 		void OnSkillEnded(const FString& SkillLineName);
-
-	// Be noticed by end notify
-	void SkillEnded();
 #pragma endregion
 
 protected:

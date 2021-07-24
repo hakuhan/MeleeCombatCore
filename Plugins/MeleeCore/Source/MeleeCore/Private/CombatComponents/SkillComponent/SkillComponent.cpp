@@ -7,11 +7,20 @@ void USkillComponent::BeginPlay()
     m_Data = FSkillComponentData(m_debug);
 
     m_LineControl = NewObject<USkillLine>();
-    m_LineControl->OnChangeState.BindUObject(this, &USkillComponent::OnSkillUpdate);
-    if (m_Info.SkillLines.Num() > 0)
+    if (m_LineControl)
     {
-        m_LineControl->UpdateInfo(m_Info.SkillLines[0], GetOwner(), m_Data.DynamicData);
-        m_Data.LineIndex = 0;
+        m_LineControl->OnChangeState.BindUObject(this, &USkillComponent::OnSkillUpdate);
+        if (m_Info.SkillLines.Num() > 0)
+        {
+            m_LineControl->UpdateInfo(m_Info.SkillLines[0], GetOwner(), m_Data.DynamicData);
+            m_Data.LineIndex = 0;
+        }
+
+        m_LineControl->OnSkillLineEnd.AddUObject(this, &USkillComponent::OnSkillEnded);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Line control haven't initialize"))
     }
 }
 
@@ -25,14 +34,12 @@ bool USkillComponent::SwitchSkill(const FString& lineName, const FString& skillN
     if (bForce || !m_LineControl->IsExecuting())
     {
         SwitchSkill(index, skillName);
-        m_Data.ResetSwitchData();
+        ResetSwitchState();
         result = true;
     }
     else if (m_LineControl->CanSwitch())
     {
-        m_Data.bSwitch = true;
-        m_Data.SwitchLineIndex = index;
-        m_Data.SwitchSkillName = skillName;
+        UpdateSwitchState(true, index, skillName);
         result = true;
     }
 
@@ -60,7 +67,8 @@ void USkillComponent::OnSwitchEnd()
         SwitchSkill(m_Data.SwitchLineIndex, m_Data.SwitchSkillName);
     }
 
-    m_Data.ResetSwitchData();
+    ResetSwitchState();
+    FSkillInfo skill;
 }
 
 bool USkillComponent::ExecuteSkill()
@@ -72,11 +80,19 @@ bool USkillComponent::ExecuteSkill()
         case ESkillState::SKILL_UNSTART:
         case ESkillState::SKILL_TERMINAl:
             m_LineControl->StartLine(FString());
+            ResetSwitchState();
             result = true;
             break;
         
         case ESkillState::SKILL_EXECUTING:
-            result = m_LineControl->SwitchWithRule();
+        {
+            FString _nextSkillName = "";
+            if (m_LineControl->CanSwitch() && m_LineControl->GetNextSkillName(_nextSkillName))
+            {
+                UpdateSwitchState(true, -1, _nextSkillName);
+                result = true;
+            }
+        }
         break;
 
         default:
@@ -84,6 +100,20 @@ bool USkillComponent::ExecuteSkill()
     }
 
     return result;
+}
+
+
+void USkillComponent::UpdateSwitchState(bool bSwitch, int LineIndex, const FString& skilName)
+{
+    m_Data.bSwitch = bSwitch;
+    m_Data.SwitchLineIndex = LineIndex;
+    m_Data.SwitchSkillName = skilName;
+}
+
+
+void USkillComponent::ResetSwitchState()
+{
+    UpdateSwitchState(false, 0, "");
 }
 
 bool USkillComponent::IsExecuting()
@@ -110,20 +140,6 @@ void USkillComponent::StopSkill(bool bRule, const FAlphaBlend& InBlendOut)
     if (IsExecuting())
     {
         m_LineControl->FinishSkill(bRule, InBlendOut);
-    }
-}
-
-void USkillComponent::SkillEnded()
-{
-    if (m_Data.DynamicData)
-    {
-        m_Data.DynamicData->IsSkillLineEnd = true;
-    }
-    OnSkillEnded(m_LineControl->m_Info.Name);
-    
-    if (OnSkllEndEvent.IsBound())
-    {
-        OnSkllEndEvent.Broadcast(m_LineControl->m_Info.Name);
     }
 }
 

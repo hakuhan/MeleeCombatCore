@@ -4,6 +4,8 @@
 #include "GameFramework/Info.h"
 #include "SkillDynamicData.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(OnSkillEndDelegate, const FString&)
+
 UENUM(BlueprintType)
 enum class ESkillBreakLevel : uint8
 {
@@ -23,9 +25,6 @@ public:
     
     UPROPERTY(BlueprintReadWrite)
     ESkillBreakLevel SkillBreakLevel;
-
-    UPROPERTY(BlueprintReadWrite)
-    bool IsSkillLineEnd = false;
         
     UPROPERTY()
     bool bDebug = false;

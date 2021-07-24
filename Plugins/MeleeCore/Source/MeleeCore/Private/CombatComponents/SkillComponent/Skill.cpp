@@ -2,7 +2,7 @@
 
 void USkill::Tick(float DeltaTime)
 {
-    if (!m_DynamicData)
+    if (!m_DynamicData && !m_Data.IsEnable)
     {
         return;
     }
@@ -25,8 +25,10 @@ void USkill::Tick(float DeltaTime)
 
     }
 
+    m_Data.TimeLeft -= DeltaTime;
+
     // Stop
-    if (m_DynamicData->IsSkillLineEnd)
+    if (m_Data.TimeLeft < 0)
     {
         Terminate();
     }
@@ -49,9 +51,10 @@ void USkill::ExecuteSkill(AActor* target)
         {
             if (m_DynamicData->bDebug)
                 UE_LOG(LogTemp, Warning, TEXT("Execute Skill: %s"), *(m_Info.Name));
-            animInst->Montage_Play(m_Info.Montage);
+            m_Data.TimeLeft = animInst->Montage_Play(m_Info.Montage);
             m_TargetAnim = animInst;
             m_Data.IsEnable = true;
+            m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_WORK;
         }
     }
 }
@@ -81,6 +84,9 @@ void USkill::Terminate()
         if (m_DynamicData->bDebug)
             UE_LOG(LogTemp, Warning, TEXT("Terminate Skill: %s"), *(m_Info.Name));
     }
+
+    m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_END;
+    m_Data.IsEnable = false;
 }
 
 void USkill::Stop(const FAlphaBlend& InBlendOut)
@@ -97,4 +103,7 @@ void USkill::Stop(const FAlphaBlend& InBlendOut)
         if (m_DynamicData->bDebug)
             UE_LOG(LogTemp, Warning, TEXT("Stop Skill: %s"), *(m_Info.Name));
     }
+
+    m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_END;
+    m_Data.IsEnable = false;
 }

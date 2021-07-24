@@ -34,21 +34,6 @@ struct MELEECORE_API FSkillLineData
 
     UPROPERTY(BlueprintReadOnly)
     ESkillLineState State;
-
-    UPROPERTY(BlueprintReadOnly)
-    TArray<USkill*> Skills;
-
-    USkill* GetCurrentSkill()
-    {
-        USkill* currentSkill = nullptr;
-
-        if (Skills.IsValidIndex(SkillOffset))
-        {
-            currentSkill = Skills[SkillOffset];
-        }
-
-        return currentSkill;
-    }
 };
 
 UCLASS()
@@ -63,10 +48,15 @@ public:
 
     UPROPERTY(BlueprintReadOnly)
     AActor* m_Target;
+
+    UPROPERTY(BlueprintReadOnly)
+    USkill* m_Skill;
+
     UPROPERTY(BlueprintReadOnly)
     ASkillDynamicData* m_DynamicData;
 
     FSkillLineStateChangeEvent OnChangeState;
+    OnSkillEndDelegate OnSkillLineEnd;
 public:
     // Begin FTickableGameObject Interface.
     virtual void Tick(float DeltaTime) override;
@@ -82,10 +72,7 @@ public:
     bool StartLine(const FString& skillName);
 
     UFUNCTION(BlueprintCallable)
-    bool SwitchWithRule();
-
-    UFUNCTION(BlueprintCallable)
-    bool NextSkill();
+    bool GetNextSkillName(FString& outName);
 
     UFUNCTION(BlueprintCallable)
     bool SwitchSkill(const FString &skillName);
@@ -115,5 +102,5 @@ protected:
     void UpdateState(ESkillLineState state);
 
     // return true if create a new skill
-    USkill* GetSkill(const FSkillInfo& skillInfo, bool bCreateNew = true);
+    USkill* UpdateSkill(const FSkillInfo& skillInfo);
 };
