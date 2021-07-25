@@ -95,6 +95,9 @@ public:
     UFUNCTION(BlueprintCallable)
     bool CanSwitch();
 
+    UFUNCTION(BlueprintCallable)
+    bool EndLooping();
+
 protected:
     bool GetCurrentSkillInfo(FSkillInfo& outInfo);
     bool SwitchSkillByIndex(int index);

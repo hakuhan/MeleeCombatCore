@@ -81,4 +81,6 @@ public:
 
     void Stop(const FAlphaBlend& InBlendOut = FAlphaBlend(0.2f));
 
+    bool EndLooping();
+
 };

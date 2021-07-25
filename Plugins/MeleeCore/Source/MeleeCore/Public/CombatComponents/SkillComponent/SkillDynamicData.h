@@ -26,6 +26,16 @@ public:
     UPROPERTY(BlueprintReadWrite)
     ESkillBreakLevel SkillBreakLevel;
         
+    UPROPERTY(BlueprintReadWrite)
+    bool IsLooping;
+    UPROPERTY(BlueprintReadWrite)
+    FString LoopingSection;
+    UPROPERTY(BlueprintReadWrite)
+    FString EndSection;
+    UPROPERTY(BlueprintReadWrite)
+    bool EndSectionJump;
+
+
     UPROPERTY()
     bool bDebug = false;
 };

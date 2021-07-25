@@ -30,17 +30,17 @@ struct FSkillComponentData
 {
 	GENERATED_USTRUCT_BODY()
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere)
 		int LineIndex = -1;
 	UPROPERTY(BlueprintReadOnly)
 		ESkillState State = ESkillState::SKILL_UNSTART;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 		ASkillDynamicData* DynamicData;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 		bool bSwitch;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 		int SwitchLineIndex;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 		FString SwitchSkillName;
 
 	FSkillComponentData()
@@ -65,7 +65,7 @@ public:
 protected:
 	UPROPERTY()
 		USkillLine* m_LineControl;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 		FSkillComponentData m_Data;
 
 public:
@@ -115,6 +115,27 @@ public:
 		return m_Data.DynamicData;
 	}
 #pragma endregion
+
+#pragma region Loop Skill
+
+	void OnStartLoopingSkill(const FString& loopSection, const FString& endSection, bool jumpEndOfSection)
+	{
+		GetDynamicData()->IsLooping = true;
+		GetDynamicData()->LoopingSection = loopSection;
+		GetDynamicData()->EndSection = endSection;
+		GetDynamicData()->EndSectionJump = jumpEndOfSection;
+	}
+
+	void SetSkillLoopState(bool state)
+	{
+		GetDynamicData()->IsLooping = state;
+	}
+
+	UFUNCTION(BlueprintCallable)
+	bool StopLooping();
+
+#pragma endregion
+
 
 #pragma region End skill
 	UFUNCTION(BlueprintCallable)

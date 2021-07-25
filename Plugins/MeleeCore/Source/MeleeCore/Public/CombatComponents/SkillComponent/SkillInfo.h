@@ -24,6 +24,9 @@ struct FSkillInfo
     ESkillType SkillType;
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    bool Loop;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
     UAnimMontage* Montage;
 
     FSkillInfo()
@@ -33,13 +36,15 @@ struct FSkillInfo
     {
         Name = other.Name;
         SkillType = other.SkillType;
+        Loop = other.Loop;
         Montage = other.Montage;
     }
 
-    FSkillInfo(FString _name, ESkillType _type, UAnimMontage* _montage)
+    FSkillInfo(FString _name, ESkillType _type, bool _loop, UAnimMontage* _montage)
     {
         Name = _name;
         SkillType = _type;
+        Loop = _loop;
         Montage = _montage;
     }
 

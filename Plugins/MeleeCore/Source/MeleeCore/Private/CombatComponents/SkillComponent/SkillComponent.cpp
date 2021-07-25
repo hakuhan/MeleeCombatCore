@@ -135,6 +135,17 @@ bool USkillComponent::CanSwitchFrom(const TArray<FString>& limitedList, bool fro
     return result;
 }
 
+
+bool USkillComponent::StopLooping()
+{
+    if (m_LineControl)
+    {
+        return m_LineControl->EndLooping();
+    }
+
+    return false;
+}
+
 void USkillComponent::StopSkill(bool bRule, const FAlphaBlend& InBlendOut)
 {
     if (IsExecuting())

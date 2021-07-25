@@ -105,6 +105,17 @@ bool USkillLine::CanSwitch()
     return result;
 }
 
+
+bool USkillLine::EndLooping()
+{
+    if (m_Skill)
+    {
+        return m_Skill->EndLooping();
+    }
+
+    return false;
+}
+
 bool USkillLine::SwitchSkillByIndex(int index)
 {
     if (m_Info.SkillLine.IsValidIndex(index))

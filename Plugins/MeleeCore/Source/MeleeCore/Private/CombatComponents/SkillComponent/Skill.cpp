@@ -23,14 +23,21 @@ void USkill::Tick(float DeltaTime)
             m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_SWITCHABLE;
         }
 
+        if (!m_Info.Loop)
+        {
+            m_Data.TimeLeft -= DeltaTime;
+
+            // Stop
+            if (m_Data.TimeLeft < 0)
+            {
+                Terminate();
+            }
+        }
     }
-
-    m_Data.TimeLeft -= DeltaTime;
-
-    // Stop
-    if (m_Data.TimeLeft < 0)
+    else
     {
-        Terminate();
+        m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_END;
+        m_Data.IsEnable = false;
     }
 }
 
@@ -106,4 +113,17 @@ void USkill::Stop(const FAlphaBlend& InBlendOut)
 
     m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_END;
     m_Data.IsEnable = false;
+}
+
+bool USkill::EndLooping()
+{
+    if (m_DynamicData && m_DynamicData->IsLooping && m_Data.IsEnable && m_TargetAnim)
+    {
+        //FAnimMontageInstance montage = FAnimMontageInstance(m_TargetAnim);
+        m_TargetAnim->Montage_JumpToSection(FName(*m_DynamicData->EndSection), m_Info.Montage);
+        return true;
+        //return montage.JumpToSectionName(FName(*m_DynamicData->EndSection), m_DynamicData->EndSectionJump);
+    }
+
+    return false;
 }
