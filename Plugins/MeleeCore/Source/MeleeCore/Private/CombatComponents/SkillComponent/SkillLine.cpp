@@ -56,6 +56,17 @@ bool USkillLine::StartLine(const FString& skillName)
 }
 
 
+bool USkillLine::GetCurrentSkillName(FString& outName)
+{
+    if (m_Info.SkillLine.IsValidIndex(m_Data.SkillOffset))
+    {
+        outName = m_Info.SkillLine[m_Data.SkillOffset].Name;
+        return true;
+    }
+
+    return false;
+}
+
 bool USkillLine::GetNextSkillName(FString& outName)
 {
     if (m_Info.SkillLine.IsValidIndex(m_Data.SkillOffset + 1))

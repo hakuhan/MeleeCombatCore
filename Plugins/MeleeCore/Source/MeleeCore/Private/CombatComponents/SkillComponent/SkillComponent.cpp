@@ -103,6 +103,16 @@ bool USkillComponent::ExecuteSkill()
 }
 
 
+bool USkillComponent::GetCurrentSkillName(FString& outName)
+{
+    if (IsExecuting())
+    {
+        return m_LineControl->GetCurrentSkillName(outName);
+    }
+
+    return false;
+}
+
 void USkillComponent::UpdateSwitchState(bool bSwitch, int LineIndex, const FString& skilName)
 {
     m_Data.bSwitch = bSwitch;

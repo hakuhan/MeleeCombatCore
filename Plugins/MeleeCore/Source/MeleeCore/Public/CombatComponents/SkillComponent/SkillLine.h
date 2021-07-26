@@ -72,6 +72,9 @@ public:
     bool StartLine(const FString& skillName);
 
     UFUNCTION(BlueprintCallable)
+    bool GetCurrentSkillName(FString& outName);
+
+    UFUNCTION(BlueprintCallable)
     bool GetNextSkillName(FString& outName);
 
     UFUNCTION(BlueprintCallable)

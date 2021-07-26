@@ -78,6 +78,9 @@ public:
 	// Execute current line skill
 	UFUNCTION(BlueprintCallable)
 		bool ExecuteSkill();
+
+	UFUNCTION(BlueprintCallable)
+		bool GetCurrentSkillName(FString& outName);
 #pragma endregion
 
 #pragma region Switch
