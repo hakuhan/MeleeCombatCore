@@ -11,7 +11,7 @@
 #include "MotionSwitchRule.h"
 #include "MotionSwitchRuleBase.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE_RetVal(bool, FMotionRuleDelegate);
+DECLARE_DYNAMIC_DELEGATE_RetVal(FMotionCheckResult, FMotionRuleDelegate);
 
 USTRUCT(BlueprintType)
 struct FMotionRuleEvent
@@ -74,7 +74,7 @@ public:
 
 
 #pragma region logic
-    virtual bool IsSwitchable_Implementation(int id) override;
+    virtual FMotionCheckResult IsSwitchable_Implementation(int id) override;
 
     virtual void SwitchMotion_Implementation(int id) override;
 
@@ -84,7 +84,7 @@ public:
     bool CheckMotion(int id);
 
     UFUNCTION(BlueprintCallable)
-    bool CheckRule(int id);
+    void CheckRule(int id, FMotionCheckResult& outResult);
 #pragma endregion
 
 

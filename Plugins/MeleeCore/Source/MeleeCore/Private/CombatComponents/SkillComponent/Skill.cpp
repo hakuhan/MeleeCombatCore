@@ -119,10 +119,8 @@ bool USkill::EndLooping()
 {
     if (m_DynamicData && m_DynamicData->IsLooping && m_Data.IsEnable && m_TargetAnim)
     {
-        //FAnimMontageInstance montage = FAnimMontageInstance(m_TargetAnim);
         m_TargetAnim->Montage_JumpToSection(FName(*m_DynamicData->EndSection), m_Info.Montage);
         return true;
-        //return montage.JumpToSectionName(FName(*m_DynamicData->EndSection), m_DynamicData->EndSectionJump);
     }
 
     return false;

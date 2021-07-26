@@ -9,6 +9,27 @@
 #include "CoreMinimal.h"
 #include "MotionSwitchRule.generated.h"
 
+USTRUCT(BlueprintType)
+struct FMotionCheckResult
+{
+    GENERATED_USTRUCT_BODY()
+
+        UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MotionRule)
+        bool bSwitchable;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MotionRule)
+        FString CurrentActionName;
+
+    FMotionCheckResult()
+        : bSwitchable(false)
+        , CurrentActionName("")
+    {}
+    FMotionCheckResult(bool switchable, const FString& currentActionName)
+        : bSwitchable(switchable)
+        , CurrentActionName(currentActionName)
+    {}
+};
+
 UINTERFACE()
 class MELEECORE_API UMotionSwitchRule : public UInterface
 {
@@ -21,7 +42,7 @@ class MELEECORE_API IMotionSwitchRule
 
 public:
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    bool IsSwitchable(int id);
+    FMotionCheckResult IsSwitchable(int id);
 
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void SwitchMotion(int id);

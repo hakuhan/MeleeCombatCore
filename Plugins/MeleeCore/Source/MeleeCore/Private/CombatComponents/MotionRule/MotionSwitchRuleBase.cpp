@@ -59,30 +59,32 @@ void UMotionSwitchRuleBase::RemoveBasicRule(int id)
     }
 }
 
-bool UMotionSwitchRuleBase::IsSwitchable_Implementation(int id)
+FMotionCheckResult UMotionSwitchRuleBase::IsSwitchable_Implementation(int id)
 {
-    bool result = false;
+    FMotionCheckResult result;
 
+    bool isContains = false;
     if (m_CurrentMotion == m_None)
     {
-        result = false;
+        isContains = false;
     }
     else if (m_CurrentMotion == m_All)
     {
-        result = true;
+        isContains = true;
     }
     else if (m_SwitchSelf && m_CurrentMotion == id)
     {
-        result = true;
+        isContains = true;
     }
     else
     {
-        result = CheckMotion(id);
+        isContains = CheckMotion(id);
     }
 
-    if (result)
+    if (isContains)
     {
-        result = CheckRule(m_CurrentMotion);
+        result.bSwitchable = true;
+        CheckRule(m_CurrentMotion, result);
     }
 
     return result;
@@ -118,21 +120,14 @@ bool UMotionSwitchRuleBase::CheckMotion(int id)
 }
 
 // If rule is not fonded, return true
-bool UMotionSwitchRuleBase::CheckRule(int id)
+void UMotionSwitchRuleBase::CheckRule(int id, FMotionCheckResult& outResult)
 {
-    bool result = true;
-
-    if (m_BasicRules.Contains(id))
+    if (m_AlternativeRules.Contains(id))
     {
-        if (m_AlternativeRules.Contains(id))
-            result = m_AlternativeRules[id].Execute();    
-        else
-            result = m_BasicRules[id].Execute();
+        outResult = m_AlternativeRules[id].Execute();
     }
-    else if (m_AlternativeRules.Contains(id))
+    else if (m_BasicRules.Contains(id))
     {
-        result = m_AlternativeRules[id].Execute();
+        outResult = m_BasicRules[id].Execute();
     }
-
-    return result;
 }
