@@ -69,7 +69,7 @@ bool USkillLine::GetCurrentSkillName(FString& outName)
 
 bool USkillLine::GetNextSkillName(FString& outName)
 {
-    if (m_Info.SkillLine.IsValidIndex(m_Data.SkillOffset + 1))
+    if (m_Info.SwitchType == ELineSwitchType::LINE_SEQUENCE && m_Info.SkillLine.IsValidIndex(m_Data.SkillOffset + 1))
     {
         outName = m_Info.SkillLine[m_Data.SkillOffset + 1].Name;
         return true;
