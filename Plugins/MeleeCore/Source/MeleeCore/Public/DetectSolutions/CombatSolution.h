@@ -19,6 +19,10 @@ public:
 	EMeleeHurt hurtType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float hurts;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool briefHitter = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float briefDuration = 0.1f;
 
 public:
 	~FHurt()
@@ -43,7 +47,7 @@ public:
 public:
     // Attacking
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-    void OnHit(AActor *attackedActor, ECombatHitResult &outResult);
+    void OnHit(AActor* hitter, AActor *attackedActor, ECombatHitResult &outResult);
 
     // init
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -74,10 +78,15 @@ public:
     void OnEndDetection();
 
 protected:
-    void NoticeHit(AActor *actor, ECombatHitResult &outResult)
+    void NoticeHit(AActor* hitter, AActor *hittedActor, ECombatHitResult &outResult)
     {
+        if (m_HurtInfo.briefHitter)
+        {
+            UMeleeUtils::BriefPauseMontage(hitter, m_HurtInfo.briefDuration);
+        }
+
         TArray<UObject *> reacters;
-        UMeleeUtils::GetImplementFromActor(actor, UCombatReaction::StaticClass(), reacters);
+        UMeleeUtils::GetImplementFromActor(hittedActor, UCombatReaction::StaticClass(), reacters);
         if (reacters.Num() > 0)
         {
             for (auto reacter : reacters)

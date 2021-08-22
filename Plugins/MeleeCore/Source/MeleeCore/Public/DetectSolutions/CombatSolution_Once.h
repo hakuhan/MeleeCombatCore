@@ -17,7 +17,7 @@ private:
 
 public:
     ~UCombatSolution_Once();
-    virtual void OnHit_Implementation(AActor *attackedActor, ECombatHitResult &outResult) override;
+    virtual void OnHit_Implementation(AActor* hitter, AActor *attackedActor, ECombatHitResult &outResult) override;
 
     virtual void InitData_Implementation() override;
 

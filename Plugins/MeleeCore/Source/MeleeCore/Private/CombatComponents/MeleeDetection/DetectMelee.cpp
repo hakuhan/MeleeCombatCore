@@ -312,7 +312,7 @@ void UDetectMelee::ExecuteHit(FDetectInfo& hit)
 	ECombatHitResult _hitResult = ECombatHitResult::NO_HIT;
 	if (m_HurtSolution != nullptr)
 	{
-		ICombatSolution::Execute_OnHit(m_HurtSolution.GetObject(), actor, _hitResult);
+		ICombatSolution::Execute_OnHit(m_HurtSolution.GetObject(), GetOwner(), actor, _hitResult);
 	}
 
 	if (m_EffectComponent != nullptr)

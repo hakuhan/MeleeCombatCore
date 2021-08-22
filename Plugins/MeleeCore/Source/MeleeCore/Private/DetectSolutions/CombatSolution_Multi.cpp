@@ -21,11 +21,11 @@ void UCombatSolution_Multi::OnStartDetection_Implementation()
     m_IntervalTimers.Empty();
 }
 
-void UCombatSolution_Multi::OnHit_Implementation(AActor *actor, ECombatHitResult &outResult)
+void UCombatSolution_Multi::OnHit_Implementation(AActor* hitter, AActor *actor, ECombatHitResult &outResult)
 {
     if (!IsCooling(actor))
     {
-        NoticeHit(actor, outResult);
+        NoticeHit(hitter, actor, outResult);
 
         m_Actors.Add(actor);
         GetWorld()->GetTimerManager().SetTimer(m_IntervalTimers[actor], this, &UCombatSolution_Multi::CoolOver, m_MeleeInterval, false);

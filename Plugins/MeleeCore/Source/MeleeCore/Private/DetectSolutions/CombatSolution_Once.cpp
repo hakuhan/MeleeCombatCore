@@ -5,12 +5,12 @@ UCombatSolution_Once::~UCombatSolution_Once()
     m_Actors.Empty();
 }
 
-void UCombatSolution_Once::OnHit_Implementation(AActor *attackedActor, ECombatHitResult& outResult)
+void UCombatSolution_Once::OnHit_Implementation(AActor* hitter, AActor *attackedActor, ECombatHitResult& outResult)
 {
     if (!m_Actors.Contains(attackedActor))
     {
         m_Actors.Add(attackedActor);
-        NoticeHit(attackedActor, outResult);
+        NoticeHit(hitter, attackedActor, outResult);
     }
 }
 

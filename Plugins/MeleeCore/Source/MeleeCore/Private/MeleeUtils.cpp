@@ -1,5 +1,6 @@
 #include "MeleeUtils.h"
 #include "MeleeDetection/DetectMelee.h"
+#include "Animation/AnimMontage.h"
 
 void UMeleeUtils::GetImplementFromActor(AActor *owner, TSubclassOf<UInterface> interface, TArray<UObject *> &array, bool checkSelf)
 {
@@ -102,6 +103,44 @@ bool UMeleeUtils::DetachWeapon(UDetectMelee *target, UPARAM(meta=(Bitmask, UseEn
     }
 
     return result;
+}
+
+bool UMeleeUtils::BriefPauseMontage(AActor* target, float duration)
+{
+    auto montageInst = GetMontageInstance(target);
+    if (montageInst && montageInst->IsPlaying())
+    {
+        FTimerHandle handle;
+        montageInst->Pause();
+        target->GetWorld()->GetTimerManager().SetTimer(handle, [target]() {
+            auto _montageIns = GetMontageInstance(target);
+            if (_montageIns && !_montageIns->IsPlaying())
+            {
+                _montageIns->SetPlaying(true);
+            }
+        }, duration, false);
+        return true;
+    }
+
+    return false;
+}
+
+FAnimMontageInstance* UMeleeUtils::GetMontageInstance(AActor* target)
+{
+    if (target)
+    {
+        USkeletalMeshComponent *mesh = target->FindComponentByClass<USkeletalMeshComponent>();
+        if (mesh)
+        {
+            UAnimInstance *animInst = mesh->GetAnimInstance();
+            if (animInst)
+            {
+                return animInst->GetActiveMontageInstance();
+            }
+        }
+    }
+
+    return nullptr;
 }
 
 

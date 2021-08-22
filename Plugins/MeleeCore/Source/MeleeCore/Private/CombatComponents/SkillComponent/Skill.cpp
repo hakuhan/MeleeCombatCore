@@ -34,11 +34,6 @@ void USkill::Tick(float DeltaTime)
             }
         }
     }
-    else
-    {
-        m_Data.ExecuteState = ESkillExecuteState::SKILL_EXECUTE_END;
-        m_Data.IsEnable = false;
-    }
 }
 
 void USkill::UpdateData(const FSkillInfo& info, ASkillDynamicData* dynamicData)

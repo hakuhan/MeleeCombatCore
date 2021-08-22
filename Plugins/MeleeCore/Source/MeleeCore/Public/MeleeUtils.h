@@ -6,6 +6,8 @@
 class UDetectMelee;
 class IMeleeWeapon;
 class UMeleeWeapon;
+class UAnimMontage;
+struct FAnimMontageInstance;
 
 UCLASS(ClassGroup = (Custom), meta = (MeleeUtils))
 class MELEECORE_API UMeleeUtils : public UObject
@@ -27,6 +29,12 @@ public:
 
     UFUNCTION(BlueprintCallable)
     static bool DetachWeapon(UDetectMelee *target, UPARAM(meta = (Bitmask, UseEnumValuesAsMaskValuesInEditor = "true", BitmaskEnum = EAttackWeapon)) uint8 WeaponType, USceneComponent *weaponPtr = nullptr);
+    
+    UFUNCTION(BlueprintCallable)
+    static bool BriefPauseMontage(AActor* target, float duration);
+    
+    static FAnimMontageInstance* GetMontageInstance(AActor* target);
+    
     // UFUNCTION(BlueprintCallable)
     // static void TestWeapon(UPARAM(meta=(AllowAbstract = "UMeleeWeapon")) USceneComponent* weapon)
     // {
