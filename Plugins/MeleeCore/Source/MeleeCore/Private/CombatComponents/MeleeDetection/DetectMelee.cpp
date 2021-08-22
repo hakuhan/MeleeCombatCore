@@ -42,8 +42,8 @@ void UDetectMelee::BeginPlay()
 	auto solutionInfo = m_HurtSolutionTable.GetRow<FHurtSolutionTable>("Find combat solution");
 	if (solutionInfo != nullptr)
 	{
-		m_DefaultHurtSolution = solutionInfo->solutionType;
-		m_HurtSolutionType = m_DefaultHurtSolution;
+		m_DefaultHurtSolutionType = solutionInfo->solutionType;
+		m_HurtSolutionType = m_DefaultHurtSolutionType;
 
 		auto hurtObj = NewObject<UObject>(this, solutionInfo->solutionClass);
 		auto hurtInfo = solutionInfo->hurtTable.GetRow<FHurt>("Find combat hurt");
@@ -161,7 +161,7 @@ void UDetectMelee::UpdateWeaponMask(uint8 weaponMask)
 
 void UDetectMelee::ResetHurts()
 {
-	UpdateHurts(m_DefaultHurt, m_DefaultHurtSolution);
+	UpdateHurts(m_DefaultHurt, m_DefaultHurtSolutionType);
 }
 
 // Called every frame

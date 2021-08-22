@@ -103,7 +103,7 @@ public:
 	EMeleeHurt m_Hurt;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Melee")
-	EHurtType m_DefaultHurtSolution;
+	EHurtType m_DefaultHurtSolutionType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Melee")
 	EHurtType m_HurtSolutionType;
