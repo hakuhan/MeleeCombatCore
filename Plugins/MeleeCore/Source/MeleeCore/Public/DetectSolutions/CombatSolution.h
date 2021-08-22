@@ -22,7 +22,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
     bool briefHitter = true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float briefDuration = 0.1f;
+    float briefDuration = 0.038f;
 
 public:
 	~FHurt()
