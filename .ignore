@@ -1,12 +1,10 @@
-.git
-.vs
-.vscode
 Content
-DerivedDataCache
 Intermediate
-Saved
-Script
+.git
+.vscode
 Plugins/MeleeCore/Content
 Plugins/MeleeCore/Intermediate
+Plugins/StorySystem/Content
+Plugins/StorySystem/Intermediate
 Plugins/MindCore/Content
 Plugins/MindCore/Intermediate
