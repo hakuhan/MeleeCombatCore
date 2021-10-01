@@ -2,6 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "RemoteDetectorInterface.h"
+#include "Engine/DataTable.h"
+#include "DetectSolutions/CombatSolution.h"
+
 #include "DetectRemote.generated.h"
 
 UENUM(BlueprintType)
@@ -12,7 +15,7 @@ enum class ERemoteDetector : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FDetectRemoteInfo
+struct FDetectRemoteInfo : public FTableRowBase
 {
     GENERATED_USTRUCT_BODY()
 
@@ -23,7 +26,7 @@ struct FDetectRemoteInfo
     ERemoteDetector Type;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=DetectRemote)
-    AActor* AttachTarget;
+    FHurt Hurt;
 };
 
 UCLASS(Blueprintable, classGroup = (MeleeCore), meta = (BlueprintSpawnableComponent))
@@ -34,10 +37,16 @@ public:
     UDetectRemote();
 
     UFUNCTION(BlueprintCallable, Category = "RemoteDetection")
-    void Launch(const FDetectRemoteInfo& info);
+    UObject* Launch(const FString& remoteName, AActor* attachActor = nullptr);
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-    void OnHit(const FDetectInfo& info);
+    void OnHit(const FDetectInfo& info, const FHurt& hurt);
 
+public:
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = DetectRemote)
+    FDataTableRowHandle m_Infos;
+
+    UPROPERTY(BlueprintReadWrite)
+    TArray<UObject*> m_Detectors;
 };

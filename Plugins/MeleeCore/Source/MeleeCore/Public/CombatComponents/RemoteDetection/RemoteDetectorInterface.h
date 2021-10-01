@@ -1,11 +1,10 @@
 #pragma once
 
+#include "MeleeDetection/DetectSolution.h"
+#include "DetectSolutions/CombatSolution.h"
 #include "RemoteDetectorInterface.generated.h"
 
-struct FDetectInfo;
-
-
-DECLARE_DELEGATE_OneParam(FOnRemoteHit, const FDetectInfo&)
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FOnRemoteHit, const FDetectInfo&, detectInfo, const FHurt&, hurt);
 
 UINTERFACE(Blueprintable)
 class MELEECORE_API URemoteDetector : public UInterface
@@ -18,7 +17,8 @@ class MELEECORE_API IRemoteDetector
     GENERATED_BODY()
 public:
 
-    virtual void BindHitEvent(const FOnRemoteHit& callback);
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "RemoteDetection")
+    void InitData(const FHurt& hurt, const FOnRemoteHit& callback);
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "RemoteDetection")
     void StartDetection();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "RemoteDetection")
@@ -29,5 +29,6 @@ public:
     void UpdateSize();
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "RemoteDetection")
     void PlayHitEffect();
-    
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "RemoteDetection")
+    bool IsFinished();
 };
