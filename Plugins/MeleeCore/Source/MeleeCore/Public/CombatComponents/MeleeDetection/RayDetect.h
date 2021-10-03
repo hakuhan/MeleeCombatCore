@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "DetectSolution.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 #include "RayDetect.generated.h"
 

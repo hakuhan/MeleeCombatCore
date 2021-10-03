@@ -9,7 +9,28 @@ UDetectRemote::UDetectRemote()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-UObject *UDetectRemote::Launch(const FString &remoteName, AActor *attachActor)
+UDetectRemote::~UDetectRemote()
+{
+	for (int i = m_Detectors.Num() - 1; i >= 0; --i)
+	{
+		if (m_Detectors[i])
+		{
+			AActor* _actor = dynamic_cast<AActor*>(m_Detectors[i]);
+			if (_actor)
+			{
+				_actor->Destroy();
+			}
+			else
+			{
+				m_Detectors[i]->MarkPendingKill();
+			}
+			m_Detectors.RemoveAt(i);
+		}
+		
+	}
+}
+
+UObject *UDetectRemote::Launch(const FTransform& remoteTransform, const FVector& launchDirection, const FString &remoteName, AActor *attachActor)
 {
 	UObject *outDetector = nullptr;
 	// Find info
@@ -53,7 +74,7 @@ UObject *UDetectRemote::Launch(const FString &remoteName, AActor *attachActor)
 				break;
 
 			case ERemoteDetector::MOVABLE_DETECTOR:
-				detectorObj = GetOwner()->GetWorld()->SpawnActor(info->DetectorClass);
+				detectorObj = GetOwner()->GetWorld()->SpawnActor<AActor>(info->DetectorClass, remoteTransform);
 				break;
 
 			default:
@@ -73,12 +94,16 @@ UObject *UDetectRemote::Launch(const FString &remoteName, AActor *attachActor)
 					{
 						FOnRemoteHit hitEvent;
 						hitEvent.BindDynamic(this, &UDetectRemote::OnHit);
-						IRemoteDetector::Execute_InitData(detectorObj, info->Hurt, hitEvent);
+						IRemoteDetector::Execute_InitData(detectorObj, info->DetectInfoTable, launchDirection, hitEvent);
 						IRemoteDetector::Execute_StartDetection(detectorObj);
 					}
 				}
 			}
 
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Remote detect info invalid!"))
 		}
 	}
 
