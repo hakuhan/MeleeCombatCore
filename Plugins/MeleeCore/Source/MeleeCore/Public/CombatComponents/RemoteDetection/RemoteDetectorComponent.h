@@ -3,19 +3,21 @@
 #include "CoreMinimal.h"
 #include "RemoteDetectorInterface.h"
 
-#include "RemoteDetectorActor.generated.h"
+#include "RemoteDetectorComponent.generated.h"
 
 class UCollisionDetect;
 class URayDetect;
 
-UCLASS()
-class MELEECORE_API ARemoteDetectorActor : public AActor, public IRemoteDetector
+UCLASS(Blueprintable, classGroup = (MeleeCore), meta = (BlueprintSpawnableComponent))
+class MELEECORE_API URemoteDetectorComponent : public USceneComponent, public IRemoteDetector
 {
     GENERATED_BODY()
 public:
-    ARemoteDetectorActor()
+    URemoteDetectorComponent()
         : m_bFinish(true)
-    {}
+    {
+        PrimaryComponentTick.bCanEverTick = true;
+    }
 
     virtual void InitData_Implementation(const FDataTableRowHandle& infoTable, const FVector& direction, const FOnRemoteHit& callback);
     virtual bool IsFinished_Implementation();
@@ -24,8 +26,7 @@ public:
     virtual void UpdateSize_Implementation(FVector size);
     virtual void UpdateShape_Implementation(ECollisionDetectType shape);
 
-
-	virtual void Tick(float DeltaTime) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
     UFUNCTION(BlueprintCallable)
     void OnHit(const FDetectInfo& detectInfo);

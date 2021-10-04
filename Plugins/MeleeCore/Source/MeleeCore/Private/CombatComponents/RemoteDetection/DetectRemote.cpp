@@ -39,11 +39,13 @@ UObject *UDetectRemote::Launch(const FTransform& remoteTransform, const FVector&
 			case ERemoteDetector::ATTACH_DETECTOR:
 				if (attachActor)
 				{
-					detectorObj = NewObject<UObject>(this, info->DetectorClass);
-					UActorComponent *detectorComp = dynamic_cast<UActorComponent *>(detectorObj);
+					detectorObj = NewObject<UObject>(attachActor, info->DetectorClass);
+					USceneComponent *detectorComp = dynamic_cast<USceneComponent *>(detectorObj);
 					if (detectorComp)
 					{
-						attachActor->AddOwnedComponent(detectorComp);
+						detectorComp->RegisterComponent();
+						detectorComp->AttachToComponent(attachActor->GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+						UE_LOG(LogTemp, Warning, TEXT("Attach component name:%s"), *info->DetectorClass->GetName())
 					}
 					else
 					{

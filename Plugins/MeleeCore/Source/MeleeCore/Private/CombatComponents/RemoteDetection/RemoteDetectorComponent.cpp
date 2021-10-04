@@ -1,10 +1,10 @@
-#include "RemoteDetection/RemoteDetectorActor.h"
+#include "RemoteDetection/RemoteDetectorComponent.h"
 #include "RemoteDetection/DetectRemote.h"
 
 #include "MeleeDetection/CollisionDetect.h"
 #include "MeleeDetection/RayDetect.h"
 
-void ARemoteDetectorActor::InitData_Implementation(const FDataTableRowHandle &table, const FVector &direction, const FOnRemoteHit &callback)
+void URemoteDetectorComponent::InitData_Implementation(const FDataTableRowHandle &table, const FVector &direction, const FOnRemoteHit &callback)
 {
     m_collisionDetector = NewObject<UCollisionDetect>(this, UCollisionDetect::StaticClass());
     if (m_collisionDetector)
@@ -32,27 +32,27 @@ void ARemoteDetectorActor::InitData_Implementation(const FDataTableRowHandle &ta
     m_HitDelegate = callback;
 }
 
-void ARemoteDetectorActor::OnHit(const FDetectInfo &detectInfo)
+void URemoteDetectorComponent::OnHit(const FDetectInfo &detectInfo)
 {
     m_HitDelegate.ExecuteIfBound(detectInfo, m_Hurt);
 }
 
-bool ARemoteDetectorActor::IsFinished_Implementation()
+bool URemoteDetectorComponent::IsFinished_Implementation()
 {
     return m_bFinish;
 }
 
-void ARemoteDetectorActor::StartDetection_Implementation()
+void URemoteDetectorComponent::StartDetection_Implementation()
 {
     m_bFinish = false;
 
     FCollisionDetectData collisionData;
-    collisionData.Scale = GetActorScale().X;
+    collisionData.Scale = GetComponentScale().X;
     collisionData.Size = m_Size;
     m_collisionDetector->UpdateData(collisionData);
 }
 
-void ARemoteDetectorActor::StopDetection_Implementation()
+void URemoteDetectorComponent::StopDetection_Implementation()
 {
     m_bFinish = true;
     if (m_collisionDetector)
@@ -61,21 +61,21 @@ void ARemoteDetectorActor::StopDetection_Implementation()
     }
 }
 
-void ARemoteDetectorActor::UpdateShape_Implementation(ECollisionDetectType shape)
+void URemoteDetectorComponent::UpdateShape_Implementation(ECollisionDetectType shape)
 {
     FCollisionDetectData collisionData;
     collisionData.Type = shape;
     m_collisionDetector->UpdateData(collisionData);
 }
 
-void ARemoteDetectorActor::UpdateSize_Implementation(FVector size)
+void URemoteDetectorComponent::UpdateSize_Implementation(FVector size)
 {
     FCollisionDetectData collisionData;
     collisionData.Size = size;
     m_collisionDetector->UpdateData(collisionData);
 }
 
-void ARemoteDetectorActor::Tick(float Deltatime)
+void URemoteDetectorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     if (m_bFinish)
     {
@@ -88,11 +88,11 @@ void ARemoteDetectorActor::Tick(float Deltatime)
     if (m_collisionDetector)
     {
         FCollisionDetectData collisionData;
-        collisionData.Scale = GetActorScale().X;
+        collisionData.Scale = GetComponentScale().X;
         m_collisionDetector->UpdateData(collisionData);
 
         TArray<FDetectInfo> _collisionResult;
-        m_collisionDetector->Detect(this, GetActorLocation(), GetActorLocation(), _collisionResult, true);
+        m_collisionDetector->Detect(GetOwner(), GetComponentLocation(), GetComponentLocation(), _collisionResult, true);
         if (_collisionResult.Num() > 0)
         {
             detectResult.Append(_collisionResult);
@@ -114,7 +114,7 @@ void ARemoteDetectorActor::Tick(float Deltatime)
         if (m_DestroyWhenHurt)
         {
             IRemoteDetector::Execute_StopDetection(this);
-            Destroy();
+            DestroyComponent();
         }
     }
 
@@ -124,11 +124,11 @@ void ARemoteDetectorActor::Tick(float Deltatime)
         if (m_LifeBuffer > m_LifeDuration)
         {
             IRemoteDetector::Execute_StopDetection(this);
-            Destroy();
+            DestroyComponent();
         }
         else
         {
-            m_LifeBuffer += Deltatime;
+            m_LifeBuffer += DeltaTime;
         }
         
     }

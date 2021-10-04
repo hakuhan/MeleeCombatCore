@@ -140,11 +140,6 @@ void UCollisionDetect::CleanCollision()
 
 void UCollisionDetect::DestroyCheck()
 {
-    if (m_Info.IsShowCollision)
-    {
-        return;
-    }
-
     for (int i = m_CheckingCollisions.Num() - 1; i >= 0; --i)
     {
         if (m_CheckingCollisions[i] == nullptr || m_DelayDestroyFrames[i] >= m_Data.DurationFrame)
