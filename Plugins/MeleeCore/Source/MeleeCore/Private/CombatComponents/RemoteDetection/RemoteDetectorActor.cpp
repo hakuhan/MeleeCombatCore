@@ -16,6 +16,7 @@ void ARemoteDetectorActor::InitData_Implementation(const FDataTableRowHandle &ta
         {
             m_Hurt = infoPtr->Hurt;
             m_collisionDetector->Init(infoPtr->CollisionInfoTable);
+            m_collisionDetector->SetDebug(m_bDebug);
         }
         else
         {
@@ -92,7 +93,10 @@ void ARemoteDetectorActor::Tick(float Delatime)
 
         TArray<FDetectInfo> _collisionResult;
         m_collisionDetector->Detect(this, GetActorLocation(), GetActorLocation(), _collisionResult, true);
-        detectResult.Append(detectResult);
+        if (_collisionResult.Num() > 0)
+        {
+            detectResult.Append(_collisionResult);
+        }
     }
 
     // TODO check ray

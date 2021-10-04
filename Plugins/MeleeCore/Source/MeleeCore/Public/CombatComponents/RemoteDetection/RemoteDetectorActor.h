@@ -47,4 +47,6 @@ public:
 
     UPROPERTY(EditAnywhere)
     bool m_DestroyWhenHurt = true;
+    UPROPERTY(EditAnywhere)
+    bool m_bDebug = false;
 };

@@ -11,23 +11,7 @@ UDetectRemote::UDetectRemote()
 
 UDetectRemote::~UDetectRemote()
 {
-	for (int i = m_Detectors.Num() - 1; i >= 0; --i)
-	{
-		if (m_Detectors[i])
-		{
-			AActor* _actor = dynamic_cast<AActor*>(m_Detectors[i]);
-			if (_actor)
-			{
-				_actor->Destroy();
-			}
-			else
-			{
-				m_Detectors[i]->MarkPendingKill();
-			}
-			m_Detectors.RemoveAt(i);
-		}
-		
-	}
+	m_Detectors.Empty();
 }
 
 UObject *UDetectRemote::Launch(const FTransform& remoteTransform, const FVector& launchDirection, const FString &remoteName, AActor *attachActor)
