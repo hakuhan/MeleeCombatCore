@@ -2,6 +2,8 @@
 
 void USkillComponent::BeginPlay()
 {
+    Super::BeginPlay();
+    
     InitInfo();
 
     m_Data = FSkillComponentData(m_debug);

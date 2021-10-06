@@ -3,6 +3,8 @@
 
 void UTargetSystem::BeginPlay()
 {
+    Super::BeginPlay();
+    
     if (!m_IsUpdatedInfo && !m_InfoTable.IsNull())
     {
         auto targetInfoPtr = m_InfoTable.GetRow<FTargetInfo>("Find target info");

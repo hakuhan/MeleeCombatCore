@@ -77,6 +77,8 @@ void URemoteDetectorComponent::UpdateSize_Implementation(FVector size)
 
 void URemoteDetectorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+    
     if (m_bFinish)
     {
         return;
