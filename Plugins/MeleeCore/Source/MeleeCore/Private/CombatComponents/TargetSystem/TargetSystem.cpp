@@ -4,9 +4,11 @@
 void UTargetSystem::BeginPlay()
 {
     Super::BeginPlay();
-    
+
     if (!m_IsUpdatedInfo && !m_InfoTable.IsNull())
     {
+        m_IsUpdatedInfo = true;
+
         auto targetInfoPtr = m_InfoTable.GetRow<FTargetInfo>("Find target info");
         m_Info = *targetInfoPtr;
         m_Data.Reset();
@@ -25,6 +27,11 @@ void UTargetSystem::SwitchTarget()
     if (m_CheckingComponent && m_CheckingComponent->IsActive())
     {
         return;
+    }
+
+    if (!m_IsUpdatedInfo)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Target system info hasn't setted! It uses default setting"))
     }
 
     m_Data.AvailableTargets.Empty();
@@ -59,19 +66,6 @@ void UTargetSystem::SwitchTarget()
     GetOwner()->GetWorld()->GetTimerManager().SetTimer(
         handle, [&]
         {
-            if (m_bDebug)
-            {
-                FString _allTargets;
-                for (auto _actor : m_Data.AvailableTargets)
-                {
-                    if (_actor)
-                    {
-                        _allTargets += _actor->GetName() + ",";
-                    }
-                }
-                UE_LOG(LogTemp, Error, TEXT("All targets: %s"), *_allTargets)
-            }
-
             m_CheckingComponent->SetActive(false);
             m_CheckingComponent->SetSphereRadius(0);
 
@@ -83,7 +77,7 @@ void UTargetSystem::SwitchTarget()
                 m_OnSeleteTarget.Broadcast(GetOwner(), target);
                 if (m_bDebug)
                 {
-                    UE_LOG(LogTemp, Error, TEXT("Best target is: %s"), *(target->GetName()))
+                    UE_LOG(LogTemp, Error, TEXT("Best target is: %s"), *(target->GetActorLabel()))
                 }
 
                 // Switch target behavior
@@ -126,8 +120,19 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
     };
 
     // Checking range lambda
-    auto CheckTargetRangeLambda = [&](float _pointAngle, float _range, float _maxDistance, const AvaliableTargetInfo &_targetInfo)
+    auto CheckTargetRangeLambda = [&](float _pointAngle, float _range, float _maxDistance, float _hightRange, const AvaliableTargetInfo &_targetInfo)
     {
+        if (_targetInfo.RelativeHight > _hightRange)
+        {
+            return false;
+        }
+
+        // check with distance
+        if (_targetInfo.RelativeDistance > _maxDistance)
+        {
+            return false;
+        }
+
         float _minAngle = _pointAngle - _range;
         float _maxAngle = _pointAngle + _range;
         // if coss 180 digree. condition must reverse because range is from -180 to 180
@@ -158,14 +163,7 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
             _withinRange = true;
         }
 
-        // check with distance
-        bool _result = false;
-        if (_withinRange && _maxDistance < _targetInfo.RelativeDistance)
-        {
-            _result = true;
-        }
-
-        return _result;
+        return _withinRange;
     };
 
     // Find best rule
@@ -179,11 +177,11 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
         float _curAnglePoint = 0;
         if (rule != EBestFindingTagetRule::FIND_DistanceFirst && rule != EBestFindingTagetRule::FIND_AngleFirst)
         {
+            // Point high priority less
             _preDistancePoint = curTargetInfo.RelativeDistance * m_Info.DistanceWeight;
             _curDistancePoint = newTargetInfo.RelativeDistance * m_Info.DistanceWeight;
-            // Angle more and point less
-            _preAnglePoint = -FMath::Abs(curTargetInfo.Angle - targetAnglePoint) * m_Info.AngleWeight;
-            _curAnglePoint = -FMath::Abs(newTargetInfo.Angle - targetAnglePoint) * m_Info.AngleWeight;
+            _preAnglePoint = FMath::Abs(curTargetInfo.Angle - targetAnglePoint) * m_Info.AngleWeight;
+            _curAnglePoint = FMath::Abs(newTargetInfo.Angle - targetAnglePoint) * m_Info.AngleWeight;
         }
 
         switch (rule)
@@ -203,14 +201,14 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
             break;
 
         case EBestFindingTagetRule::FIND_Banace:
-            if ((_preDistancePoint + _preAnglePoint) < (_curDistancePoint + _curAnglePoint))
+            if ((_preDistancePoint + _preAnglePoint) > (_curDistancePoint + _curAnglePoint))
             {
                 _result = true;
             }
             break;
 
         case EBestFindingTagetRule::FIND_DistanceGold:
-            if ((_preDistancePoint * 0.618 + _preAnglePoint * 0.32) < (_curDistancePoint * 0.618 + _curAnglePoint * 0.32))
+            if ((_preDistancePoint * 0.618 + _preAnglePoint * 0.32) > (_curDistancePoint * 0.618 + _curAnglePoint * 0.32))
             {
                 _result = true;
             }
@@ -218,7 +216,7 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
             break;
 
         case EBestFindingTagetRule::FIND_AngleGold:
-            if ((_preDistancePoint * 0.32 + _preAnglePoint * 0.618) < (_curDistancePoint * 0.32 + _curAnglePoint * 0.618))
+            if ((_preDistancePoint * 0.32 + _preAnglePoint * 0.618) > (_curDistancePoint * 0.32 + _curAnglePoint * 0.618))
             {
                 _result = true;
             }
@@ -241,13 +239,35 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
         AvaliableTargetInfo _info;
         _info.Target = _target;
         _info.Position = _target->GetActorLocation();
-        FVector _relationVector = _info.Position - forwardVector;
+        FVector _relationVector = _info.Position - ownerLocation;
         FVector _relativeVectorNormalize = _relationVector.GetSafeNormal();
         _info.Angle = FMath::RadiansToDegrees(acosf(FVector::DotProduct(forwardVector, _relativeVectorNormalize)));
-        _info.RelativeDistance = _relationVector.Size();
-        _info.RelativeHight = ownerLocation.Z - _info.Position.Z;
+        FVector _crossVector = FVector::CrossProduct(forwardVector, _relativeVectorNormalize);
+        if (_crossVector.Z > 0)
+        {
+            _info.Angle *= -1;
+        }
+        _info.RelativeDistance = _relationVector.Size() / 100;
+        _info.RelativeHight = (ownerLocation.Z - _info.Position.Z) / 100;
 
         targetInfos.Add(_info);
+    }
+
+    if (m_bDebug)
+    {
+        FString _allTargets;
+        for (auto _info : targetInfos)
+        {
+            if (_info.Target)
+            {
+                _allTargets += _info.Target->GetActorLabel() + ",";
+                _allTargets += "location:" + _info.Position.ToString() + ",";
+                _allTargets +=  "Angle:" + FString::Printf(TEXT("%f"), _info.Angle) + ",";
+                _allTargets +=  "Distance:" + FString::Printf(TEXT("%f"), _info.RelativeDistance) + ",";
+                _allTargets +=  "Hight:" + FString::Printf(TEXT("%f"), _info.RelativeHight) + "\n";
+            }
+        }
+        UE_LOG(LogTemp, Error, TEXT("All targets: %s"), *_allTargets)
     }
 
     // Check danger positions
@@ -257,7 +277,7 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
     {
         for (int i = 0; i < targetInfos.Num(); ++i)
         {
-            bool _isInRange = CheckTargetRangeLambda(_dangerPointAngle, m_Info.DangerousAngleRange, m_Info.DangerousDistance, targetInfos[i]);
+            bool _isInRange = CheckTargetRangeLambda(_dangerPointAngle, m_Info.DangerousAngleRange, m_Info.DangerousDistance, m_Info.DangerousHightRange, targetInfos[i]);
 
             if (_isInRange && CompareBestTargetLambda(targetInfos[i], targetInfos[dangerousIndex], _dangerPointAngle, m_Info.BestTargetRule))
             {
@@ -276,7 +296,7 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
     {
         int _preTargetIndex = targetInfos.IndexOfByPredicate([&](const AvaliableTargetInfo &_target)
                                                              { return _target.Target == m_Data.CurrentTarget; });
-        if (_preTargetIndex >= 0 && CheckTargetRangeLambda(0, m_Info.FocusRange, m_Info.FocusDistance, targetInfos[_preTargetIndex]))
+        if (_preTargetIndex >= 0 && CheckTargetRangeLambda(0, m_Info.FocusRange, m_Info.FocusDistance, m_Info.DetectHightRange, targetInfos[_preTargetIndex]))
         {
             return targetInfos[_preTargetIndex].Target;
         }
@@ -287,7 +307,7 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
     int focusIndex = 0;
     for (int i = 0; i < targetInfos.Num(); ++i)
     {
-        bool _isInRange = CheckTargetRangeLambda(0, m_Info.FocusRange, m_Info.FocusDistance, targetInfos[i]);
+        bool _isInRange = CheckTargetRangeLambda(0, m_Info.FocusRange, m_Info.FocusDistance, m_Info.FocusHightRange, targetInfos[i]);
         if (_isInRange)
         {
             if (_isInRange && CompareBestTargetLambda(targetInfos[i], targetInfos[focusIndex], 0, m_Info.BestTargetRule))
@@ -304,11 +324,11 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
     }
     
     // Check Rest targets
-    AActor* restBestActor = nullptr;
+    AActor* restBestActor = targetInfos[0].Target;
     int restIndex = 0;
     for (int i = 0; i < targetInfos.Num(); ++i)
     {
-        if (CompareBestTargetLambda(targetInfos[i], targetInfos[restIndex], 0, EBestFindingTagetRule::FIND_DistanceFirst))
+        if (CompareBestTargetLambda(targetInfos[i], targetInfos[restIndex], 0, m_Info.BestTargetRule))
         {
             restIndex = i;
             restBestActor = targetInfos[i].Target;
@@ -348,5 +368,13 @@ bool UTargetSystem::LookAtTarget_Implementation()
 
 bool UTargetSystem::FaceToTarget_Implementation()
 {
-    return true;
+    if (m_Data.CurrentTarget && GetOwner())
+    {
+        FVector direction = m_Data.CurrentTarget->GetActorLocation() - GetOwner()->GetActorLocation();
+        FRotator rotator = direction.ToOrientationRotator();
+        GetOwner()->SetActorRotation(rotator);
+        return true;
+    }
+    
+    return false;
 }

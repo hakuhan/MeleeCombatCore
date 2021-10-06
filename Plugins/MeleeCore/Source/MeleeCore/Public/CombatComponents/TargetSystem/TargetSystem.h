@@ -64,8 +64,12 @@ struct MELEECORE_API FTargetInfo : public FTableRowBase
     // 查找半径
     float DetectRadius = 10;    
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=TargetSystem)
+    // 查找高度范围
+    float DetectHightRange = 2;
+
     UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category=TargetSystem)
-    // 危险点(优先考虑危险点, 单位：度)
+    // 危险点(优先考虑危险点, 单位：角度，以玩家正前方为标准， 左为负，右为正，范围是-180到180)
     TArray<float> DangerousPoints;
 
     UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category=TargetSystem)
@@ -75,6 +79,10 @@ struct MELEECORE_API FTargetInfo : public FTableRowBase
     UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category=TargetSystem)
     // 危险距离（米）
     float DangerousDistance = 2;
+
+    UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category=TargetSystem)
+    // 危险高度范围（米）
+    float DangerousHightRange = 1;
 
     UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category=TargetSystem)
     // 如果之前目标在专注范围内，并且相当近，则优于危险区域外的其他目标
@@ -151,10 +159,10 @@ public:
     UPROPERTY(EditAnywhere)
     FDataTableRowHandle m_InfoTable;
 
-    UPROPERTY(VisibleAnywhere)
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     FTargetInfo m_Info;
 
-    UPROPERTY(VisibleAnywhere)
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     FTargetData m_Data;
 
     UPROPERTY()
