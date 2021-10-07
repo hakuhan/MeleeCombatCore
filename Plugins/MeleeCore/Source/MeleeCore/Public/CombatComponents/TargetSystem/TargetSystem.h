@@ -134,7 +134,7 @@ public:
     virtual AActor* FindBestTarget_Implementation(const TArray<AActor*>& avaliables);
 
     UFUNCTION(BlueprintCallable)
-    void SwitchTarget();
+    void SwitchTarget(bool useDefaultSetting = true, ESwitchToRule newRule = ESwitchToRule::TARGET_FaceTo);
 
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
     bool LockOnTarget();

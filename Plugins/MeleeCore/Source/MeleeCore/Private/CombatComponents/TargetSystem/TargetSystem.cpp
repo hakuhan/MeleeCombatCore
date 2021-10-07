@@ -22,7 +22,7 @@ void UTargetSystem::UpdateInfo(const FTargetInfo &info)
     m_Data.Reset();
 }
 
-void UTargetSystem::SwitchTarget()
+void UTargetSystem::SwitchTarget(bool useDefaultSetting, ESwitchToRule newRule)
 {
     if (m_CheckingComponent && m_CheckingComponent->IsActive())
     {
@@ -32,6 +32,11 @@ void UTargetSystem::SwitchTarget()
     if (!m_IsUpdatedInfo)
     {
         UE_LOG(LogTemp, Warning, TEXT("Target system info hasn't setted! It uses default setting"))
+    }
+
+    if (UseDefaultSettings)
+    {
+        newRule = m_Info.SwitchingRule;
     }
 
     m_Data.AvailableTargets.Empty();
@@ -81,7 +86,7 @@ void UTargetSystem::SwitchTarget()
                 }
 
                 // Switch target behavior
-                switch (m_Info.SwitchingRule)
+                switch (newRule)
                 {
                 case ESwitchToRule::TARGET_LockAndFaceTo:
                     FaceToTarget();
