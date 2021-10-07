@@ -2,7 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
+#include "Components/TimelineComponent.h"
 #include "Engine/DataTable.h"
+#include "Curves/CurveFloat.h"
 
 #include "TargetSystem.generated.h"
 
@@ -99,6 +101,22 @@ struct MELEECORE_API FTargetInfo : public FTableRowBase
     UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category=TargetSystem)
     // 专注区域高度范围（单位米）
     float FocusHightRange = 1;
+
+    UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category=TargetSystem)
+    // 相机旋转时间
+    float SwitchCameraDuration = 1;
+
+    UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category=TargetSystem)
+    // 相机移动速度曲线
+    UCurveFloat* CameraSpeedCurve;
+
+    UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category=TargetSystem)
+    // 曲线X范围
+    float CameraCurveXDuration = 1;
+
+    UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category=TargetSystem)
+    // 曲线Y范围
+    float CameraCurveYDuration = 1;
 };
 
 USTRUCT(BlueprintType)
@@ -112,10 +130,31 @@ struct MELEECORE_API FTargetData
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=TargetSystem)
     TArray<AActor*> AvailableTargets;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=TargetSystem)
+    ESwitchToRule SwitchingRule;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=TargetSystem)
+    bool bLocking = false;
+
+    UPROPERTY(BlueprintReadWrite)
+    bool bAnimating = false;
+
+    UPROPERTY()
+    float AnimTimeBuffer = 0;
+
+    UPROPERTY(BlueprintReadWrite)
+    FRotator CameraStartRotator;
+
+    UPROPERTY(BlueprintReadWrite)
+    FRotator CameraTargetRotator;
+
     void Reset()
     {
         CurrentTarget = nullptr;
         AvailableTargets.Empty();
+        bAnimating = false;
+        bLocking = false;
+        AnimTimeBuffer = 0;
     }
 };
 
@@ -124,7 +163,9 @@ class MELEECORE_API UTargetSystem : public USceneComponent
 {
     GENERATED_BODY()
 public:
+    UTargetSystem();
 	virtual void BeginPlay();
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
     UFUNCTION(BlueprintCallable)
     void UpdateInfo(const FTargetInfo& info);
@@ -151,7 +192,13 @@ public:
     UFUNCTION()
     void OnOverlabBegin(class UPrimitiveComponent* Comp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+    void UnLockTarget();
+    void UnLockTarget_Implementation();
 
+    UFUNCTION(BlueprintCallable)
+    bool IsLocking();
+    
 public:
     UPROPERTY(BlueprintReadWrite)
     FOnSelectTargetDelegate m_OnSeleteTarget;
@@ -174,5 +221,8 @@ public:
 
     UPROPERTY(EditAnywhere)
     bool m_bDebug = false;
+  
+    UPROPERTY()
+    UTimelineComponent* m_Timeline;
 };
 

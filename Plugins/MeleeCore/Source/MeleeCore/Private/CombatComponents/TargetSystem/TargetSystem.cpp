@@ -1,5 +1,13 @@
 #include "TargetSystem/TargetSystem.h"
 #include "Components/SphereComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+
+UTargetSystem::UTargetSystem()
+{
+    PrimaryComponentTick.bCanEverTick = true;
+}
 
 void UTargetSystem::BeginPlay()
 {
@@ -12,6 +20,89 @@ void UTargetSystem::BeginPlay()
         auto targetInfoPtr = m_InfoTable.GetRow<FTargetInfo>("Find target info");
         m_Info = *targetInfoPtr;
         m_Data.Reset();
+    }
+
+    if (m_Info.CameraSpeedCurve == nullptr)
+    {
+        m_Info.CameraSpeedCurve = NewObject<UCurveFloat>();
+        m_Info.CameraSpeedCurve->FloatCurve.AddKey(0, 0);
+        m_Info.CameraSpeedCurve->FloatCurve.AddKey(1, 1);
+        m_Info.CameraCurveXDuration = 1;
+        m_Info.CameraCurveYDuration = 1;
+    }
+}
+
+void UTargetSystem::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+    if (!m_Data.bAnimating && !m_Data.bLocking)
+    {
+        return;
+    }
+
+    // Rotate component
+    USceneComponent *rotateComponent = nullptr;
+
+    auto springArm = GetOwner()->GetComponentByClass(USpringArmComponent::StaticClass());
+
+    // Find correct camera rotation
+    if (springArm)
+    {
+        rotateComponent = dynamic_cast<USceneComponent *>(springArm);
+    }
+    else
+    {
+        auto camera = GetOwner()->GetComponentByClass(UCameraComponent::StaticClass());
+        if (camera)
+        {
+            rotateComponent = dynamic_cast<USceneComponent *>(camera);
+        }
+    }
+
+    // Rotate Animation
+    if (m_Data.bAnimating)
+    {
+        // Get curve value
+        float lerpValue = FMath::Lerp(0.0f, m_Info.CameraCurveXDuration, m_Data.AnimTimeBuffer / m_Info.SwitchCameraDuration * m_Info.CameraCurveXDuration);
+
+        // Get lerp value of roation
+        FRotator _rotator = UKismetMathLibrary::RLerp(m_Data.CameraStartRotator, m_Data.CameraTargetRotator, lerpValue, true);
+
+        if (rotateComponent)
+        {
+            rotateComponent->SetRelativeRotation(_rotator);
+        }
+        else
+        {
+            m_Data.bAnimating = false;
+            UE_LOG(LogTemp, Error, TEXT("camera component is not valid!"))
+        }
+
+        if (m_Data.AnimTimeBuffer > m_Info.SwitchCameraDuration)
+        {
+            m_Data.bAnimating = false;
+        }
+        m_Data.AnimTimeBuffer += DeltaTime;
+    }
+    // Lock Target
+    else if (m_Data.bLocking)
+    {
+        if (m_Data.CurrentTarget && rotateComponent)
+        {
+            // Get direction
+            auto _direction = m_Data.CurrentTarget->GetActorLocation() - GetOwner()->GetActorLocation();
+
+            // Get rotator
+            m_Data.CameraTargetRotator = _direction.ToOrientationRotator();
+            m_Data.CameraTargetRotator.Pitch = rotateComponent->GetRelativeRotation().Pitch;
+            rotateComponent->SetRelativeRotation(m_Data.CameraTargetRotator);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("target or camera not valid!"))
+            m_Data.bLocking = false;
+        }
     }
 }
 
@@ -34,9 +125,13 @@ void UTargetSystem::SwitchTarget(bool useDefaultSetting, ESwitchToRule newRule)
         UE_LOG(LogTemp, Warning, TEXT("Target system info hasn't setted! It uses default setting"))
     }
 
-    if (UseDefaultSettings)
+    if (useDefaultSetting)
     {
-        newRule = m_Info.SwitchingRule;
+        m_Data.SwitchingRule = m_Info.SwitchingRule;
+    }
+    else
+    {
+        m_Data.SwitchingRule = newRule;
     }
 
     m_Data.AvailableTargets.Empty();
@@ -86,12 +181,16 @@ void UTargetSystem::SwitchTarget(bool useDefaultSetting, ESwitchToRule newRule)
                 }
 
                 // Switch target behavior
-                switch (newRule)
+                switch (m_Data.SwitchingRule)
                 {
                 case ESwitchToRule::TARGET_LockAndFaceTo:
                     FaceToTarget();
                 case ESwitchToRule::TARGET_Lock:
                     LockOnTarget();
+                    break;
+
+                case ESwitchToRule::TARGET_FaceTo:
+                    FaceToTarget();
                     break;
 
                 case ESwitchToRule::TARGET_LookAtAndFaceTo:
@@ -267,16 +366,16 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
             {
                 _allTargets += _info.Target->GetActorLabel() + ",";
                 _allTargets += "location:" + _info.Position.ToString() + ",";
-                _allTargets +=  "Angle:" + FString::Printf(TEXT("%f"), _info.Angle) + ",";
-                _allTargets +=  "Distance:" + FString::Printf(TEXT("%f"), _info.RelativeDistance) + ",";
-                _allTargets +=  "Hight:" + FString::Printf(TEXT("%f"), _info.RelativeHight) + "\n";
+                _allTargets += "Angle:" + FString::Printf(TEXT("%f"), _info.Angle) + ",";
+                _allTargets += "Distance:" + FString::Printf(TEXT("%f"), _info.RelativeDistance) + ",";
+                _allTargets += "Hight:" + FString::Printf(TEXT("%f"), _info.RelativeHight) + "\n";
             }
         }
         UE_LOG(LogTemp, Error, TEXT("All targets: %s"), *_allTargets)
     }
 
     // Check danger positions
-    AActor* dangerousActor = nullptr;
+    AActor *dangerousActor = nullptr;
     int dangerousIndex = 0;
     for (float _dangerPointAngle : m_Info.DangerousPoints)
     {
@@ -308,7 +407,7 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
     }
 
     // Check focus range
-    AActor* focusingActor = nullptr;
+    AActor *focusingActor = nullptr;
     int focusIndex = 0;
     for (int i = 0; i < targetInfos.Num(); ++i)
     {
@@ -321,15 +420,14 @@ AActor *UTargetSystem::FindBestTarget_Implementation(const TArray<AActor *> &ava
                 focusingActor = targetInfos[i].Target;
             }
         }
-        
     }
     if (focusingActor)
     {
         return focusingActor;
     }
-    
+
     // Check Rest targets
-    AActor* restBestActor = targetInfos[0].Target;
+    AActor *restBestActor = targetInfos[0].Target;
     int restIndex = 0;
     for (int i = 0; i < targetInfos.Num(); ++i)
     {
@@ -363,11 +461,63 @@ void UTargetSystem::OnOverlabBegin(class UPrimitiveComponent *Comp, class AActor
 
 bool UTargetSystem::LockOnTarget_Implementation()
 {
+    if (!m_Data.bLocking)
+    {
+        m_Data.bLocking = true;
+        return LookAtTarget();
+    }
+
     return true;
 }
 
 bool UTargetSystem::LookAtTarget_Implementation()
 {
+    if (GetOwner() == nullptr || m_Data.CurrentTarget == nullptr)
+    {
+        return false;
+    }
+
+    // Check spring arm and camera
+    auto camera = GetOwner()->GetComponentByClass(UCameraComponent::StaticClass());
+    auto springArm = GetOwner()->GetComponentByClass(USpringArmComponent::StaticClass());
+    if (camera == nullptr)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Cannot find any spring arm or camera for rotation"))
+        return false;
+    }
+
+    // Get rotate component
+    USceneComponent *rotateComponent = nullptr;
+    if (springArm)
+    {
+        rotateComponent = dynamic_cast<USceneComponent *>(springArm);
+    }
+    else if (camera)
+    {
+        rotateComponent = dynamic_cast<USceneComponent *>(camera);
+    }
+
+    if (rotateComponent)
+    {
+        // Start rotator
+        m_Data.CameraStartRotator = rotateComponent->GetRelativeRotation();
+
+        // Get direction
+        auto _direction = m_Data.CurrentTarget->GetActorLocation() - GetOwner()->GetActorLocation();
+
+        // Get target rotator
+        m_Data.CameraTargetRotator = _direction.ToOrientationRotator();
+        m_Data.CameraTargetRotator.Pitch = m_Data.CameraStartRotator.Pitch;
+
+        m_Data.bAnimating = true;
+        m_Data.AnimTimeBuffer = 0;
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Cannot find any spring arm or camera for rotation"))
+        return false;
+    }
+
     return true;
 }
 
@@ -380,6 +530,16 @@ bool UTargetSystem::FaceToTarget_Implementation()
         GetOwner()->SetActorRotation(rotator);
         return true;
     }
-    
+
     return false;
+}
+
+void UTargetSystem::UnLockTarget_Implementation()
+{
+    m_Data.bLocking = false;
+}
+
+bool UTargetSystem::IsLocking()
+{
+    return m_Data.bLocking;
 }
