@@ -4,3 +4,6 @@
 [submodule "MindCore"]
 	path = Plugins/MindCore
 	url = git@github.com:hakuhan/MindCore.git
+[submodule "StorySystem"]
+	path = Plugins/StorySystem
+	url = git@github.com:hakuhan/StorySystem.git
