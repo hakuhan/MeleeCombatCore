@@ -1,3 +1,6 @@
 [submodule "MeleeCore"]
 	path = Plugins/MeleeCore
 	url = git@github.com:hakuhan/MeleeCore.git
+[submodule "MindCore"]
+	path = Plugins/MindCore
+	url = git@github.com:hakuhan/MindCore.git
