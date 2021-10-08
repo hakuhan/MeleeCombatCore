@@ -113,7 +113,7 @@ void UTargetSystem::UpdateInfo(const FTargetInfo &info)
     m_Data.Reset();
 }
 
-void UTargetSystem::SwitchTarget(bool useDefaultSetting, ESwitchToRule newRule)
+void UTargetSystem::SwitchTarget(bool useDefaultSetting, ESwitchToRule newRule, float newDetectRadius)
 {
     if (m_CheckingComponent && m_CheckingComponent->IsActive())
     {
@@ -128,10 +128,12 @@ void UTargetSystem::SwitchTarget(bool useDefaultSetting, ESwitchToRule newRule)
     if (useDefaultSetting)
     {
         m_Data.SwitchingRule = m_Info.SwitchingRule;
+        m_Data.DetectRadius = m_Info.DetectRadius;
     }
     else
     {
         m_Data.SwitchingRule = newRule;
+        m_Data.DetectRadius = newDetectRadius;
     }
 
     m_Data.AvailableTargets.Empty();
@@ -150,7 +152,7 @@ void UTargetSystem::SwitchTarget(bool useDefaultSetting, ESwitchToRule newRule)
 
         m_CheckingComponent->SetWorldLocation(GetOwner()->GetActorLocation());
         m_CheckingComponent->bShouldCollideWhenPlacing = true;
-        m_CheckingComponent->InitSphereRadius(m_Info.DetectRadius * 100);
+        m_CheckingComponent->InitSphereRadius(m_Data.DetectRadius * 100);
         m_CheckingComponent->SetCollisionProfileName(m_Info.CollisionPresetName);
         m_CheckingComponent->OnComponentBeginOverlap.AddDynamic(this, &UTargetSystem::OnOverlabBegin);
         m_CheckingComponent->RegisterComponent();
@@ -159,7 +161,7 @@ void UTargetSystem::SwitchTarget(bool useDefaultSetting, ESwitchToRule newRule)
     else
     {
         m_CheckingComponent->SetActive(true);
-        m_CheckingComponent->SetSphereRadius(m_Info.DetectRadius * 100);
+        m_CheckingComponent->SetSphereRadius(m_Data.DetectRadius * 100);
     }
 
     FTimerHandle handle;

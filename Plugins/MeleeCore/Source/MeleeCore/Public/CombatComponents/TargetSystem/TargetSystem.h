@@ -131,6 +131,9 @@ struct MELEECORE_API FTargetData
     TArray<AActor*> AvailableTargets;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=TargetSystem)
+    float DetectRadius;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=TargetSystem)
     ESwitchToRule SwitchingRule;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=TargetSystem)
@@ -175,7 +178,7 @@ public:
     virtual AActor* FindBestTarget_Implementation(const TArray<AActor*>& avaliables);
 
     UFUNCTION(BlueprintCallable)
-    void SwitchTarget(bool useDefaultSetting = true, ESwitchToRule newRule = ESwitchToRule::TARGET_FaceTo);
+    void SwitchTarget(bool useDefaultSetting = true, ESwitchToRule newRule = ESwitchToRule::TARGET_FaceTo, float newDetectRadius = 5.0f);
 
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
     bool LockOnTarget();
