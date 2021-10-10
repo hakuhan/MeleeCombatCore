@@ -9,6 +9,6 @@ public class MeleeCombatCoreTarget : TargetRules
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.AddRange( new string[] { "MeleeCombatCore", "MeleeCore" } );
+		ExtraModuleNames.AddRange( new string[] { "MeleeCombatCore" } );
 	}
 }
