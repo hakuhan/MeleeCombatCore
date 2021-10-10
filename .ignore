@@ -5,8 +5,6 @@ DerivedDataCache
 Saved
 .git
 .vscode
-Plugins/MeleeEditor/Content
-Plugins/MeleeEditor/Intermediate
 Plugins/MeleeCore/Content
 Plugins/MeleeCore/Intermediate
 Plugins/StorySystem/Content
