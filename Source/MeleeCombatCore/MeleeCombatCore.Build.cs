@@ -8,9 +8,9 @@ public class MeleeCombatCore : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AnimGraph", "AnimGraphRunTime", "BlueprintGraph" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AnimGraph", "AnimGraphRuntime", "BlueprintGraph" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "AnimGraph", "AnimGraphRunTime", "BlueprintGraph" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "AnimGraph", "AnimGraphRuntime", "BlueprintGraph" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
